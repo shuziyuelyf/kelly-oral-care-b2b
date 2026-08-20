@@ -1,75 +1,57 @@
 'use client';
 
-import { useTranslations, useLocale } from 'next-intl';
-import { Plus, Edit, Trash2, ExternalLink, MessageSquare, ShoppingCart } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
 import { mockProducts } from '@/lib/mock/data';
 import { getI18nValue } from '@/lib/utils-i18n';
+import { ExternalLink, MessageCircle, Globe } from 'lucide-react';
 
 export default function AdminChannelsPage() {
-  const t = useTranslations('admin');
   const locale = useLocale();
+  const t = useTranslations('admin.channels');
+  const lang = locale;
 
-  const allChannels = mockProducts.flatMap((p) =>
-    p.channels.map((ch) => ({
-      ...ch,
-      productName: getI18nValue(p.i18n, locale, 'name'),
-      modelNumber: p.modelNumber,
-    }))
-  );
+  const productsWithChannels = mockProducts.filter((p) => p.channels && p.channels.length > 0);
 
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold text-gray-900">{t('channels')}</h1>
-        <button className="flex items-center gap-2 rounded-lg bg-[#1B3A5C] px-4 py-2 text-sm font-medium text-white hover:bg-[#153050]">
-          <Plus className="h-4 w-4" /> Add Channel
-        </button>
-      </div>
-
-      <div className="mt-6 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="border-b border-gray-200 bg-gray-50">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Type</th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">{t('products') === t('products') ? 'Shop Name' : ''}</th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">URL</th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">{t('actions')}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {allChannels.map((ch) => (
-                <tr key={ch.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3">
-                    <div>
-                      <span className="text-sm font-medium text-gray-900">{ch.productName}</span>
-                      <span className="ml-2 text-xs text-gray-400">{ch.modelNumber}</span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${ch.type === 'whatsapp' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}>
-                      {ch.type === 'whatsapp' ? <MessageSquare className="h-3 w-3" /> : <ShoppingCart className="h-3 w-3" />}
-                      {ch.type === 'whatsapp' ? 'WhatsApp' : 'Online Store'}
+      <h1 className="text-2xl font-bold text-[#1B3A5C] mb-6">{t('title')}</h1>
+      <div className="space-y-4">
+        {productsWithChannels.map((product) => (
+          <div key={product.id} className="bg-white rounded-lg shadow-sm p-5">
+            <div className="flex items-center gap-3 mb-4">
+              <img src={product.mainImage || undefined} alt="" className="w-12 h-12 rounded object-cover" />
+              <div>
+                <h3 className="font-semibold text-[#1B3A5C]">{getI18nValue(product.i18n, lang, 'name')}</h3>
+                <p className="text-sm text-gray-500">{product.productCode}</p>
+              </div>
+            </div>
+            <div className="space-y-2">
+              {(product.channels || []).map((ch) => (
+                <div key={ch.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    {ch.channelType === 1 ? (
+                      <Globe className="w-4 h-4 text-blue-500" />
+                    ) : (
+                      <MessageCircle className="w-4 h-4 text-green-500" />
+                    )}
+                    <span className="text-sm font-medium text-gray-700">
+                      {ch.channelType === 1 ? (ch.shopName || t('onlineStore')) : 'WhatsApp'}
                     </span>
-                  </td>
-                  <td className="px-4 py-3 text-sm text-gray-600">{ch.shopName}</td>
-                  <td className="px-4 py-3">
-                    <a href={ch.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm text-[#1B3A5C] hover:underline">
-                      <ExternalLink className="h-3 w-3" /> {ch.url.length > 30 ? ch.url.slice(0, 30) + '...' : ch.url}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-400 truncate max-w-[200px]">{ch.url}</span>
+                    <a href={ch.url} target="_blank" rel="noopener noreferrer" className="p-1 hover:bg-gray-200 rounded">
+                      <ExternalLink className="w-3 h-3 text-gray-400" />
                     </a>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <button className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-[#1B3A5C]"><Edit className="h-4 w-4" /></button>
-                      <button className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-red-600"><Trash2 className="h-4 w-4" /></button>
-                    </div>
-                  </td>
-                </tr>
+                    <span className={`px-2 py-0.5 rounded text-xs ${ch.status === 1 ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                      {ch.status === 1 ? t('active') : t('inactive')}
+                    </span>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
-        </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

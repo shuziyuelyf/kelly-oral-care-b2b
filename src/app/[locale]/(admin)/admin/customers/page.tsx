@@ -1,88 +1,64 @@
 'use client';
 
-import { useTranslations, useLocale } from 'next-intl';
 import { useState } from 'react';
-import { Eye, Edit, Check, X, Users } from 'lucide-react';
-import { mockCustomers } from '@/lib/mock/data';
-import { formatDate } from '@/lib/utils-i18n';
+import { useLocale, useTranslations } from 'next-intl';
+import { mockCustomers } from '@/lib/mock/other';
+import { Check, X, Eye } from 'lucide-react';
 
 export default function AdminCustomersPage() {
-  const t = useTranslations('admin');
   const locale = useLocale();
-  const [filterStatus, setFilterStatus] = useState<string>('all');
+  const t = useTranslations('admin.customers');
+  const [filter, setFilter] = useState<number | null>(null);
 
-  const filtered = filterStatus === 'all' ? mockCustomers : mockCustomers.filter((c) => c.status === filterStatus);
+  const filtered = filter !== null ? mockCustomers.filter((c) => c.auditStatus === filter) : mockCustomers;
+  const auditMap: Record<number, { label: string; cls: string }> = {
+    0: { label: t('auditPending'), cls: 'bg-yellow-50 text-yellow-700' },
+    1: { label: t('auditApproved'), cls: 'bg-green-50 text-green-700' },
+    2: { label: t('auditRejected'), cls: 'bg-red-50 text-red-700' },
+  };
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900">{t('customers')}</h1>
-
-      <div className="mt-6 flex gap-2">
-        {['all', 'pending', 'approved', 'rejected'].map((s) => (
-          <button
-            key={s}
-            onClick={() => setFilterStatus(s)}
-            className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${filterStatus === s ? 'bg-[#1B3A5C] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-          >
-            {s === 'all' ? 'All' : s}
-          </button>
+      <h1 className="text-2xl font-bold text-[#1B3A5C] mb-6">{t('title')}</h1>
+      <div className="flex gap-2 mb-4">
+        <button onClick={() => setFilter(null)} className={`px-3 py-1.5 rounded text-sm ${filter === null ? 'bg-[#1B3A5C] text-white' : 'bg-gray-100 text-gray-600'}`}>{t('all')}</button>
+        {[0, 1, 2].map((s) => (
+          <button key={s} onClick={() => setFilter(s)} className={`px-3 py-1.5 rounded text-sm ${filter === s ? 'bg-[#1B3A5C] text-white' : 'bg-gray-100 text-gray-600'}`}>{auditMap[s].label}</button>
         ))}
       </div>
-
-      <div className="mt-6 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="border-b border-gray-200 bg-gray-50">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Company</th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Contact</th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Email</th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Group</th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">{t('status')}</th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">{t('created_at')}</th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">{t('actions')}</th>
+      <div className="bg-white rounded-lg shadow-sm overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead className="bg-gray-50"><tr>
+            <th className="px-4 py-3 text-left text-gray-500 font-medium">{t('companyName')}</th>
+            <th className="px-4 py-3 text-left text-gray-500 font-medium">{t('creditCode')}</th>
+            <th className="px-4 py-3 text-left text-gray-500 font-medium">{t('contact')}</th>
+            <th className="px-4 py-3 text-left text-gray-500 font-medium">{t('industry')}</th>
+            <th className="px-4 py-3 text-left text-gray-500 font-medium">{t('auditStatus')}</th>
+            <th className="px-4 py-3 text-left text-gray-500 font-medium">{t('actions')}</th>
+          </tr></thead>
+          <tbody>
+            {filtered.map((c) => (
+              <tr key={c.id} className="border-t hover:bg-gray-50">
+                <td className="px-4 py-3 font-medium text-[#1B3A5C]">{c.companyName}</td>
+                <td className="px-4 py-3 text-gray-500">{c.creditCode}</td>
+                <td className="px-4 py-3">{c.contactPerson}<br /><span className="text-xs text-gray-400">{c.contactEmail}</span></td>
+                <td className="px-4 py-3">{c.industry}</td>
+                <td className="px-4 py-3"><span className={`px-2 py-0.5 rounded text-xs font-medium ${auditMap[c.auditStatus].cls}`}>{auditMap[c.auditStatus].label}</span></td>
+                <td className="px-4 py-3">
+                  <div className="flex gap-1">
+                    <button className="p-1 hover:bg-gray-100 rounded" title={t('view')}><Eye className="w-4 h-4 text-gray-400" /></button>
+                    {c.auditStatus === 0 && (
+                      <>
+                        <button className="p-1 hover:bg-green-50 rounded" title={t('approve')}><Check className="w-4 h-4 text-green-500" /></button>
+                        <button className="p-1 hover:bg-red-50 rounded" title={t('reject')}><X className="w-4 h-4 text-red-500" /></button>
+                      </>
+                    )}
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {filtered.map((cust) => (
-                <tr key={cust.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <div className="flex h-8 w-8 items-center justify-center rounded bg-[#1B3A5C]/10"><Users className="h-4 w-4 text-[#1B3A5C]" /></div>
-                      <div>
-                        <span className="text-sm font-medium text-gray-900">{cust.companyName}</span>
-                        <span className="block text-xs text-gray-400">{cust.creditCode}</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 text-sm text-gray-600">{cust.contactPerson}</td>
-                  <td className="px-4 py-3 text-sm text-gray-600">{cust.contactEmail}</td>
-                  <td className="px-4 py-3 text-sm text-gray-600">{cust.group || '-'}</td>
-                  <td className="px-4 py-3">
-                    <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                      cust.status === 'approved' ? 'bg-green-100 text-green-700' :
-                      cust.status === 'pending' ? 'bg-amber-100 text-amber-700' :
-                      'bg-red-100 text-red-700'
-                    }`}>{cust.status}</span>
-                  </td>
-                  <td className="px-4 py-3 text-sm text-gray-500">{formatDate(cust.createdAt, locale)}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <button className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-[#1B3A5C]"><Eye className="h-4 w-4" /></button>
-                      <button className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-[#1B3A5C]"><Edit className="h-4 w-4" /></button>
-                      {cust.status === 'pending' && (
-                        <>
-                          <button className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-green-600"><Check className="h-4 w-4" /></button>
-                          <button className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-red-600"><X className="h-4 w-4" /></button>
-                        </>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

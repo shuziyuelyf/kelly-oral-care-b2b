@@ -1,124 +1,97 @@
 'use client';
 
-import { useTranslations, useLocale } from 'next-intl';
 import { useState } from 'react';
-import { Plus, Edit, Trash2, FileText, Image, Newspaper, Award } from 'lucide-react';
-import { mockNews, mockBanners, mockCaseShows } from '@/lib/mock/data';
-import { getI18nValue, formatDate } from '@/lib/utils-i18n';
-
-type TabType = 'news' | 'banners' | 'cases';
+import { useLocale, useTranslations } from 'next-intl';
+import { mockNews, mockNewsCategories, mockBanners, mockCaseShows } from '@/lib/mock/other';
+import { getI18nValue } from '@/lib/utils-i18n';
+import { Plus, Edit, Trash2 } from 'lucide-react';
 
 export default function AdminContentPage() {
-  const t = useTranslations('admin');
   const locale = useLocale();
-  const [tab, setTab] = useState<TabType>('news');
-
-  const tabs = [
-    { key: 'news' as TabType, label: 'News', icon: Newspaper },
-    { key: 'banners' as TabType, label: 'Banners', icon: Image },
-    { key: 'cases' as TabType, label: 'Case Studies', icon: Award },
-  ];
+  const t = useTranslations('admin.content');
+  const lang = locale;
+  const [tab, setTab] = useState<'news' | 'banners' | 'cases'>('news');
 
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold text-gray-900">{t('content')}</h1>
-        <button className="flex items-center gap-2 rounded-lg bg-[#1B3A5C] px-4 py-2 text-sm font-medium text-white hover:bg-[#153050]">
-          <Plus className="h-4 w-4" /> Add Content
-        </button>
-      </div>
-
-      <div className="mt-6 flex gap-1 border-b border-gray-200">
-        {tabs.map((tb) => (
-          <button
-            key={tb.key}
-            onClick={() => setTab(tb.key)}
-            className={`flex items-center gap-2 border-b-2 px-4 py-2 text-sm font-medium transition-colors ${tab === tb.key ? 'border-[#1B3A5C] text-[#1B3A5C]' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
-          >
-            <tb.icon className="h-4 w-4" /> {tb.label}
+      <h1 className="text-2xl font-bold text-[#1B3A5C] mb-6">{t('title')}</h1>
+      <div className="flex gap-2 mb-6">
+        {(['news', 'banners', 'cases'] as const).map((t2) => (
+          <button key={t2} onClick={() => setTab(t2)} className={`px-4 py-2 rounded-lg text-sm font-medium ${tab === t2 ? 'bg-[#1B3A5C] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
+            {t(t2)}
           </button>
         ))}
       </div>
 
-      <div className="mt-6">
-        {tab === 'news' && (
-          <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="border-b border-gray-200 bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Title</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Category</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">{t('created_at')}</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">{t('actions')}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {mockNews.map((n) => (
-                    <tr key={n.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 text-sm font-medium text-gray-900">{getI18nValue(n.i18n, locale, 'title')}</td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{n.category}</td>
-                      <td className="px-4 py-3 text-sm text-gray-500">{formatDate(n.publishedAt, locale)}</td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-2">
-                          <button className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-[#1B3A5C]"><Edit className="h-4 w-4" /></button>
-                          <button className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-red-600"><Trash2 className="h-4 w-4" /></button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
+      {tab === 'news' && (
+        <div className="bg-white rounded-lg shadow-sm">
+          <div className="p-4 border-b flex justify-end"><button className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#E8720C] text-white rounded text-sm"><Plus className="w-3 h-3" />{t('addNews')}</button></div>
+          <table className="w-full text-sm">
+            <thead className="bg-gray-50"><tr>
+              <th className="px-4 py-3 text-left text-gray-500">ID</th>
+              <th className="px-4 py-3 text-left text-gray-500">{t('newsTitle')}</th>
+              <th className="px-4 py-3 text-left text-gray-500">{t('category')}</th>
+              <th className="px-4 py-3 text-left text-gray-500">{t('date')}</th>
+              <th className="px-4 py-3 text-left text-gray-500">{t('actions')}</th>
+            </tr></thead>
+            <tbody>
+              {mockNews.map((n) => (
+                <tr key={n.id} className="border-t hover:bg-gray-50">
+                  <td className="px-4 py-3">{n.id}</td>
+                  <td className="px-4 py-3 font-medium">{getI18nValue(n.i18n, lang, 'title')}</td>
+                  <td className="px-4 py-3">{mockNewsCategories.find((c) => c.id === n.categoryId) ? getI18nValue(mockNewsCategories.find((c) => c.id === n.categoryId)!.i18n, lang, 'categoryName') : '-'}</td>
+                  <td className="px-4 py-3 text-gray-500">{n.publishedAt}</td>
+                  <td className="px-4 py-3"><button className="p-1 hover:bg-gray-100 rounded"><Edit className="w-4 h-4 text-blue-500" /></button><button className="p-1 hover:bg-gray-100 rounded ml-1"><Trash2 className="w-4 h-4 text-red-400" /></button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
-        {tab === 'banners' && (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {tab === 'banners' && (
+        <div className="bg-white rounded-lg shadow-sm">
+          <div className="p-4 border-b flex justify-end"><button className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#E8720C] text-white rounded text-sm"><Plus className="w-3 h-3" />{t('addBanner')}</button></div>
+          <div className="divide-y">
             {mockBanners.map((b) => (
-              <div key={b.id} className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-                <div className="flex h-32 items-center justify-center bg-gradient-to-r from-[#1B3A5C] to-[#2A5A8C]">
-                  <Image className="h-8 w-8 text-white/50" />
+              <div key={b.id} className="flex items-center gap-4 p-4">
+                <img src={b.imageUrl} alt="" className="w-24 h-14 rounded object-cover" />
+                <div className="flex-1">
+                  <p className="font-medium text-[#1B3A5C]">{getI18nValue(b.i18n, lang, 'title')}</p>
+                  <p className="text-xs text-gray-400">{b.linkUrl}</p>
                 </div>
-                <div className="p-4">
-                  <h3 className="text-sm font-medium text-gray-900">{getI18nValue(b.i18n, locale, 'title')}</h3>
-                  <p className="mt-1 text-xs text-gray-500">{getI18nValue(b.i18n, locale, 'subtitle')}</p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <span className="text-xs text-gray-400">Sort: {b.sortOrder}</span>
-                    <div className="flex gap-1">
-                      <button className="rounded p-1 text-gray-400 hover:text-[#1B3A5C]"><Edit className="h-3.5 w-3.5" /></button>
-                      <button className="rounded p-1 text-gray-400 hover:text-red-600"><Trash2 className="h-3.5 w-3.5" /></button>
-                    </div>
-                  </div>
-                </div>
+                <div className="flex gap-1"><button className="p-1 hover:bg-gray-100 rounded"><Edit className="w-4 h-4 text-blue-500" /></button><button className="p-1 hover:bg-gray-100 rounded"><Trash2 className="w-4 h-4 text-red-400" /></button></div>
               </div>
             ))}
           </div>
-        )}
+        </div>
+      )}
 
-        {tab === 'cases' && (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {mockCaseShows.map((c) => (
-              <div key={c.id} className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-                <div className="flex h-32 items-center justify-center bg-gradient-to-r from-[#E8720C]/20 to-[#E8720C]/5">
-                  <Award className="h-8 w-8 text-[#E8720C]/30" />
-                </div>
-                <div className="p-4">
-                  <h3 className="text-sm font-medium text-gray-900">{getI18nValue(c.i18n, locale, 'title')}</h3>
-                  <p className="mt-1 text-xs text-gray-500">{getI18nValue(c.i18n, locale, 'description').slice(0, 80)}...</p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <span className="text-xs text-gray-400">{getI18nValue(c.i18n, locale, 'clientName')}</span>
-                    <div className="flex gap-1">
-                      <button className="rounded p-1 text-gray-400 hover:text-[#1B3A5C]"><Edit className="h-3.5 w-3.5" /></button>
-                      <button className="rounded p-1 text-gray-400 hover:text-red-600"><Trash2 className="h-3.5 w-3.5" /></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      {tab === 'cases' && (
+        <div className="bg-white rounded-lg shadow-sm">
+          <div className="p-4 border-b flex justify-end"><button className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#E8720C] text-white rounded text-sm"><Plus className="w-3 h-3" />{t('addCase')}</button></div>
+          <table className="w-full text-sm">
+            <thead className="bg-gray-50"><tr>
+              <th className="px-4 py-3 text-left text-gray-500">ID</th>
+              <th className="px-4 py-3 text-left text-gray-500">{t('caseTitle')}</th>
+              <th className="px-4 py-3 text-left text-gray-500">{t('industry')}</th>
+              <th className="px-4 py-3 text-left text-gray-500">{t('views')}</th>
+              <th className="px-4 py-3 text-left text-gray-500">{t('actions')}</th>
+            </tr></thead>
+            <tbody>
+              {mockCaseShows.map((c) => (
+                <tr key={c.id} className="border-t hover:bg-gray-50">
+                  <td className="px-4 py-3">{c.id}</td>
+                  <td className="px-4 py-3 font-medium">{getI18nValue(c.i18n, lang, 'title')}</td>
+                  <td className="px-4 py-3">{getI18nValue(c.i18n, lang, 'industry')}</td>
+                  <td className="px-4 py-3">{c.viewCount}</td>
+                  <td className="px-4 py-3"><button className="p-1 hover:bg-gray-100 rounded"><Edit className="w-4 h-4 text-blue-500" /></button><button className="p-1 hover:bg-gray-100 rounded ml-1"><Trash2 className="w-4 h-4 text-red-400" /></button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

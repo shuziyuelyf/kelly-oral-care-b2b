@@ -1,160 +1,215 @@
 'use client';
 
-import { useTranslations, useLocale } from 'next-intl';
-import Link from 'next/link';
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, ShoppingCart, MessageSquare, ExternalLink, Package, ArrowLeft } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { useLocale, useTranslations } from 'next-intl';
+import { ShoppingCart, MessageCircle, FileText, ChevronLeft, ChevronRight, ExternalLink, Check } from 'lucide-react';
 import { mockProducts } from '@/lib/mock/data';
-import { getI18nValue, formatPrice } from '@/lib/utils-i18n';
+import { getI18nValue } from '@/lib/utils-i18n';
+import Link from 'next/link';
 
 export default function ProductDetailPage() {
-  const t = useTranslations('products');
-  const tNav = useTranslations('nav');
+  const params = useParams();
   const locale = useLocale();
+  const t = useTranslations('product');
+  const lang = locale;
+  const productId = Number(params.id);
+  const product = mockProducts.find((p) => p.id === productId);
   const [currentImage, setCurrentImage] = useState(0);
-  const [selectedSku, setSelectedSku] = useState(0);
-
-  const product = mockProducts[0];
+  const [selectedSku, setSelectedSku] = useState<number | null>(null);
 
   if (!product) {
     return (
-      <div className="mx-auto max-w-7xl px-4 py-16 text-center">
-        <Package className="mx-auto mb-4 h-16 w-16 text-gray-300" />
-        <p className="text-lg text-gray-500">Product not found</p>
-        <Link href={`/${locale}/products`} className="mt-4 inline-flex items-center gap-2 text-[#E8720C] hover:underline">
-          <ArrowLeft className="h-4 w-4" /> {t('title')}
-        </Link>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">{t('notFound')}</h1>
+          <Link href={`/${locale}/products`} className="text-[#E8720C] hover:underline">{t('backToList')}</Link>
+        </div>
       </div>
     );
   }
 
-  const name = getI18nValue(product.i18n, locale, 'name');
-  const description = getI18nValue(product.i18n, locale, 'description');
-  const sku = product.skus[selectedSku] || product.skus[0];
-  const price = sku?.price || 0;
-  const originalPrice = sku?.originalPrice || 0;
-  const stock = product.skus.reduce((s, sk) => s + sk.stock, 0);
-  const whatsappChannel = product.channels.find((c) => c.type === 'whatsapp');
-  const onlineChannel = product.channels.find((c) => c.type === 'online_store');
+  const name = getI18nValue(product.i18n, lang, 'name');
+  const subtitle = getI18nValue(product.i18n, lang, 'subtitle');
+  const description = getI18nValue(product.i18n, lang, 'description');
+  const specsData = getI18nValue(product.i18n, lang, 'specsData');
+  let specs: { label: string; value: string }[] = [];
+  try { specs = JSON.parse(specsData || '[]'); } catch { /* empty */ }
 
-  const whatsappUrl = whatsappChannel
-    ? `${whatsappChannel.url}?text=${encodeURIComponent(`Hi, I'm interested in: ${name} (${product.modelNumber})`)}`
-    : null;
+  const images = product.images || [];
+  const skus = product.skus || [];
+  const channels = product.channels || [];
+  const onlineStores = channels.filter((c) => c.channelType === 1 && c.status === 1);
+  const whatsappChannels = channels.filter((c) => c.channelType === 2 && c.status === 1);
+
+  const selectedSkuData = skus.find((s) => s.id === selectedSku);
+  const displayPrice = selectedSkuData?.price || product.priceMin;
+  const displayStock = selectedSkuData?.stock || product.totalStock;
+
+  const getStockStatus = (stock: number) => {
+    if (stock <= 0) return { text: t('outOfStock'), color: 'text-red-600 bg-red-50' };
+    if (stock <= 10) return { text: t('lowStock'), color: 'text-yellow-600 bg-yellow-50' };
+    return { text: t('inStock'), color: 'text-green-600 bg-green-50' };
+  };
+  const stockStatus = getStockStatus(displayStock);
+
+  // Build WhatsApp URL with pre-filled product info
+  const buildWhatsAppUrl = (channelUrl: string) => {
+    const productName = encodeURIComponent(name);
+    const productCode = product.productCode;
+    const msg = encodeURIComponent(`Hi, I'm interested in: ${name} (${productCode})`);
+    const baseUrl = channelUrl.replace(/\/$/, '');
+    return baseUrl.includes('?text=') ? baseUrl : `${baseUrl}?text=${msg}`;
+  };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      {/* Breadcrumb */}
-      <nav className="mb-6 flex items-center gap-2 text-sm text-gray-500">
-        <Link href={`/${locale}`} className="hover:text-[#1B3A5C]">{tNav('home')}</Link>
-        <span>/</span>
-        <Link href={`/${locale}/products`} className="hover:text-[#1B3A5C]">{t('title')}</Link>
-        <span>/</span>
-        <span className="text-gray-900">{name}</span>
-      </nav>
+    <div className="min-h-screen bg-white pt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-2 text-sm text-gray-500 mb-8">
+          <Link href={`/${locale}`} className="hover:text-[#E8720C]">{t('breadcrumb.home')}</Link>
+          <span>/</span>
+          <Link href={`/${locale}/products`} className="hover:text-[#E8720C]">{t('breadcrumb.products')}</Link>
+          <span>/</span>
+          <span className="text-gray-800">{name}</span>
+        </nav>
 
-      <div className="grid gap-8 lg:grid-cols-2">
-        {/* Image Gallery */}
-        <div>
-          <div className="relative aspect-square overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
-            <div className="flex h-full items-center justify-center">
-              <Package className="h-24 w-24 text-gray-300" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          {/* Image Gallery */}
+          <div>
+            <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-4">
+              {images.length > 0 ? (
+                <img src={images[currentImage]?.imageUrl} alt={name} className="w-full h-full object-cover" />
+              ) : (
+                <img src={product.mainImage || undefined} alt={name} className="w-full h-full object-cover" />
+              )}
             </div>
-            {product.images.length > 1 && (
-              <>
-                <button onClick={() => setCurrentImage((c) => (c - 1 + product.images.length) % product.images.length)} className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-sm hover:bg-white">
-                  <ChevronLeft className="h-5 w-5" />
-                </button>
-                <button onClick={() => setCurrentImage((c) => (c + 1) % product.images.length)} className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow-sm hover:bg-white">
-                  <ChevronRight className="h-5 w-5" />
-                </button>
-              </>
-            )}
-          </div>
-          <div className="mt-4 flex gap-2">
-            {product.images.map((img, i) => (
-              <button key={img.id} onClick={() => setCurrentImage(i)} className={`h-16 w-16 overflow-hidden rounded border-2 ${i === currentImage ? 'border-[#E8720C]' : 'border-gray-200'}`}>
-                <div className="flex h-full items-center justify-center bg-gray-50">
-                  <Package className="h-6 w-6 text-gray-300" />
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Product Info */}
-        <div>
-          <h1 className="text-2xl font-bold text-[#1B3A5C] lg:text-3xl">{name}</h1>
-          <p className="mt-1 text-sm text-gray-400">Model: {product.modelNumber}</p>
-
-          {/* Price */}
-          <div className="mt-4 flex items-baseline gap-3">
-            <span className="text-3xl font-bold text-[#E8720C]">{formatPrice(price, locale)}</span>
-            {originalPrice > 0 && <span className="text-lg text-gray-400 line-through">{formatPrice(originalPrice, locale)}</span>}
-          </div>
-
-          {/* Stock */}
-          <div className="mt-3">
-            <span className={`rounded-full px-3 py-1 text-sm font-medium ${stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-              {stock > 0 ? `In Stock: ${stock}` : 'Out of Stock'}
-            </span>
-          </div>
-
-          {/* SKU Selection */}
-          {product.skus.length > 1 && (
-            <div className="mt-6">
-              <h3 className="text-sm font-medium text-gray-700">Specifications</h3>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {product.skus.map((s, i) => (
-                  <button key={s.id} onClick={() => setSelectedSku(i)} className={`rounded-lg border px-4 py-2 text-sm transition-colors ${i === selectedSku ? 'border-[#E8720C] bg-[#E8720C]/5 text-[#E8720C]' : 'border-gray-200 text-gray-600 hover:border-gray-300'}`}>
-                    {Object.entries(s.attributes).map(([k, v]) => `${k}: ${v}`).join(', ')}
+            {images.length > 1 && (
+              <div className="flex gap-2">
+                {images.map((img, i) => (
+                  <button key={img.id} onClick={() => setCurrentImage(i)} className={`w-16 h-16 rounded-lg overflow-hidden border-2 ${i === currentImage ? 'border-[#E8720C]' : 'border-transparent'}`}>
+                    <img src={img.imageUrl} alt="" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
-            </div>
-          )}
-
-          {/* Description */}
-          <div className="mt-6 rounded-lg border border-gray-200 p-4">
-            <h3 className="text-sm font-medium text-gray-700">Description</h3>
-            <p className="mt-2 text-sm text-gray-600">{description}</p>
+            )}
           </div>
 
-          {/* Attributes */}
-          {product.attributes.length > 0 && (
-            <div className="mt-6">
-              <h3 className="text-sm font-medium text-gray-700">Specifications</h3>
-              <div className="mt-2 overflow-hidden rounded-lg border border-gray-200">
-                <table className="w-full">
-                  <tbody>
-                    {product.attributes.map((attr) => (
-                      <tr key={attr.id} className="border-b border-gray-100 last:border-0">
-                        <td className="bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700">{attr.name}</td>
-                        <td className="px-4 py-2 text-sm text-gray-600">{attr.value} {attr.unit}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+          {/* Product Info */}
+          <div>
+            <h1 className="text-2xl font-bold text-[#1B3A5C]">{name}</h1>
+            {subtitle && <p className="text-gray-500 mt-2">{subtitle}</p>}
+            <div className="mt-2 text-sm text-gray-400">{t('model')}: {product.productCode}</div>
+
+            {/* Price */}
+            <div className="mt-6 p-4 bg-red-50 rounded-lg">
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold text-red-600">${displayPrice?.toLocaleString()}</span>
+                {!selectedSku && (product.priceMax || 0) > (product.priceMin || 0) && (
+                  <span className="text-sm text-gray-500">- ${product.priceMax?.toLocaleString()}</span>
+                )}
+              </div>
+              <div className="text-sm text-gray-500 mt-1">
+                {t('moq')}: {product.minOrderQuantity} {product.unit}
               </div>
             </div>
-          )}
 
-          {/* Actions */}
-          <div className="mt-8 flex flex-wrap gap-3">
-            <button className="flex items-center gap-2 rounded-lg bg-[#E8720C] px-6 py-3 text-sm font-medium text-white hover:bg-[#d4660a]">
-              <ShoppingCart className="h-4 w-4" /> Add to Inquiry
-            </button>
-            {whatsappUrl && (
-              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 rounded-lg bg-green-600 px-6 py-3 text-sm font-medium text-white hover:bg-green-700">
-                <MessageSquare className="h-4 w-4" /> WhatsApp
-              </a>
+            {/* Stock Status */}
+            <div className="mt-4 flex items-center gap-2">
+              <span className={`px-3 py-1 rounded-full text-sm font-medium ${stockStatus.color}`}>
+                <Check className="w-3 h-3 inline mr-1" />{stockStatus.text}: {displayStock}
+              </span>
+              <span className="text-sm text-gray-400">{t('sales')}: {product.salesCount}</span>
+            </div>
+
+            {/* SKU Selection */}
+            {skus.length > 0 && (
+              <div className="mt-6">
+                <h3 className="text-sm font-medium text-gray-700 mb-2">{t('selectSku')}</h3>
+                <div className="flex flex-wrap gap-2">
+                  {skus.map((sku) => (
+                    <button
+                      key={sku.id}
+                      onClick={() => setSelectedSku(sku.id === selectedSku ? null : sku.id)}
+                      className={`px-4 py-2 rounded-lg text-sm border transition-colors ${
+                        selectedSku === sku.id ? 'border-[#E8720C] bg-orange-50 text-[#E8720C]' : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      {sku.skuCode} - ${sku.price?.toLocaleString()}
+                    </button>
+                  ))}
+                </div>
+              </div>
             )}
-            {onlineChannel && (
-              <a href={onlineChannel.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 rounded-lg border border-gray-300 px-6 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50">
-                <ExternalLink className="h-4 w-4" /> Buy Online
-              </a>
+
+            {/* Channel Links - Online Stores */}
+            {onlineStores.length > 0 && (
+              <div className="mt-6">
+                <h3 className="text-sm font-medium text-gray-700 mb-2">{t('onlineStores')}</h3>
+                <div className="flex flex-wrap gap-2">
+                  {onlineStores.map((ch) => (
+                    <a key={ch.id} href={ch.url} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 text-sm font-medium transition-colors">
+                      <ExternalLink className="w-4 h-4" />
+                      {ch.shopName || t('visitStore')}
+                    </a>
+                  ))}
+                </div>
+              </div>
             )}
+
+            {/* Channel Links - WhatsApp */}
+            {whatsappChannels.length > 0 && (
+              <div className="mt-4">
+                <h3 className="text-sm font-medium text-gray-700 mb-2">{t('whatsappContact')}</h3>
+                <div className="flex flex-wrap gap-2">
+                  {whatsappChannels.map((ch) => (
+                    <a key={ch.id} href={buildWhatsAppUrl(ch.url)} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 text-sm font-medium transition-colors">
+                      <MessageCircle className="w-4 h-4" />
+                      WhatsApp {t('inquiry')}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Inquiry Button */}
+            <div className="mt-6 flex gap-3">
+              <Link href={`/${locale}/contact?type=inquiry&productId=${product.id}`}
+                className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#E8720C] text-white font-medium rounded-lg hover:bg-[#d4680b] transition-colors">
+                <FileText className="w-4 h-4" /> {t('requestQuote')}
+              </Link>
+            </div>
           </div>
         </div>
+
+        {/* Specs Table */}
+        {specs.length > 0 && (
+          <div className="mt-12">
+            <h2 className="text-xl font-bold text-[#1B3A5C] mb-4">{t('specifications')}</h2>
+            <div className="border rounded-lg overflow-hidden">
+              <table className="w-full">
+                <tbody>
+                  {specs.map((spec, i) => (
+                    <tr key={i} className={i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                      <td className="px-4 py-3 text-sm font-medium text-gray-700 w-1/3">{spec.label}</td>
+                      <td className="px-4 py-3 text-sm text-gray-600">{spec.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Description */}
+        {description && (
+          <div className="mt-8">
+            <h2 className="text-xl font-bold text-[#1B3A5C] mb-4">{t('description')}</h2>
+            <div className="prose max-w-none text-gray-600" dangerouslySetInnerHTML={{ __html: description }} />
+          </div>
+        )}
       </div>
     </div>
   );

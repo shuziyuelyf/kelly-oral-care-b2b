@@ -1,86 +1,89 @@
-import { useTranslations } from 'next-intl';
-import { useLocale } from 'next-intl';
 import Link from 'next/link';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
+import { Phone, Mail, MapPin } from 'lucide-react';
+import { mockCompanyInfo, mockPartners } from '@/lib/mock/other';
+import { getI18nValue } from '@/lib/utils-i18n';
 
-export function Footer() {
-  const t = useTranslations('footer');
-  const tNav = useTranslations('nav');
+export default function Footer() {
+  const t = useTranslations('common');
   const locale = useLocale();
+  const lang = locale;
+  const company = mockCompanyInfo;
+  const companyName = getI18nValue(company.i18n, lang, 'companyName');
+  const address = getI18nValue(company.i18n, lang, 'address');
+
+  const footerLinks = [
+    { title: t('nav.products'), links: [{ label: t('footer.allProducts'), href: '/products' }, { label: t('nav.custom'), href: '/custom' }] },
+    { title: t('nav.about'), links: [{ label: t('footer.company'), href: '/about' }, { label: t('nav.news'), href: '/news' }, { label: t('nav.contact'), href: '/contact' }] },
+  ];
 
   return (
-    <footer className="bg-[#1B3A5C] text-white">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {/* About */}
-          <div>
-            <div className="mb-4 flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded bg-white/10">
-                <span className="text-lg font-bold">B</span>
+    <footer className="bg-[#1a2332] text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Company Info */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-[#E8720C] rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">B2B</span>
               </div>
-              <span className="text-lg font-bold">B2B<span className="text-[#E8720C]">Pro</span></span>
+              <span className="font-bold text-lg">{companyName}</span>
             </div>
-            <p className="text-sm text-gray-300">{t('about_desc')}</p>
-            <div className="mt-4 space-y-2 text-sm text-gray-300">
-              <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4" />
-                <span>+86-755-8888-9999</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                <span>info@b2bpro.com</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="h-4 w-4" />
-                <span>Shenzhen, Guangdong, China</span>
-              </div>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              {getI18nValue(company.i18n, lang, 'introduction').replace(/<[^>]*>/g, '').slice(0, 100)}...
+            </p>
+            <div className="space-y-2 text-sm text-gray-400">
+              <div className="flex items-center gap-2"><Phone className="w-4 h-4" /> {company.phone}</div>
+              <div className="flex items-center gap-2"><Mail className="w-4 h-4" /> {company.email}</div>
+              <div className="flex items-center gap-2"><MapPin className="w-4 h-4" /> {address}</div>
             </div>
           </div>
 
           {/* Quick Links */}
-          <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider">{t('quick_links')}</h3>
-            <ul className="space-y-2 text-sm text-gray-300">
-              <li><Link href={`/${locale}/products`} className="transition-colors hover:text-white">{tNav('products')}</Link></li>
-              <li><Link href={`/${locale}/custom`} className="transition-colors hover:text-white">{tNav('custom')}</Link></li>
-              <li><Link href={`/${locale}/about`} className="transition-colors hover:text-white">{tNav('about')}</Link></li>
-              <li><Link href={`/${locale}/news`} className="transition-colors hover:text-white">{tNav('news')}</Link></li>
-              <li><Link href={`/${locale}/contact`} className="transition-colors hover:text-white">{tNav('contact')}</Link></li>
-            </ul>
-          </div>
+          {footerLinks.map((section) => (
+            <div key={section.title}>
+              <h3 className="font-semibold text-lg mb-4">{section.title}</h3>
+              <ul className="space-y-2">
+                {section.links.map((link) => (
+                  <li key={link.href}>
+                    <Link href={`/${locale}${link.href}`} className="text-gray-400 hover:text-white text-sm transition-colors">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
 
-          {/* Support */}
+          {/* Contact & Social */}
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider">{t('support')}</h3>
-            <ul className="space-y-2 text-sm text-gray-300">
-              <li><a href="#" className="transition-colors hover:text-white">{t('faq')}</a></li>
-              <li><a href="#" className="transition-colors hover:text-white">{t('shipping')}</a></li>
-              <li><a href="#" className="transition-colors hover:text-white">{t('returns')}</a></li>
-              <li><a href="#" className="transition-colors hover:text-white">{t('privacy')}</a></li>
-              <li><a href="#" className="transition-colors hover:text-white">{t('terms')}</a></li>
-            </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider">{t('newsletter')}</h3>
-            <p className="mb-3 text-sm text-gray-300">{t('newsletter_desc')}</p>
-            <div className="flex gap-2">
-              <input
-                type="email"
-                placeholder={t('newsletter_placeholder')}
-                className="flex-1 rounded-md bg-white/10 px-3 py-2 text-sm text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E8720C]"
-              />
-              <button className="rounded-md bg-[#E8720C] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#d4660a]">
-                {t('newsletter_subscribe')}
-              </button>
+            <h3 className="font-semibold text-lg mb-4">{t('footer.contactUs')}</h3>
+            <div className="space-y-2 text-sm text-gray-400">
+              <p>{t('footer.businessHours')}: {company.businessHours}</p>
+              <p>WhatsApp: +{company.whatsapp}</p>
             </div>
           </div>
         </div>
 
+        {/* Partners */}
+        <div className="mt-8 pt-8 border-t border-gray-700">
+          <h4 className="text-sm font-medium text-gray-400 mb-4">{t('footer.partners')}</h4>
+          <div className="flex flex-wrap gap-6 items-center">
+            {mockPartners.map((partner) => (
+              <div key={partner.id} className="text-gray-500 hover:text-gray-300 text-sm font-medium transition-colors">
+                {partner.name}
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Bottom */}
-        <div className="mt-8 border-t border-white/10 pt-6 text-center text-sm text-gray-400">
-          <p>{t('copyright')}</p>
+        <div className="mt-8 pt-8 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+          <p>&copy; 2024 {companyName}. All rights reserved.</p>
+          <div className="flex gap-4">
+            <span>{company.icp}</span>
+            <span>{company.policeRecord}</span>
+          </div>
         </div>
       </div>
     </footer>

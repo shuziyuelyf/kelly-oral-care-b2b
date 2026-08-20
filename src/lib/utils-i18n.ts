@@ -1,41 +1,39 @@
 /**
- * Get the i18n value for a specific locale from an array of translations.
- * Falls back to English, then to the first available translation.
+ * i18n helper utilities
  */
-export function getI18nValue<T extends { locale: string }>(
-  i18nArray: T[],
-  locale: string,
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyI18nEntry = Record<string, any>;
+
+/**
+ * Get the i18n value for a specific locale from an array of i18n entries.
+ * Falls back to the first available entry if the requested locale is not found.
+ */
+export function getI18nValue<T extends AnyI18nEntry>(
+  i18nArray: T[] | undefined | null,
+  langCode: string,
   field: keyof T
 ): string {
-  const exact = i18nArray.find((item) => item.locale === locale);
-  if (exact && exact[field]) return exact[field] as string;
-
-  const fallback = i18nArray.find((item) => item.locale === 'en');
-  if (fallback && fallback[field]) return fallback[field] as string;
-
-  return (i18nArray[0]?.[field] as string) || '';
+  if (!i18nArray || i18nArray.length === 0) return '';
+  const entry = i18nArray.find((item) => item.langCode === langCode) || i18nArray[0];
+  const value = entry[field];
+  return typeof value === 'string' ? value : '';
 }
 
 /**
- * Format price with currency symbol
+ * Get i18n object for a specific locale
  */
-export function formatPrice(price: number, locale: string = 'en'): string {
-  const currency = locale === 'zh-CN' || locale === 'zh-TW' ? 'CNY' : 'USD';
-  return new Intl.NumberFormat(locale === 'zh-CN' ? 'zh-CN' : 'en-US', {
-    style: 'currency',
-    currency,
-    minimumFractionDigits: price < 100 ? 2 : 0,
-    maximumFractionDigits: price < 100 ? 2 : 0,
-  }).format(price);
+export function getI18nEntry<T extends AnyI18nEntry>(
+  i18nArray: T[] | undefined | null,
+  langCode: string
+): T | undefined {
+  if (!i18nArray || i18nArray.length === 0) return undefined;
+  return i18nArray.find((item) => item.langCode === langCode) || i18nArray[0];
 }
 
 /**
- * Format date for display
+ * Safe image src: returns empty string for null/undefined
  */
-export function formatDate(dateStr: string, locale: string = 'en'): string {
-  return new Intl.DateTimeFormat(locale === 'zh-CN' ? 'zh-CN' : 'en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }).format(new Date(dateStr));
+export function safeImageSrc(src: string | null | undefined): string {
+  return src || '';
 }

@@ -1,104 +1,114 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle, MessageCircle } from 'lucide-react';
+import { mockCompanyInfo } from '@/lib/mock/other';
+import { getI18nValue } from '@/lib/utils-i18n';
 
 export default function ContactPage() {
+  const locale = useLocale();
   const t = useTranslations('contact');
+  const lang = locale;
+  const company = mockCompanyInfo;
   const [submitted, setSubmitted] = useState(false);
 
-  const contactInfo = [
-    { icon: MapPin, label: t('address'), value: 'Building A8, Science Park, Nanshan District, Shenzhen, Guangdong, China' },
-    { icon: Phone, label: t('phone'), value: '+86-755-8888-9999' },
-    { icon: Mail, label: t('email'), value: 'info@b2bpro.com' },
-    { icon: Clock, label: t('working_hours'), value: t('working_hours_value') },
-  ];
+  const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); setSubmitted(true); };
 
   return (
-    <div>
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-[#1B3A5C] to-[#162f4a] py-16 text-center text-white lg:py-20">
-        <div className="mx-auto max-w-3xl px-4">
-          <h1 className="text-3xl font-bold lg:text-4xl">{t('title')}</h1>
-          <p className="mt-4 text-lg text-gray-300">{t('subtitle')}</p>
-        </div>
-      </section>
+    <div className="min-h-screen bg-gray-50 pt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="text-2xl font-bold text-[#1B3A5C] mb-8">{t('title')}</h1>
 
-      <section className="bg-white py-16 lg:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-2">
-            {/* Contact Info + Map */}
-            <div>
-              <div className="space-y-6">
-                {contactInfo.map((item, i) => (
-                  <div key={i} className="flex items-start gap-4">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-[#1B3A5C]/10">
-                      <item.icon className="h-5 w-5 text-[#1B3A5C]" />
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-medium text-gray-500">{item.label}</h3>
-                      <p className="mt-1 text-gray-900">{item.value}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Map placeholder */}
-              <div className="mt-8 aspect-[4/3] overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
-                <div className="flex h-full items-center justify-center">
-                  <div className="text-center text-gray-400">
-                    <MapPin className="mx-auto h-10 w-10" />
-                    <p className="mt-2 text-sm">Map View</p>
-                    <p className="text-xs">Shenzhen, Guangdong, China</p>
-                  </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Contact Info */}
+          <div className="space-y-4">
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+              <h3 className="font-semibold text-[#1B3A5C] mb-4">{t('contactInfo')}</h3>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <Phone className="w-5 h-5 text-[#E8720C] mt-0.5" />
+                  <div><p className="text-sm font-medium text-gray-700">{t('phone')}</p><p className="text-sm text-gray-500">{company.phone}</p></div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <MessageCircle className="w-5 h-5 text-[#E8720C] mt-0.5" />
+                  <div><p className="text-sm font-medium text-gray-700">WhatsApp</p><p className="text-sm text-gray-500">+{company.whatsapp}</p></div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Mail className="w-5 h-5 text-[#E8720C] mt-0.5" />
+                  <div><p className="text-sm font-medium text-gray-700">{t('email')}</p><p className="text-sm text-gray-500">{company.email}</p></div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-5 h-5 text-[#E8720C] mt-0.5" />
+                  <div><p className="text-sm font-medium text-gray-700">{t('address')}</p><p className="text-sm text-gray-500">{getI18nValue(company.i18n, lang, 'address')}</p></div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <Clock className="w-5 h-5 text-[#E8720C] mt-0.5" />
+                  <div><p className="text-sm font-medium text-gray-700">{t('businessHours')}</p><p className="text-sm text-gray-500">{company.businessHours}</p></div>
                 </div>
               </div>
             </div>
 
-            {/* Contact Form */}
-            <div>
-              <h2 className="text-2xl font-bold text-[#1B3A5C]">{t('message_title')}</h2>
+            {/* Map Placeholder */}
+            <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+              <div className="aspect-[4/3] bg-gray-200 flex items-center justify-center">
+                <div className="text-center text-gray-500">
+                  <MapPin className="w-8 h-8 mx-auto mb-2" />
+                  <p className="text-sm">{getI18nValue(company.i18n, lang, 'address')}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Form */}
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-lg p-6 shadow-sm">
+              <h3 className="font-semibold text-[#1B3A5C] mb-4">{t('messageForm')}</h3>
               {submitted ? (
-                <div className="mt-8 rounded-lg border border-green-200 bg-green-50 p-8 text-center">
-                  <CheckCircle className="mx-auto h-12 w-12 text-green-500" />
-                  <p className="mt-4 text-lg font-medium text-green-700">{t('form_success')}</p>
+                <div className="text-center py-12">
+                  <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-gray-800">{t('submitSuccess')}</h3>
+                  <p className="text-gray-500 mt-2">{t('submitSuccessDesc')}</p>
                 </div>
               ) : (
-                <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }} className="mt-6 space-y-4">
-                  <div className="grid gap-4 sm:grid-cols-2">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="mb-1 block text-sm font-medium text-gray-700">{t('form_name')}</label>
-                      <input type="text" required className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-[#1B3A5C] focus:outline-none focus:ring-1 focus:ring-[#1B3A5C]" />
+                      <label className="block text-sm font-medium text-gray-700 mb-1">{t('form.name')} *</label>
+                      <input type="text" required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20 focus:border-[#E8720C]" />
                     </div>
                     <div>
-                      <label className="mb-1 block text-sm font-medium text-gray-700">{t('form_email')}</label>
-                      <input type="email" required className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-[#1B3A5C] focus:outline-none focus:ring-1 focus:ring-[#1B3A5C]" />
+                      <label className="block text-sm font-medium text-gray-700 mb-1">{t('form.email')} *</label>
+                      <input type="email" required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20 focus:border-[#E8720C]" />
                     </div>
                   </div>
-                  <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="mb-1 block text-sm font-medium text-gray-700">{t('form_company')}</label>
-                      <input type="text" className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-[#1B3A5C] focus:outline-none focus:ring-1 focus:ring-[#1B3A5C]" />
+                      <label className="block text-sm font-medium text-gray-700 mb-1">{t('form.phone')}</label>
+                      <input type="tel" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20 focus:border-[#E8720C]" />
                     </div>
                     <div>
-                      <label className="mb-1 block text-sm font-medium text-gray-700">{t('form_subject')}</label>
-                      <input type="text" required className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-[#1B3A5C] focus:outline-none focus:ring-1 focus:ring-[#1B3A5C]" />
+                      <label className="block text-sm font-medium text-gray-700 mb-1">{t('form.company')}</label>
+                      <input type="text" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20 focus:border-[#E8720C]" />
                     </div>
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-gray-700">{t('form_message')}</label>
-                    <textarea rows={5} required className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-[#1B3A5C] focus:outline-none focus:ring-1 focus:ring-[#1B3A5C]" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('form.subject')} *</label>
+                    <input type="text" required className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20 focus:border-[#E8720C]" />
                   </div>
-                  <button type="submit" className="flex items-center gap-2 rounded-md bg-[#E8720C] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#d4660a]">
-                    <Send className="h-4 w-4" /> {t('form_submit')}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">{t('form.message')} *</label>
+                    <textarea required rows={6} className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20 focus:border-[#E8720C]" />
+                  </div>
+                  <button type="submit" className="inline-flex items-center gap-2 px-6 py-3 bg-[#E8720C] text-white font-medium rounded-lg hover:bg-[#d4680b] transition-colors">
+                    <Send className="w-4 h-4" /> {t('form.submit')}
                   </button>
                 </form>
               )}
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

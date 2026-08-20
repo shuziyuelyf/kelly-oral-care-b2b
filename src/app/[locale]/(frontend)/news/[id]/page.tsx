@@ -1,67 +1,57 @@
-'use client';
-
-import { useTranslations, useLocale } from 'next-intl';
+import { notFound } from 'next/navigation';
+import { mockNews } from '@/lib/mock/other';
+import { getI18nValue } from '@/lib/utils-i18n';
+import { Calendar, Eye, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { ArrowLeft, Award, Calendar } from 'lucide-react';
-import { mockNews } from '@/lib/mock/data';
-import { getI18nValue, formatDate } from '@/lib/utils-i18n';
 
-export default function NewsDetailPage() {
-  const t = useTranslations('news');
-  const locale = useLocale();
-  const news = mockNews[0]; // Default for demo
+export default async function NewsDetailPage({ params }: { params: Promise<{ locale: string; id: string }> }) {
+  const { locale, id } = await params;
+  const lang = locale;
+  const news = mockNews.find((n) => n.id === Number(id));
+  if (!news) return notFound();
 
-  if (!news) {
-    return (
-      <div className="mx-auto max-w-4xl px-4 py-16 text-center">
-        <p className="text-lg text-gray-500">Article not found</p>
-        <Link href={`/${locale}/news`} className="mt-4 inline-flex items-center gap-2 text-[#E8720C] hover:underline">
-          <ArrowLeft className="h-4 w-4" /> {t('title')}
-        </Link>
-      </div>
-    );
-  }
-
-  const title = getI18nValue(news.i18n, locale, 'title');
-  const content = getI18nValue(news.i18n, locale, 'content');
-  const related = mockNews.filter((n) => n.id !== news.id && n.category === news.category).slice(0, 3);
+  const title = getI18nValue(news.i18n, lang, 'title');
+  const content = getI18nValue(news.i18n, lang, 'content');
+  const relatedNews = mockNews.filter((n) => n.id !== news.id && n.categoryId === news.categoryId).slice(0, 3);
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
-      <Link href={`/${locale}/news`} className="mb-6 inline-flex items-center gap-2 text-sm text-gray-500 hover:text-[#1B3A5C]">
-        <ArrowLeft className="h-4 w-4" /> {t('title')}
-      </Link>
+    <div className="min-h-screen bg-white pt-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Link href={`/${locale}/news`} className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-[#E8720C] mb-6">
+          <ArrowLeft className="w-4 h-4" /> Back to News
+        </Link>
 
-      <article>
-        <div className="mb-4 flex items-center gap-3">
-          <span className="rounded bg-[#1B3A5C]/10 px-2 py-0.5 text-xs font-medium text-[#1B3A5C]">
-            {t(news.category as 'company' | 'industry' | 'exhibition')}
-          </span>
-          <span className="flex items-center gap-1 text-xs text-gray-400">
-            <Calendar className="h-3 w-3" /> {formatDate(news.publishedAt, locale)}
-          </span>
-        </div>
-        <h1 className="text-3xl font-bold text-[#1B3A5C]">{title}</h1>
-        <div className="mt-6 aspect-[2/1] overflow-hidden rounded-lg bg-gray-100">
-          <div className="flex h-full items-center justify-center"><Award className="h-16 w-16 text-gray-300" /></div>
-        </div>
-        <div className="prose mt-8 max-w-none text-gray-600" dangerouslySetInnerHTML={{ __html: content }} />
-      </article>
-
-      {/* Related News */}
-      {related.length > 0 && (
-        <div className="mt-12 border-t border-gray-200 pt-8">
-          <h2 className="text-xl font-bold text-[#1B3A5C]">{t('related_news')}</h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {related.map((item) => (
-              <Link key={item.id} href={`/${locale}/news/${item.id}`} className="group rounded-lg border border-gray-200 p-4 transition-all hover:shadow-md">
-                <h3 className="font-medium text-[#1B3A5C] group-hover:text-[#E8720C]">{getI18nValue(item.i18n, locale, 'title')}</h3>
-                <p className="mt-1 text-xs text-gray-400">{formatDate(item.publishedAt, locale)}</p>
-              </Link>
-            ))}
+        <article>
+          <h1 className="text-3xl font-bold text-[#1B3A5C] mb-4">{title}</h1>
+          <div className="flex items-center gap-4 text-sm text-gray-400 mb-8 pb-8 border-b">
+            <span className="flex items-center gap-1"><Calendar className="w-4 h-4" />{news.publishedAt}</span>
+            <span className="flex items-center gap-1"><Eye className="w-4 h-4" />{news.viewCount}</span>
+            <span>{news.author}</span>
           </div>
-        </div>
-      )}
+          {news.coverImage && (
+            <img src={news.coverImage || undefined} alt={title} className="w-full h-64 object-cover rounded-lg mb-8" />
+          )}
+          <div className="prose max-w-none text-gray-600 leading-relaxed" dangerouslySetInnerHTML={{ __html: content }} />
+        </article>
+
+        {/* Related News */}
+        {relatedNews.length > 0 && (
+          <div className="mt-12 pt-8 border-t">
+            <h2 className="text-xl font-bold text-[#1B3A5C] mb-6">Related News</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {relatedNews.map((rn) => (
+                <Link key={rn.id} href={`/${locale}/news/${rn.id}`} className="group bg-gray-50 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                  <img src={rn.coverImage || undefined} alt={getI18nValue(rn.i18n, lang, 'title')} className="w-full h-32 object-cover" loading="lazy" />
+                  <div className="p-3">
+                    <h3 className="text-sm font-medium text-[#1B3A5C] group-hover:text-[#E8720C] line-clamp-2">{getI18nValue(rn.i18n, lang, 'title')}</h3>
+                    <p className="text-xs text-gray-400 mt-1">{rn.publishedAt}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

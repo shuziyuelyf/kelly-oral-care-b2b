@@ -1,105 +1,116 @@
 'use client';
 
-import { useTranslations, useLocale } from 'next-intl';
-import Link from 'next/link';
 import { useState } from 'react';
-import { LogIn, UserPlus, AlertCircle } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
+import { LogIn, UserPlus, Building2, User, Mail, Lock, Phone, FileText, CheckCircle } from 'lucide-react';
 
-export default function AuthPage({ searchParams }: { searchParams: Promise<{ mode?: string }> }) {
-  const t = useTranslations('auth');
+export default function AuthPage() {
   const locale = useLocale();
+  const t = useTranslations('auth');
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [submitted, setSubmitted] = useState(false);
 
+  const handleLogin = (e: React.FormEvent) => { e.preventDefault(); setSubmitted(true); };
+  const handleRegister = (e: React.FormEvent) => { e.preventDefault(); setSubmitted(true); };
+
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-gray-50 pt-20 flex items-center justify-center">
+        <div className="text-center bg-white p-8 rounded-lg shadow-sm max-w-md">
+          <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+          <h2 className="text-xl font-bold text-gray-800 mb-2">
+            {mode === 'login' ? t('loginSuccess') : t('registerSuccess')}
+          </h2>
+          <p className="text-gray-500">
+            {mode === 'login' ? t('loginSuccessDesc') : t('registerSuccessDesc')}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex min-h-[80vh] items-center justify-center bg-gray-50 px-4 py-12">
+    <div className="min-h-screen bg-gray-50 pt-20 flex items-center justify-center py-12">
       <div className="w-full max-w-md">
-        <div className="rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
-          {/* Tab Switch */}
-          <div className="mb-6 flex rounded-lg bg-gray-100 p-1">
-            <button
-              onClick={() => { setMode('login'); setSubmitted(false); }}
-              className={`flex-1 rounded-md py-2 text-sm font-medium transition-colors ${mode === 'login' ? 'bg-white text-[#1B3A5C] shadow-sm' : 'text-gray-500'}`}
-            >
-              {t('login_title')}
+        <div className="bg-white rounded-lg shadow-sm p-8">
+          {/* Tabs */}
+          <div className="flex mb-8 bg-gray-100 rounded-lg p-1">
+            <button onClick={() => setMode('login')} className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${mode === 'login' ? 'bg-white text-[#1B3A5C] shadow-sm' : 'text-gray-500'}`}>
+              <LogIn className="w-4 h-4 inline mr-1" /> {t('login')}
             </button>
-            <button
-              onClick={() => { setMode('register'); setSubmitted(false); }}
-              className={`flex-1 rounded-md py-2 text-sm font-medium transition-colors ${mode === 'register' ? 'bg-white text-[#1B3A5C] shadow-sm' : 'text-gray-500'}`}
-            >
-              {t('register_title')}
+            <button onClick={() => setMode('register')} className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${mode === 'register' ? 'bg-white text-[#1B3A5C] shadow-sm' : 'text-gray-500'}`}>
+              <UserPlus className="w-4 h-4 inline mr-1" /> {t('register')}
             </button>
           </div>
 
-          {submitted ? (
-            <div className="py-8 text-center">
-              <AlertCircle className="mx-auto h-12 w-12 text-amber-500" />
-              <p className="mt-4 text-lg font-medium text-gray-700">{t('pending_approval')}</p>
-            </div>
-          ) : mode === 'login' ? (
-            <form onSubmit={(e) => { e.preventDefault(); }} className="space-y-4">
+          {mode === 'login' ? (
+            <form onSubmit={handleLogin} className="space-y-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-700">{t('username')}</label>
-                <input type="text" required className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm focus:border-[#1B3A5C] focus:outline-none focus:ring-1 focus:ring-[#1B3A5C]" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('email')}</label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input type="email" required className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20 focus:border-[#E8720C]" />
+                </div>
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-700">{t('password')}</label>
-                <input type="password" required className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm focus:border-[#1B3A5C] focus:outline-none focus:ring-1 focus:ring-[#1B3A5C]" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('password')}</label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input type="password" required className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20 focus:border-[#E8720C]" />
+                </div>
               </div>
-              <button type="submit" className="flex w-full items-center justify-center gap-2 rounded-md bg-[#1B3A5C] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#153050]">
-                <LogIn className="h-4 w-4" /> {t('login_btn')}
+              <button type="submit" className="w-full py-3 bg-[#1B3A5C] text-white font-medium rounded-lg hover:bg-[#15304d] transition-colors">
+                {t('loginBtn')}
               </button>
-              <p className="text-center text-sm text-gray-500">
-                {t('no_account')}{' '}
-                <button type="button" onClick={() => setMode('register')} className="font-medium text-[#E8720C] hover:underline">
-                  {t('register_title')}
-                </button>
-              </p>
             </form>
           ) : (
-            <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }} className="space-y-4">
+            <form onSubmit={handleRegister} className="space-y-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-700">{t('company_name')}</label>
-                <input type="text" required className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm focus:border-[#1B3A5C] focus:outline-none focus:ring-1 focus:ring-[#1B3A5C]" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('companyName')} *</label>
+                <div className="relative">
+                  <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input type="text" required className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20 focus:border-[#E8720C]" />
+                </div>
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-700">{t('credit_code')}</label>
-                <input type="text" required className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm focus:border-[#1B3A5C] focus:outline-none focus:ring-1 focus:ring-[#1B3A5C]" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('creditCode')}</label>
+                <div className="relative">
+                  <FileText className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input type="text" className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20 focus:border-[#E8720C]" />
+                </div>
               </div>
               <div>
-                <label className="mb-1 block text-sm font-medium text-gray-700">{t('contact_person')}</label>
-                <input type="text" required className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm focus:border-[#1B3A5C] focus:outline-none focus:ring-1 focus:ring-[#1B3A5C]" />
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700">{t('contact_phone')}</label>
-                  <input type="tel" required className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm focus:border-[#1B3A5C] focus:outline-none focus:ring-1 focus:ring-[#1B3A5C]" />
-                </div>
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700">{t('contact_email')}</label>
-                  <input type="email" required className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm focus:border-[#1B3A5C] focus:outline-none focus:ring-1 focus:ring-[#1B3A5C]" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('contactPerson')} *</label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input type="text" required className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20 focus:border-[#E8720C]" />
                 </div>
               </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700">{t('username')}</label>
-                  <input type="text" required className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm focus:border-[#1B3A5C] focus:outline-none focus:ring-1 focus:ring-[#1B3A5C]" />
-                </div>
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700">{t('password')}</label>
-                  <input type="password" required className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm focus:border-[#1B3A5C] focus:outline-none focus:ring-1 focus:ring-[#1B3A5C]" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('contactEmail')} *</label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input type="email" required className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20 focus:border-[#E8720C]" />
                 </div>
               </div>
-              <p className="text-xs text-gray-400">{t('register_note')}</p>
-              <button type="submit" className="flex w-full items-center justify-center gap-2 rounded-md bg-[#E8720C] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#d4660a]">
-                <UserPlus className="h-4 w-4" /> {t('register_btn')}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('contactPhone')}</label>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input type="tel" className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20 focus:border-[#E8720C]" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('setPassword')} *</label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input type="password" required className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20 focus:border-[#E8720C]" />
+                </div>
+              </div>
+              <p className="text-xs text-gray-400">{t('registerHint')}</p>
+              <button type="submit" className="w-full py-3 bg-[#E8720C] text-white font-medium rounded-lg hover:bg-[#d4680b] transition-colors">
+                {t('registerBtn')}
               </button>
-              <p className="text-center text-sm text-gray-500">
-                {t('has_account')}{' '}
-                <button type="button" onClick={() => setMode('login')} className="font-medium text-[#E8720C] hover:underline">
-                  {t('login_title')}
-                </button>
-              </p>
             </form>
           )}
         </div>

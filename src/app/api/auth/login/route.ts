@@ -1,17 +1,16 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { email, password } = body;
-
-  if (!email || !password) {
-    return NextResponse.json({ error: 'Email and password required' }, { status: 400 });
+  if (!body.email || !body.password) {
+    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
   }
-
   // Mock login
-  if (email === 'admin@company.com' && password === 'admin123') {
-    return NextResponse.json({ success: true, data: { token: 'mock-jwt-token', user: { id: '1', name: 'Admin', email, role: 'admin' } } });
+  if (body.email === 'admin@company.com' && body.password === 'admin123') {
+    return NextResponse.json({
+      success: true,
+      data: { token: 'mock-jwt-token', user: { id: 1, name: 'Admin', email: 'admin@company.com', role: 'admin' } },
+    });
   }
-
   return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
 }
