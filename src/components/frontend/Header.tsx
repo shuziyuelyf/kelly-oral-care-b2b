@@ -22,25 +22,30 @@ export default function Header() {
   const [activeMenu, setActiveMenu] = useState<MenuKey>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const langCloseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const langMenuRef = useRef<HTMLDivElement>(null);
   const [isPanelVisible, setIsPanelVisible] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Check initial state on mount
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mega menu when clicking outside
+  // Close all dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Node;
-      if (!(target as HTMLElement).closest('[data-mega-menu]')) {
+      if (headerRef.current && !headerRef.current.contains(target)) {
         setActiveMenu(null);
         setIsPanelVisible(false);
+        setIsLangMenuOpen(false);
       }
     };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleMenuEnter = useCallback((key: MenuKey) => {
@@ -138,16 +143,15 @@ export default function Header() {
 
       {/* Pill Navbar - header is the positioning context for mega menus */}
       <header
-        className={`fixed top-3 left-3 right-3 z-50 transition-all duration-500 ${
-          isScrolled ? 'top-2' : 'top-3'
-        }`}
+        ref={headerRef}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500`}
         data-mega-menu
       >
         <nav
           className={`max-w-6xl mx-auto rounded-full transition-all duration-500 ${
             isScrolled
-              ? 'bg-white/90 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.1)]'
-              : 'bg-white/70 backdrop-blur-lg shadow-[0_2px_20px_rgba(0,0,0,0.06)]'
+              ? 'mt-2 bg-white/95 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.1)]'
+              : 'mt-3 bg-white/10 backdrop-blur-sm shadow-none'
           }`}
         >
           <div className="flex items-center justify-between px-6 py-3">
@@ -163,7 +167,9 @@ export default function Header() {
                   className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
                     isActive('/products')
                       ? 'bg-[#1B2A4A] text-white'
-                      : 'text-[#4a4a4a] hover:text-[#1B2A4A] hover:bg-gray-100/80'
+                      : isScrolled
+                        ? 'text-[#4a4a4a] hover:text-[#1B2A4A] hover:bg-gray-100/80'
+                        : 'text-white/90 hover:text-white hover:bg-white/15'
                   }`}
                 >
                   {t('nav.products')}
@@ -181,7 +187,9 @@ export default function Header() {
                   className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
                     isActive('/custom')
                       ? 'bg-[#1B2A4A] text-white'
-                      : 'text-[#4a4a4a] hover:text-[#1B2A4A] hover:bg-gray-100/80'
+                      : isScrolled
+                        ? 'text-[#4a4a4a] hover:text-[#1B2A4A] hover:bg-gray-100/80'
+                        : 'text-white/90 hover:text-white hover:bg-white/15'
                   }`}
                 >
                   {t('nav.custom')}
@@ -199,7 +207,9 @@ export default function Header() {
                   className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
                     isActive('/about')
                       ? 'bg-[#1B2A4A] text-white'
-                      : 'text-[#4a4a4a] hover:text-[#1B2A4A] hover:bg-gray-100/80'
+                      : isScrolled
+                        ? 'text-[#4a4a4a] hover:text-[#1B2A4A] hover:bg-gray-100/80'
+                        : 'text-white/90 hover:text-white hover:bg-white/15'
                   }`}
                 >
                   {t('nav.about')}
@@ -217,7 +227,9 @@ export default function Header() {
                   className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
                     isActive('/news')
                       ? 'bg-[#1B2A4A] text-white'
-                      : 'text-[#4a4a4a] hover:text-[#1B2A4A] hover:bg-gray-100/80'
+                      : isScrolled
+                        ? 'text-[#4a4a4a] hover:text-[#1B2A4A] hover:bg-gray-100/80'
+                        : 'text-white/90 hover:text-white hover:bg-white/15'
                   }`}
                 >
                   {t('nav.news')}
@@ -231,7 +243,9 @@ export default function Header() {
                 className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
                   isActive('/contact')
                     ? 'bg-[#1B2A4A] text-white'
-                    : 'text-[#4a4a4a] hover:text-[#1B2A4A] hover:bg-gray-100/80'
+                    : isScrolled
+                      ? 'text-[#4a4a4a] hover:text-[#1B2A4A] hover:bg-gray-100/80'
+                      : 'text-white/90 hover:text-white hover:bg-white/15'
                 }`}
               >
                 {t('nav.contact')}
@@ -240,10 +254,10 @@ export default function Header() {
 
             {/* Center Logo */}
             <Link href={`/${locale}`} className="flex items-center gap-2">
-              <div className="w-9 h-9 bg-[#1B2A4A] rounded-full flex items-center justify-center">
+              <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300 ${isScrolled ? 'bg-[#1B2A4A]' : 'bg-white/20 backdrop-blur-sm'}`}>
                 <span className="text-white font-bold text-xs">PM</span>
               </div>
-              <span className="font-bold text-lg text-[#1B2A4A] hidden sm:block tracking-tight">
+              <span className={`font-bold text-lg hidden sm:block tracking-tight transition-colors duration-300 ${isScrolled ? 'text-[#1B2A4A]' : 'text-white'}`}>
                 {t('brand')}
               </span>
             </Link>
@@ -251,18 +265,29 @@ export default function Header() {
             {/* Right Nav Items + Actions */}
             <div className="hidden lg:flex items-center gap-1">
               {/* Divider */}
-              <div className="w-px h-5 bg-gray-200 mx-2" />
+              <div className={`w-px h-5 mx-2 ${isScrolled ? 'bg-gray-200' : 'bg-white/30'}`} />
 
-              {/* Language Switcher */}
-              <div className="relative">
+              {/* Language Switcher - hover based */}
+              <div
+                ref={langMenuRef}
+                className="relative"
+                onMouseEnter={() => {
+                  if (langCloseTimeoutRef.current) clearTimeout(langCloseTimeoutRef.current);
+                  setIsLangMenuOpen(true);
+                }}
+                onMouseLeave={() => {
+                  langCloseTimeoutRef.current = setTimeout(() => setIsLangMenuOpen(false), 300);
+                }}
+              >
                 <button
-                  onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-                  className="flex items-center gap-1 px-3 py-2 text-sm text-[#4a4a4a] hover:bg-gray-100/80 rounded-full transition-colors"
+                  className={`flex items-center gap-1 px-3 py-2 text-sm rounded-full transition-colors ${
+                    isScrolled ? 'text-[#4a4a4a] hover:bg-gray-100/80' : 'text-white/90 hover:bg-white/10'
+                  }`}
                 >
                   <Globe className="w-4 h-4" />
                 </button>
                 {isLangMenuOpen && (
-                  <div className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 min-w-[160px] overflow-hidden z-50">
+                  <div className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 min-w-[160px] overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                     {locales.map((l) => (
                       <button
                         key={l}
@@ -279,14 +304,14 @@ export default function Header() {
               </div>
 
               {/* Search */}
-              <button className="p-2 text-[#4a4a4a] hover:bg-gray-100/80 rounded-full transition-colors">
+              <button className={`p-2 rounded-full transition-colors ${isScrolled ? 'text-[#4a4a4a] hover:bg-gray-100/80' : 'text-white/80 hover:text-white hover:bg-white/15'}`}>
                 <Search className="w-4 h-4" />
               </button>
 
               {/* Account */}
               <Link
                 href={`/${locale}/auth`}
-                className="p-2 text-[#4a4a4a] hover:bg-gray-100/80 rounded-full transition-colors"
+                className={`p-2 rounded-full transition-colors ${isScrolled ? 'text-[#4a4a4a] hover:bg-gray-100/80' : 'text-white/80 hover:text-white hover:bg-white/15'}`}
               >
                 <User className="w-4 h-4" />
               </Link>
