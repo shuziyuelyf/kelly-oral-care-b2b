@@ -596,5 +596,36 @@
   "faq": {
     "title": "FAQ",
     "subtitle": "Frequently Asked Questions"
+  },
+  "megaMenu": {
+    "productCategories": "产品分类",
+    "allProducts": "全部产品",
+    "byIndustry": "按行业分类",
+    "viewAllProducts": "查看全部产品",
+    "customMfg": "定制制造",
+    "customMfgDesc": "为您量身定制的OEM/ODM方案",
+    "featuredProducts": "精选产品",
+    "featuredProductsDesc": "我们最受欢迎的解决方案",
+    "ourServices": "我们的服务",
+    "serviceOem": "OEM代工制造",
+    "serviceOdm": "ODM设计服务",
+    "servicePrivateLabel": "自有品牌",
+    "servicePackaging": "定制包装",
+    "serviceSample": "样品申请",
+    "getQuote": "获取报价",
+    "trustedPartner": "您值得信赖的制造合作伙伴",
+    "aboutProfile": "公司简介",
+    "aboutFactory": "工厂参观",
+    "aboutCerts": "认证资质",
+    "aboutCareers": "招贤纳士",
+    "aboutContact": "联系我们",
+    "newsCompany": "公司新闻",
+    "newsIndustry": "行业洞察",
+    "newsPress": "媒体报道",
+    "appAutomotive": "汽车工业",
+    "appAerospace": "航空航天与国防",
+    "appMedical": "医疗器械",
+    "appEnergy": "能源与电力",
+    "appConsumer": "消费电子"
   }
 }
