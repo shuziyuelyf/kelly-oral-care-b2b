@@ -3,30 +3,50 @@
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import { usePathname } from 'next/navigation';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useLayoutEffect } from 'react';
 import { Menu, X, Globe, ChevronDown, ChevronRight, ArrowRight, MessageCircle } from 'lucide-react';
 import { locales, localeNames } from '@/i18n/config';
-import { mockCategories } from '@/lib/mock/data';
-import { getI18nValue } from '@/lib/utils-i18n';
 
 type MenuKey = 'products' | 'privateLabel' | 'oemOdm' | 'factory' | 'quality' | 'resources' | null;
+
+const ALL_MENU_ITEMS: { key: NonNullable<MenuKey>; href: string }[] = [
+  { key: 'products', href: '/products' },
+  { key: 'privateLabel', href: '/private-label' },
+  { key: 'oemOdm', href: '/customized-services' },
+  { key: 'factory', href: '/about#factory' },
+  { key: 'quality', href: '/about#quality' },
+  { key: 'resources', href: '/news' },
+];
 
 export default function Header() {
   const t = useTranslations('common');
   const tm = useTranslations('megaMenu');
   const locale = useLocale();
   const pathname = usePathname();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // ---- Progressive collapse state ----
+  const [visibleCount, setVisibleCount] = useState(ALL_MENU_ITEMS.length); // default: all visible
+  const [isMeasuring, setIsMeasuring] = useState(true); // hide menu during first measurement
+  const capsuleRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const logoRef = useRef<HTMLAnchorElement>(null);
+  const rightControlsRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number>(0);
+
+  // ---- Existing state ----
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState<MenuKey>(null);
-  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [isPanelVisible, setIsPanelVisible] = useState(false);
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+  const [burgerExpanded, setBurgerExpanded] = useState<string | null>(null);
+  const [showLangLabel, setShowLangLabel] = useState(true);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const langCloseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLElement>(null);
-  const [isPanelVisible, setIsPanelVisible] = useState(false);
   const isClickingRef = useRef(false);
 
+  // Scroll listener
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -34,6 +54,7 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Click outside to close panels
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Node;
@@ -41,12 +62,96 @@ export default function Header() {
         setActiveMenu(null);
         setIsPanelVisible(false);
         setIsLangMenuOpen(false);
+        setIsBurgerOpen(false);
+        setBurgerExpanded(null);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // ---- Progressive Collapse: Measure & Calculate ----
+  const calculateVisibleCount = useCallback(() => {
+    const capsule = capsuleRef.current;
+    if (!capsule) return ALL_MENU_ITEMS.length;
+
+    const capsuleWidth = capsule.offsetWidth;
+    const capsuleStyle = window.getComputedStyle(capsule);
+    const paddingLeft = parseFloat(capsuleStyle.paddingLeft);
+    const paddingRight = parseFloat(capsuleStyle.paddingRight);
+    const availableWidth = capsuleWidth - paddingLeft - paddingRight;
+
+    // Measure logo width
+    const logoWidth = logoRef.current?.offsetWidth ?? 120;
+
+    // Measure right controls width
+    const rightWidth = rightControlsRef.current?.offsetWidth ?? 100;
+
+    // Gap between left items and logo (approximate)
+    const leftLogoGap = 16;
+    const logoRightGap = 16;
+
+    // Available width for left menu items
+    const leftAvailable = availableWidth - logoWidth - leftLogoGap - logoRightGap - rightWidth;
+
+    if (leftAvailable <= 0) return 0;
+
+    // Measure each item width
+    const itemWidths: number[] = [];
+    for (let i = 0; i < ALL_MENU_ITEMS.length; i++) {
+      const el = itemRefs.current[i];
+      itemWidths.push(el?.offsetWidth ?? 80);
+    }
+
+    // Count how many items fit from left to right
+    let totalWidth = 0;
+    let count = 0;
+    const itemGap = 2; // gap-0.5 ≈ 2px
+    for (let i = 0; i < itemWidths.length; i++) {
+      if (totalWidth + itemWidths[i] + (count > 0 ? itemGap : 0) <= leftAvailable) {
+        totalWidth += itemWidths[i] + (count > 0 ? itemGap : 0);
+        count++;
+      } else {
+        break;
+      }
+    }
+
+    return count;
+  }, []);
+
+  // Run measurement after render
+  useLayoutEffect(() => {
+    const measure = () => {
+      const count = calculateVisibleCount();
+      setVisibleCount(count);
+      setIsMeasuring(false);
+    };
+
+    // Initial measurement
+    measure();
+
+    // Observe container resize
+    const capsule = capsuleRef.current;
+    if (!capsule) return;
+
+    const observer = new ResizeObserver(() => {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => {
+        setIsMeasuring(true);
+        requestAnimationFrame(() => {
+          measure();
+        });
+      });
+    });
+
+    observer.observe(capsule);
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, [calculateVisibleCount, locale]); // re-measure when locale changes
+
+  // ---- Menu handlers ----
   const handleMenuEnter = useCallback((key: MenuKey) => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
@@ -90,9 +195,7 @@ export default function Header() {
     return pathname.startsWith(`/${locale}${href}`);
   };
 
-  const categories = mockCategories.filter(c => c.status === 1);
-
-  // ============ MENU LINK DATA ============
+  // ---- Sub-link data ----
   const privateLabelLinks = [
     { name: tm('plWhy'), href: '/private-label#why' },
     { name: tm('plStartup'), href: '/private-label#packages' },
@@ -125,7 +228,18 @@ export default function Header() {
     { name: tm('faq'), href: '/news?cat=faq' },
   ];
 
-  // ============ PANEL MOUSE HANDLERS ============
+  const getSubLinks = (key: NonNullable<MenuKey>) => {
+    switch (key) {
+      case 'products': return [{ name: tm('allProducts'), href: '/products' }, { name: tm('toothpaste'), href: '/products?cat=toothpaste' }, { name: tm('mouthwash'), href: '/products?cat=mouthwash' }, { name: tm('toothPowder'), href: '/products?cat=tooth-powder' }, { name: tm('toothbrush'), href: '/products?cat=toothbrush' }];
+      case 'privateLabel': return privateLabelLinks;
+      case 'oemOdm': return oemOdmLinks;
+      case 'factory': return factoryLinks;
+      case 'quality': return qualityLinks;
+      case 'resources': return resourcesLinks;
+    }
+  };
+
+  // ---- Panel mouse handlers ----
   const panelMouseHandlers = {
     onMouseEnter: () => {
       if (closeTimeoutRef.current) {
@@ -141,7 +255,7 @@ export default function Header() {
     },
   };
 
-  // ============ MEGA MENU PANELS ============
+  // ---- Mega Menu Panels ----
   const renderProductsPanel = () => (
     <div className="absolute left-0 right-0 top-full pt-3 px-4 z-50" {...panelMouseHandlers}>
       <div className={`max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-6 transition-all duration-200 ${isPanelVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
@@ -255,51 +369,74 @@ export default function Header() {
     }
   };
 
-  // Menu items config
-  const menuItems: { key: NonNullable<MenuKey>; href: string }[] = [
-    { key: 'products', href: '/products' },
-    { key: 'privateLabel', href: '/private-label' },
-    { key: 'oemOdm', href: '/customized-services' },
-    { key: 'factory', href: '/about#factory' },
-    { key: 'quality', href: '/about#quality' },
-    { key: 'resources', href: '/news' },
-  ];
+  // ---- Derived state ----
+  const visibleItems = ALL_MENU_ITEMS.slice(0, visibleCount);
+  const overflowItems = ALL_MENU_ITEMS.slice(visibleCount);
+  const hasOverflow = overflowItems.length > 0;
 
   return (
     <header ref={headerRef} className="fixed top-3 left-0 right-0 z-50">
-      {/* Single Pill Capsule */}
       <div className="max-w-6xl mx-auto px-4">
-        <div className={`flex items-center justify-between h-14 rounded-full px-4 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-xl shadow-xl' : 'bg-white/85 backdrop-blur-xl shadow-md'}`}>
-          {/* Left: Menu Items */}
-          <div className="flex items-center gap-0.5 flex-1">
-            {menuItems.map(({ key, href }) => {
-              const active = isActive(href);
-              return (
-                <div
-                  key={key}
-                  className="relative"
-                  onMouseEnter={() => handleMenuEnter(key)}
-                  onMouseLeave={handleMenuLeave}
-                >
-                  <Link
-                    href={`/${locale}${href}`}
-                    className={`flex items-center gap-1 px-3 py-2 text-[13px] font-medium rounded-full transition-all whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63] hover:text-[#008FD5] hover:bg-gray-100/60'}`}
+        <div
+          ref={capsuleRef}
+          className={`flex items-center justify-between h-14 rounded-full px-4 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-xl shadow-xl' : 'bg-white/85 backdrop-blur-xl shadow-md'}`}
+        >
+          {/* Left: Visible Menu Items */}
+          <div className="flex items-center gap-0.5 flex-1 min-w-0">
+            {isMeasuring ? (
+              // During measurement, render all items hidden to get accurate widths
+              <div className="invisible absolute pointer-events-none">
+                {ALL_MENU_ITEMS.map(({ key, href }, i) => {
+                  const active = isActive(href);
+                  return (
+                    <div
+                      key={key}
+                      ref={el => { itemRefs.current[i] = el; }}
+                      className="inline-block"
+                    >
+                      <span className={`flex items-center gap-1 px-3 py-2 text-[13px] font-medium rounded-full whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63]'}`}>
+                        {t(`nav.${key}`)}
+                        <ChevronDown className="w-3 h-3" />
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              visibleItems.map(({ key, href }, i) => {
+                const active = isActive(href);
+                return (
+                  <div
+                    key={key}
+                    ref={el => { itemRefs.current[i] = el; }}
+                    className="relative"
+                    onMouseEnter={() => handleMenuEnter(key)}
+                    onMouseLeave={handleMenuLeave}
                   >
-                    {t(`nav.${key}`)}
-                    <ChevronDown className={`w-3 h-3 transition-transform ${activeMenu === key ? 'rotate-180' : ''}`} />
-                  </Link>
-                </div>
-              );
-            })}
+                    <Link
+                      href={`/${locale}${href}`}
+                      className={`flex items-center gap-1 px-3 py-2 text-[13px] font-medium rounded-full transition-all whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63] hover:text-[#008FD5] hover:bg-gray-100/60'}`}
+                    >
+                      {t(`nav.${key}`)}
+                      <ChevronDown className={`w-3 h-3 transition-transform ${activeMenu === key ? 'rotate-180' : ''}`} />
+                    </Link>
+                  </div>
+                );
+              })
+            )}
           </div>
 
           {/* Center: Logo */}
-          <Link href={`/${locale}`} className="flex-shrink-0 mx-3">
+          <Link
+            ref={logoRef}
+            href={`/${locale}`}
+            className="flex-shrink-0 mx-3"
+          >
             <span className="text-lg font-extrabold tracking-tight text-[#173A63] whitespace-nowrap">{t('nav.brand')}</span>
           </Link>
 
-          {/* Right: Language + WhatsApp */}
-          <div className="flex items-center gap-0.5 flex-1 justify-end">
+          {/* Right: Language + WhatsApp + Burger */}
+          <div ref={rightControlsRef} className="flex items-center gap-0.5 flex-1 justify-end min-w-0">
             {/* Language Selector */}
             <div
               className="relative"
@@ -332,91 +469,90 @@ export default function Header() {
               href="https://wa.me/8613800138000"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 bg-[#21C96B] text-white text-xs font-semibold rounded-full hover:bg-[#1DB95E] transition-colors"
+              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-[#21C96B] text-white text-xs font-semibold rounded-full hover:bg-[#1DB95E] transition-colors"
             >
               <MessageCircle className="w-4 h-4" />
               <span className="hidden xl:inline">WhatsApp</span>
             </a>
 
-            {/* Mobile Menu Toggle */}
-            <button
-              className="lg:hidden p-2 text-[#173A63] rounded-full hover:bg-gray-100 transition-colors"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+            {/* Hamburger Button - only when there are overflow items */}
+            {hasOverflow && (
+              <button
+                className="p-2 text-[#173A63] rounded-full hover:bg-gray-100 transition-colors"
+                onClick={() => {
+                  setIsBurgerOpen(!isBurgerOpen);
+                  setBurgerExpanded(null);
+                }}
+                aria-label="Toggle menu"
+              >
+                {isBurgerOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            )}
           </div>
         </div>
 
         {/* Mega Menu Panels */}
         {renderMegaMenuPanel()}
-      </div>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden absolute top-full left-4 right-4 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-4 max-h-[70vh] overflow-y-auto">
-          <div className="space-y-1">
-            {menuItems.map(({ key, href }) => {
-              const active = isActive(href);
-              const isExpanded = mobileExpanded === key;
-              const subLinks = key === 'products' ? [{ name: tm('allProducts'), href: '/products' }, { name: tm('toothpaste'), href: '/products?cat=toothpaste' }, { name: tm('mouthwash'), href: '/products?cat=mouthwash' }, { name: tm('toothPowder'), href: '/products?cat=tooth-powder' }, { name: tm('toothbrush'), href: '/products?cat=toothbrush' }]
-                : key === 'privateLabel' ? privateLabelLinks
-                : key === 'oemOdm' ? oemOdmLinks
-                : key === 'factory' ? factoryLinks
-                : key === 'quality' ? qualityLinks
-                : resourcesLinks;
+        {/* Burger Dropdown - overflow items */}
+        {isBurgerOpen && hasOverflow && (
+          <div className="absolute top-full left-4 right-4 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-4 max-h-[70vh] overflow-y-auto z-50">
+            <div className="space-y-1">
+              {overflowItems.map(({ key, href }) => {
+                const active = isActive(href);
+                const isExpanded = burgerExpanded === key;
+                const subLinks = getSubLinks(key);
 
-              return (
-                <div key={key}>
-                  <div className="flex items-center">
-                    <Link
-                      href={`/${locale}${href}`}
-                      className={`flex-1 flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${active ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {t(`nav.${key}`)}
-                    </Link>
-                    <button
-                      onClick={() => setMobileExpanded(isExpanded ? null : key)}
-                      className="p-2 text-gray-400 hover:text-[#173A63] transition-colors"
-                    >
-                      <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-                    </button>
-                  </div>
-                  {isExpanded && (
-                    <div className="pl-4 pb-2 space-y-0.5">
-                      {subLinks.map((l, i) => (
-                        <Link key={i} href={`/${locale}${l.href}`} className="block px-4 py-2 text-sm text-gray-600 hover:text-[#008FD5] rounded-lg hover:bg-gray-50" onClick={() => setIsMobileMenuOpen(false)}>
-                          {l.name}
-                        </Link>
-                      ))}
+                return (
+                  <div key={key}>
+                    <div className="flex items-center">
+                      <Link
+                        href={`/${locale}${href}`}
+                        className={`flex-1 flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${active ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
+                        onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
+                      >
+                        {t(`nav.${key}`)}
+                      </Link>
+                      <button
+                        onClick={() => setBurgerExpanded(isExpanded ? null : key)}
+                        className="p-2 text-gray-400 hover:text-[#173A63] transition-colors"
+                      >
+                        <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                      </button>
                     </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-          <div className="border-t border-gray-100 mt-3 pt-3 flex items-center justify-between px-4">
-            <a
-              href="https://wa.me/8613800138000"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#21C96B] text-white text-sm font-semibold rounded-full hover:bg-[#1DB95E] transition-colors"
-            >
-              <MessageCircle className="w-4 h-4" />
-              WhatsApp
-            </a>
-            <div className="flex gap-1">
-              {locales.map(l => (
-                <button key={l} onClick={() => { switchLocale(l); setIsMobileMenuOpen(false); }} className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors ${l === locale ? 'bg-[#008FD5] text-white' : 'text-gray-500 hover:bg-gray-100'}`}>
-                  {localeNames[l]?.flag}
-                </button>
-              ))}
+                    {isExpanded && (
+                      <div className="pl-4 pb-2 space-y-0.5">
+                        {subLinks.map((l, i) => (
+                          <Link
+                            key={i}
+                            href={`/${locale}${l.href}`}
+                            className="block px-4 py-2 text-sm text-gray-600 hover:text-[#008FD5] rounded-lg hover:bg-gray-50"
+                            onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
+                          >
+                            {l.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            {/* WhatsApp in burger menu */}
+            <div className="border-t border-gray-100 mt-3 pt-3">
+              <a
+                href="https://wa.me/8613800138000"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#21C96B] text-white text-sm font-semibold rounded-full hover:bg-[#1DB95E] transition-colors"
+              >
+                <MessageCircle className="w-4 h-4" />
+                WhatsApp
+              </a>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </header>
   );
 }
