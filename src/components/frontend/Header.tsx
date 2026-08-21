@@ -30,7 +30,7 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Check initial state on mount
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -64,6 +64,20 @@ export default function Header() {
     }, 300);
   }, []);
 
+  const handleLangEnter = useCallback(() => {
+    if (langCloseTimeoutRef.current) {
+      clearTimeout(langCloseTimeoutRef.current);
+      langCloseTimeoutRef.current = null;
+    }
+    setIsLangMenuOpen(true);
+  }, []);
+
+  const handleLangLeave = useCallback(() => {
+    langCloseTimeoutRef.current = setTimeout(() => {
+      setIsLangMenuOpen(false);
+    }, 300);
+  }, []);
+
   const switchLocale = useCallback((newLocale: string) => {
     const segments = pathname.split('/');
     segments[1] = newLocale;
@@ -79,8 +93,8 @@ export default function Header() {
   // Get categories for mega menu
   const categories = mockCategories.filter(c => c.status === 1);
 
-  // Application/Industry links
-  const applications = [
+  // Industry/application links for mega menu
+  const industryLinks = [
     { name: tm('appAutomotive'), href: '/products?industry=automotive' },
     { name: tm('appAerospace'), href: '/products?industry=aerospace' },
     { name: tm('appMedical'), href: '/products?industry=medical' },
@@ -88,18 +102,18 @@ export default function Header() {
     { name: tm('appConsumer'), href: '/products?industry=consumer' },
   ];
 
-  // Custom services links
+  // Custom services for mega menu
   const customServices = [
-    { name: tm('serviceOem'), href: '/custom?type=oem' },
-    { name: tm('serviceOdm'), href: '/custom?type=odm' },
-    { name: tm('servicePrivateLabel'), href: '/custom?type=private-label' },
-    { name: tm('servicePackaging'), href: '/custom?type=packaging' },
-    { name: tm('serviceSample'), href: '/custom?type=sample' },
+    { name: tm('serviceOem'), href: '/custom#oem' },
+    { name: tm('serviceOdm'), href: '/custom#odm' },
+    { name: tm('servicePrivateLabel'), href: '/custom#private-label' },
+    { name: tm('servicePackaging'), href: '/custom#packaging' },
+    { name: tm('serviceSample'), href: '/custom#sample' },
   ];
 
   // About links
   const aboutLinks = [
-    { name: tm('aboutProfile'), href: '/about' },
+    { name: tm('aboutProfile'), href: '/about#profile' },
     { name: tm('aboutFactory'), href: '/about#factory' },
     { name: tm('aboutCerts'), href: '/about#certifications' },
     { name: tm('aboutCareers'), href: '/about#careers' },
@@ -113,562 +127,304 @@ export default function Header() {
     { name: tm('newsPress'), href: '/news?cat=press' },
   ];
 
-  // ============ MOBILE MENU ============
-
-  const MobileSubmenu = ({ links }: { links: { name: string; href: string }[] }) => (
-    <div className="ml-4 mt-1 space-y-1">
-      {links.map((link) => (
-        <Link
-          key={link.href}
-          href={`/${locale}${link.href}`}
-          onClick={() => setIsMobileMenuOpen(false)}
-          className="block px-4 py-2.5 rounded-xl text-sm text-gray-500 hover:text-[#1B2A4A] hover:bg-gray-50 transition-colors"
-        >
-          {link.name}
-        </Link>
-      ))}
+  // ============ MEGA MENU PANELS ============
+  const renderProductsPanel = () => (
+    <div className="absolute left-0 right-0 top-full pt-3 px-4 z-50">
+      <div className={`max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl border border-gray-100/80 p-8 transition-all duration-200 ${isPanelVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
+        <div className="grid grid-cols-12 gap-8">
+          {/* Left: Categories */}
+          <div className="col-span-4">
+            <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">{tm('productCategories')}</p>
+            <ul className="space-y-1">
+              <li><Link href={`/${locale}/products`} className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[#1B2A4A] hover:bg-gray-50 hover:text-[#E8720C] transition-colors group"><span className="w-1 h-1 rounded-full bg-gray-300 group-hover:bg-[#E8720C] transition-colors" />{tm('allProducts')}</Link></li>
+              {categories.map(cat => (
+                <li key={cat.id}>
+                  <Link href={`/${locale}/products?cat=${cat.id}`} className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[#1B2A4A] hover:bg-gray-50 hover:text-[#E8720C] transition-colors group">
+                    <span className="w-1 h-1 rounded-full bg-gray-300 group-hover:bg-[#E8720C] transition-colors" />
+                    {getI18nValue(cat.i18n, locale, 'categoryName')}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 pt-4 border-t border-gray-100">
+              <Link href={`/${locale}/products`} className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#1B2A4A] text-white text-sm font-semibold rounded-full hover:bg-[#2D4A7A] transition-colors">
+                {tm('viewAllProducts')} <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+          {/* Middle: By Industry */}
+          <div className="col-span-3">
+            <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">{tm('byIndustry')}</p>
+            <ul className="space-y-1">
+              {industryLinks.map((link, i) => (
+                <li key={i}>
+                  <Link href={link.href} className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-[#1B2A4A] hover:bg-gray-50 hover:text-[#E8720C] transition-colors group">
+                    <span className="w-1 h-1 rounded-full bg-gray-300 group-hover:bg-[#E8720C] transition-colors" />
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* Right: Image Cards */}
+          <div className="col-span-5 flex flex-col gap-4">
+            <Link href={`/${locale}/custom`} className="group relative rounded-2xl overflow-hidden h-36 block">
+              <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600" alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#1B2A4A]/85 to-[#1B2A4A]/40 z-10" />
+              <div className="relative z-20 h-full flex flex-col justify-between p-5">
+                <div className="self-end w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors"><ArrowRight className="w-4 h-4 text-white" /></div>
+                <div>
+                  <p className="text-white font-bold text-lg">{tm('customMfg')}</p>
+                  <p className="text-white/70 text-sm mt-0.5">{tm('customMfgDesc')}</p>
+                </div>
+              </div>
+            </Link>
+            <Link href={`/${locale}/products`} className="group relative rounded-2xl overflow-hidden h-36 block">
+              <img src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=600" alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#1B2A4A]/85 to-[#1B2A4A]/40 z-10" />
+              <div className="relative z-20 h-full flex flex-col justify-between p-5">
+                <div className="self-end w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors"><ArrowRight className="w-4 h-4 text-white" /></div>
+                <div>
+                  <p className="text-white font-bold text-lg">{tm('featuredProducts')}</p>
+                  <p className="text-white/70 text-sm mt-0.5">{tm('featuredProductsDesc')}</p>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 
-  // Panel animation classes
-  const panelAnimClass = (menuKey: MenuKey) =>
-    isPanelVisible && activeMenu === menuKey
-      ? 'opacity-100 translate-y-0 pointer-events-auto'
-      : 'opacity-0 -translate-y-2 pointer-events-none';
-
-  return (
-    <>
-      {/* Spacer for fixed nav */}
-      <div className="h-20" />
-
-      {/* Pill Navbar - header is the positioning context for mega menus */}
-      <header
-        ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500`}
-        data-mega-menu
-      >
-        <nav
-          className={`max-w-6xl mx-auto rounded-full transition-all duration-500 ${
-            isScrolled
-              ? 'mt-2 bg-white/95 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.1)]'
-              : 'mt-3 bg-white/10 backdrop-blur-sm shadow-none'
-          }`}
-        >
-          <div className="flex items-center justify-between px-6 py-3">
-            {/* Left Nav Items */}
-            <div className="hidden lg:flex items-center gap-1">
-              {/* Products */}
-              <div
-                onMouseEnter={() => handleMenuEnter('products')}
-                onMouseLeave={handleMenuLeave}
-              >
-                <Link
-                  href={`/${locale}/products`}
-                  className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
-                    isActive('/products')
-                      ? 'bg-[#1B2A4A] text-white'
-                      : isScrolled
-                        ? 'text-[#4a4a4a] hover:text-[#1B2A4A] hover:bg-gray-100/80'
-                        : 'text-white/90 hover:text-white hover:bg-white/15'
-                  }`}
-                >
-                  {t('nav.products')}
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === 'products' ? 'rotate-180' : ''}`} />
-                </Link>
-              </div>
-
-              {/* Custom Manufacturing */}
-              <div
-                onMouseEnter={() => handleMenuEnter('custom')}
-                onMouseLeave={handleMenuLeave}
-              >
-                <Link
-                  href={`/${locale}/custom`}
-                  className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
-                    isActive('/custom')
-                      ? 'bg-[#1B2A4A] text-white'
-                      : isScrolled
-                        ? 'text-[#4a4a4a] hover:text-[#1B2A4A] hover:bg-gray-100/80'
-                        : 'text-white/90 hover:text-white hover:bg-white/15'
-                  }`}
-                >
-                  {t('nav.custom')}
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === 'custom' ? 'rotate-180' : ''}`} />
-                </Link>
-              </div>
-
-              {/* About */}
-              <div
-                onMouseEnter={() => handleMenuEnter('about')}
-                onMouseLeave={handleMenuLeave}
-              >
-                <Link
-                  href={`/${locale}/about`}
-                  className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
-                    isActive('/about')
-                      ? 'bg-[#1B2A4A] text-white'
-                      : isScrolled
-                        ? 'text-[#4a4a4a] hover:text-[#1B2A4A] hover:bg-gray-100/80'
-                        : 'text-white/90 hover:text-white hover:bg-white/15'
-                  }`}
-                >
-                  {t('nav.about')}
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === 'about' ? 'rotate-180' : ''}`} />
-                </Link>
-              </div>
-
-              {/* News */}
-              <div
-                onMouseEnter={() => handleMenuEnter('news')}
-                onMouseLeave={handleMenuLeave}
-              >
-                <Link
-                  href={`/${locale}/news`}
-                  className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
-                    isActive('/news')
-                      ? 'bg-[#1B2A4A] text-white'
-                      : isScrolled
-                        ? 'text-[#4a4a4a] hover:text-[#1B2A4A] hover:bg-gray-100/80'
-                        : 'text-white/90 hover:text-white hover:bg-white/15'
-                  }`}
-                >
-                  {t('nav.news')}
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === 'news' ? 'rotate-180' : ''}`} />
-                </Link>
-              </div>
-
-              {/* Contact - no dropdown */}
-              <Link
-                href={`/${locale}/contact`}
-                className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
-                  isActive('/contact')
-                    ? 'bg-[#1B2A4A] text-white'
-                    : isScrolled
-                      ? 'text-[#4a4a4a] hover:text-[#1B2A4A] hover:bg-gray-100/80'
-                      : 'text-white/90 hover:text-white hover:bg-white/15'
-                }`}
-              >
-                {t('nav.contact')}
+  const renderCustomPanel = () => (
+    <div className="absolute left-0 right-0 top-full pt-3 px-4 z-50">
+      <div className={`max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl border border-gray-100/80 p-8 transition-all duration-200 ${isPanelVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
+        <div className="grid grid-cols-12 gap-8">
+          <div className="col-span-5">
+            <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">{tm('ourServices')}</p>
+            <ul className="space-y-1">
+              {customServices.map((s, i) => (
+                <li key={i}>
+                  <Link href={s.href} className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-[#1B2A4A] hover:bg-gray-50 hover:text-[#E8720C] transition-colors group">
+                    <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-[#E8720C] transition-colors" />
+                    {s.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6">
+              <Link href={`/${locale}/custom`} className="inline-flex items-center gap-2 px-8 py-3 bg-[#1B2A4A] text-white font-semibold rounded-full hover:bg-[#2D4A7A] transition-colors text-sm">
+                {t('nav.custom')} <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-
-            {/* Center Logo */}
-            <Link href={`/${locale}`} className="flex items-center gap-2">
-              <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300 ${isScrolled ? 'bg-[#1B2A4A]' : 'bg-white/20 backdrop-blur-sm'}`}>
-                <span className="text-white font-bold text-xs">PM</span>
+          </div>
+          <div className="col-span-7">
+            <div className="relative rounded-2xl overflow-hidden h-72">
+              <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800" alt="" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1B2A4A]/80 via-transparent to-transparent z-10" />
+              <div className="relative z-20 h-full flex flex-col justify-end p-8">
+                <p className="text-white font-bold text-2xl mb-2">{tm('trustedPartner')}</p>
+                <p className="text-white/80 text-sm mb-4 max-w-sm">{tm('customMfgDesc')}</p>
+                <Link href={`/${locale}/contact`} className="inline-flex items-center gap-2 px-8 py-3 bg-white text-[#1B2A4A] font-semibold rounded-full hover:bg-gray-100 transition-colors text-sm w-fit">
+                  {tm('getQuote')} <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
-              <span className={`font-bold text-lg hidden sm:block tracking-tight transition-colors duration-300 ${isScrolled ? 'text-[#1B2A4A]' : 'text-white'}`}>
-                {t('brand')}
-              </span>
-            </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
-            {/* Right Nav Items + Actions */}
-            <div className="hidden lg:flex items-center gap-1">
-              {/* Divider */}
-              <div className={`w-px h-5 mx-2 ${isScrolled ? 'bg-gray-200' : 'bg-white/30'}`} />
+  const renderSimpleDropdown = (links: { name: string; href: string }[]) => (
+    <div className="absolute left-0 right-0 top-full pt-3 px-4 z-50">
+      <div className={`max-w-xs mx-auto bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-3 transition-all duration-200 ${isPanelVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
+        <ul className="space-y-0.5">
+          {links.map((link, i) => (
+            <li key={i}>
+              <Link href={link.href} className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-[#1B2A4A] hover:bg-gray-50 hover:text-[#E8720C] transition-colors">
+                <ChevronRight className="w-3.5 h-3.5 text-gray-300" />
+                {link.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
 
-              {/* Language Switcher - hover based */}
-              <div
-                ref={langMenuRef}
-                className="relative"
-                onMouseEnter={() => {
-                  if (langCloseTimeoutRef.current) clearTimeout(langCloseTimeoutRef.current);
-                  setIsLangMenuOpen(true);
-                }}
-                onMouseLeave={() => {
-                  langCloseTimeoutRef.current = setTimeout(() => setIsLangMenuOpen(false), 300);
-                }}
-              >
-                <button
-                  className={`flex items-center gap-1 px-3 py-2 text-sm rounded-full transition-colors ${
-                    isScrolled ? 'text-[#4a4a4a] hover:bg-gray-100/80' : 'text-white/90 hover:bg-white/10'
-                  }`}
+  const renderMegaMenuPanel = () => {
+    if (!activeMenu) return null;
+    switch (activeMenu) {
+      case 'products': return renderProductsPanel();
+      case 'custom': return renderCustomPanel();
+      case 'about': return renderSimpleDropdown(aboutLinks);
+      case 'news': return renderSimpleDropdown(newsLinks);
+      default: return null;
+    }
+  };
+
+  return (
+    <header ref={headerRef} className="fixed top-3 left-0 right-0 z-50">
+      {/* Single Pill Capsule */}
+      <div className={`max-w-6xl mx-auto px-6 transition-all duration-300 ${isScrolled ? 'shadow-xl' : 'shadow-md'}`}>
+        <div className={`flex items-center justify-between h-14 rounded-full px-6 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-xl' : 'bg-white/85 backdrop-blur-xl'}`}>
+          {/* Left: Menu Items */}
+          <div className="flex items-center gap-1 flex-1">
+            {(['products', 'custom', 'about', 'news'] as MenuKey[]).map(key => {
+              const href = key === 'products' ? '/products' : key === 'custom' ? '/custom' : key === 'about' ? '/about' : '/news';
+              const active = isActive(href);
+              return (
+                <div
+                  key={key}
+                  className="relative"
+                  onMouseEnter={() => handleMenuEnter(key)}
+                  onMouseLeave={handleMenuLeave}
                 >
-                  <Globe className="w-4 h-4" />
-                </button>
-                {isLangMenuOpen && (
-                  <div className="absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 min-w-[160px] overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                    {locales.map((l) => (
+                  <Link
+                    href={`/${locale}${href}`}
+                    className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-full transition-all whitespace-nowrap ${active ? 'text-[#E8720C]' : 'text-[#1B2A4A] hover:text-[#E8720C] hover:bg-gray-100/60'}`}
+                  >
+                    {t(`nav.${key}`)}
+                    {(key === 'products' || key === 'custom' || key === 'about' || key === 'news') && (
+                      <ChevronDown className={`w-3.5 h-3.5 transition-transform ${activeMenu === key ? 'rotate-180' : ''}`} />
+                    )}
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Center: Logo */}
+          <Link href={`/${locale}`} className="flex-shrink-0 mx-4">
+            <span className="text-xl font-extrabold tracking-tight text-[#1B2A4A]">{t('nav.brand')}</span>
+          </Link>
+
+          {/* Right: Icons */}
+          <div className="flex items-center gap-1 flex-1 justify-end">
+            {/* Language Selector - hover based */}
+            <div
+              className="relative"
+              onMouseEnter={handleLangEnter}
+              onMouseLeave={handleLangLeave}
+            >
+              <button className="p-2.5 text-[#1B2A4A]/70 hover:text-[#E8720C] rounded-full hover:bg-gray-100/60 transition-colors">
+                <Globe className="w-[18px] h-[18px]" />
+              </button>
+              {/* Dropdown */}
+              {isLangMenuOpen && (
+                <div className="absolute right-0 top-full pt-2 z-50">
+                  <div className="bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-2 min-w-[160px]">
+                    {locales.map(l => (
                       <button
                         key={l}
                         onClick={() => { switchLocale(l); setIsLangMenuOpen(false); }}
-                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${
-                          locale === l ? 'text-[#1B2A4A] font-semibold bg-gray-50' : 'text-[#4a4a4a]'
-                        }`}
+                        className={`flex items-center gap-3 w-full px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${l === locale ? 'bg-[#E8720C]/10 text-[#E8720C]' : 'text-[#1B2A4A] hover:bg-gray-50'}`}
                       >
-                        {localeNames[l]}
+                        <span className="text-base">{localeNames[l]?.flag}</span>
+                        <span>{localeNames[l]?.name}</span>
                       </button>
                     ))}
                   </div>
-                )}
-              </div>
-
-              {/* Search */}
-              <button className={`p-2 rounded-full transition-colors ${isScrolled ? 'text-[#4a4a4a] hover:bg-gray-100/80' : 'text-white/80 hover:text-white hover:bg-white/15'}`}>
-                <Search className="w-4 h-4" />
-              </button>
-
-              {/* Account */}
-              <Link
-                href={`/${locale}/auth`}
-                className={`p-2 rounded-full transition-colors ${isScrolled ? 'text-[#4a4a4a] hover:bg-gray-100/80' : 'text-white/80 hover:text-white hover:bg-white/15'}`}
-              >
-                <User className="w-4 h-4" />
-              </Link>
+                </div>
+              )}
             </div>
 
-            {/* Mobile Menu Button */}
+            <Link href={`/${locale}/contact`} className="p-2.5 text-[#1B2A4A]/70 hover:text-[#E8720C] rounded-full hover:bg-gray-100/60 transition-colors hidden lg:flex">
+              <Search className="w-[18px] h-[18px]" />
+            </Link>
+            <Link href={`/${locale}/auth`} className="p-2.5 text-[#1B2A4A]/70 hover:text-[#E8720C] rounded-full hover:bg-gray-100/60 transition-colors hidden lg:flex">
+              <User className="w-[18px] h-[18px]" />
+            </Link>
+
+            {/* Mobile Menu Toggle */}
             <button
+              className="lg:hidden p-2.5 text-[#1B2A4A] rounded-full hover:bg-gray-100 transition-colors"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 text-[#4a4a4a] hover:bg-gray-100 rounded-full transition-colors"
+              aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
-        </nav>
+        </div>
 
-        {/* ============ MEGA MENU PANELS ============ */}
-        {/* Rendered as direct children of <header> so they span full header width */}
+        {/* Mega Menu Panels - rendered inside header for positioning */}
+        {renderMegaMenuPanel()}
+      </div>
 
-        {/* Products Mega Menu */}
-        <div
-          className={`hidden lg:block absolute left-0 right-0 top-full pt-3 transition-all duration-200 z-40 ${panelAnimClass('products')}`}
-          style={{ display: activeMenu === 'products' || isPanelVisible ? undefined : 'none' }}
-          onMouseEnter={() => handleMenuEnter('products')}
-          onMouseLeave={handleMenuLeave}
-        >
-          <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-            <div className="p-8 grid grid-cols-12 gap-8">
-              {/* Left: Categories */}
-              <div className="col-span-4">
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-4">
-                  {tm('productCategories')}
-                </p>
-                <ul className="space-y-1">
-                  <li>
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden absolute top-full left-4 right-4 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-4 max-h-[70vh] overflow-y-auto">
+          {/* Mobile menu items */}
+          <div className="space-y-1">
+            {(['products', 'custom', 'about', 'news'] as MenuKey[]).map(key => {
+              const href = key === 'products' ? '/products' : key === 'custom' ? '/custom' : key === 'about' ? '/about' : '/news';
+              const active = isActive(href);
+              const isExpanded = mobileExpanded === key;
+              const hasSubmenu = key === 'products' || key === 'custom' || key === 'about' || key === 'news';
+
+              return (
+                <div key={key}>
+                  <div className="flex items-center">
                     <Link
-                      href={`/${locale}/products`}
-                      className="group flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm text-gray-600 hover:text-[#1B2A4A] hover:bg-gray-50 transition-all"
+                      href={`/${locale}${href}`}
+                      className={`flex-1 flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${active ? 'bg-[#E8720C]/10 text-[#E8720C]' : 'text-[#1B2A4A] hover:bg-gray-50'}`}
+                      onClick={() => !hasSubmenu && setIsMobileMenuOpen(false)}
                     >
-                      <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                      <span className="font-medium">{tm('allProducts')}</span>
+                      {t(`nav.${key}`)}
                     </Link>
-                  </li>
-                  {categories.map((cat) => (
-                    <li key={cat.id}>
-                      <Link
-                        href={`/${locale}/products?category=${cat.id}`}
-                        className="group flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm text-gray-600 hover:text-[#1B2A4A] hover:bg-gray-50 transition-all"
+                    {hasSubmenu && (
+                      <button
+                        onClick={() => setMobileExpanded(isExpanded ? null : key ?? null)}
+                        className="p-2 text-gray-400 hover:text-[#1B2A4A] transition-colors"
                       >
-                        <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                        <span>{getI18nValue(cat.i18n, locale, 'categoryName')}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-6 pt-4 border-t border-gray-100">
-                  <Link
-                    href={`/${locale}/products`}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1B2A4A] text-white text-sm font-medium rounded-full hover:bg-[#2a3d5e] transition-colors"
-                  >
-                    {tm('viewAllProducts')}
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
-
-              {/* Middle: By Industry */}
-              <div className="col-span-3">
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-4">
-                  {tm('byIndustry')}
-                </p>
-                <ul className="space-y-1">
-                  {applications.map((app) => (
-                    <li key={app.href}>
-                      <Link
-                        href={`/${locale}${app.href}`}
-                        className="group flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm text-gray-600 hover:text-[#1B2A4A] hover:bg-gray-50 transition-all"
-                      >
-                        <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                        <span>{app.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Right: Image Cards */}
-              <div className="col-span-5 grid grid-cols-2 gap-4">
-                <Link
-                  href={`/${locale}/custom`}
-                  className="group relative rounded-2xl overflow-hidden aspect-[4/5]"
-                >
-                  <img
-                    src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=400"
-                    alt="Custom Manufacturing"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute top-3 right-3 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                    <ArrowRight className="w-4 h-4 text-white" />
+                        <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                      </button>
+                    )}
                   </div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <p className="text-white font-semibold text-sm">{tm('customMfg')}</p>
-                    <p className="text-white/70 text-xs mt-1">{tm('customMfgDesc')}</p>
-                  </div>
-                </Link>
-                <Link
-                  href={`/${locale}/products`}
-                  className="group relative rounded-2xl overflow-hidden aspect-[4/5]"
-                >
-                  <img
-                    src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400"
-                    alt="Featured Products"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute top-3 right-3 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                    <ArrowRight className="w-4 h-4 text-white" />
-                  </div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <p className="text-white font-semibold text-sm">{tm('featuredProducts')}</p>
-                    <p className="text-white/70 text-xs mt-1">{tm('featuredProductsDesc')}</p>
-                  </div>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Custom Mega Menu */}
-        <div
-          className={`hidden lg:block absolute left-0 right-0 top-full pt-3 transition-all duration-200 z-40 ${panelAnimClass('custom')}`}
-          style={{ display: activeMenu === 'custom' || isPanelVisible ? undefined : 'none' }}
-          onMouseEnter={() => handleMenuEnter('custom')}
-          onMouseLeave={handleMenuLeave}
-        >
-          <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-            <div className="p-8 grid grid-cols-12 gap-8">
-              {/* Left: Services */}
-              <div className="col-span-5">
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-4">
-                  {tm('ourServices')}
-                </p>
-                <ul className="space-y-1">
-                  {customServices.map((svc) => (
-                    <li key={svc.href}>
-                      <Link
-                        href={`/${locale}${svc.href}`}
-                        className="group flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm text-gray-600 hover:text-[#1B2A4A] hover:bg-gray-50 transition-all"
-                      >
-                        <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                        <span>{svc.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-6 pt-4 border-t border-gray-100">
-                  <Link
-                    href={`/${locale}/custom`}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1B2A4A] text-white text-sm font-medium rounded-full hover:bg-[#2a3d5e] transition-colors"
-                  >
-                    {tm('getQuote')}
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
-
-              {/* Right: Factory Image */}
-              <div className="col-span-7">
-                <Link
-                  href={`/${locale}/custom`}
-                  className="group relative rounded-2xl overflow-hidden h-full min-h-[280px]"
-                >
-                  <img
-                    src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800"
-                    alt="Factory"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#1B2A4A]/80 to-transparent" />
-                  <div className="absolute inset-0 flex flex-col justify-center p-8">
-                    <p className="text-white font-bold text-xl max-w-[200px] leading-tight">
-                      {tm('trustedPartner')}
-                    </p>
-                    <div className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-white text-[#1B2A4A] text-sm font-medium rounded-full w-fit group-hover:bg-[#E8720C] group-hover:text-white transition-colors">
-                      {tm('getQuote')}
-                      <ArrowRight className="w-4 h-4" />
-                    </div>
-                  </div>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* About Simple Dropdown */}
-        <div
-          className={`hidden lg:block absolute left-0 right-0 top-full pt-3 transition-all duration-200 z-40 ${panelAnimClass('about')}`}
-          style={{ display: activeMenu === 'about' || isPanelVisible ? undefined : 'none' }}
-          onMouseEnter={() => handleMenuEnter('about')}
-          onMouseLeave={handleMenuLeave}
-        >
-          <div className="max-w-xs mx-auto bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-            <div className="p-3">
-              {aboutLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={`/${locale}${link.href}`}
-                  className="group flex items-center justify-between px-4 py-3 rounded-xl text-sm text-gray-600 hover:text-[#1B2A4A] hover:bg-gray-50 transition-all"
-                >
-                  <span>{link.name}</span>
-                  <ChevronRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* News Simple Dropdown */}
-        <div
-          className={`hidden lg:block absolute left-0 right-0 top-full pt-3 transition-all duration-200 z-40 ${panelAnimClass('news')}`}
-          style={{ display: activeMenu === 'news' || isPanelVisible ? undefined : 'none' }}
-          onMouseEnter={() => handleMenuEnter('news')}
-          onMouseLeave={handleMenuLeave}
-        >
-          <div className="max-w-xs mx-auto bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-            <div className="p-3">
-              {newsLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={`/${locale}${link.href}`}
-                  className="group flex items-center justify-between px-4 py-3 rounded-xl text-sm text-gray-600 hover:text-[#1B2A4A] hover:bg-gray-50 transition-all"
-                >
-                  <span>{link.name}</span>
-                  <ChevronRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden max-w-6xl mx-auto mt-2 bg-white/95 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-            <div className="py-4 px-4 max-h-[70vh] overflow-y-auto">
-              {/* Home */}
-              <Link
-                href={`/${locale}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-                  isActive('/') ? 'bg-[#1B2A4A] text-white' : 'text-[#4a4a4a] hover:bg-gray-50'
-                }`}
-              >
-                {t('nav.home')}
-              </Link>
-
-              {/* Products - accordion */}
-              <div>
-                <button
-                  onClick={() => setMobileExpanded(mobileExpanded === 'products' ? null : 'products')}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-[#4a4a4a] hover:bg-gray-50 transition-colors"
-                >
-                  {t('nav.products')}
-                  <ChevronDown className={`w-4 h-4 transition-transform ${mobileExpanded === 'products' ? 'rotate-180' : ''}`} />
-                </button>
-                {mobileExpanded === 'products' && (
-                  <MobileSubmenu links={[
-                    { name: tm('allProducts'), href: '/products' },
-                    ...categories.map(c => ({
-                      name: getI18nValue(c.i18n, locale, 'categoryName'),
-                      href: `/products?category=${c.id}`,
-                    })),
-                  ]} />
-                )}
-              </div>
-
-              {/* Custom - accordion */}
-              <div>
-                <button
-                  onClick={() => setMobileExpanded(mobileExpanded === 'custom' ? null : 'custom')}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-[#4a4a4a] hover:bg-gray-50 transition-colors"
-                >
-                  {t('nav.custom')}
-                  <ChevronDown className={`w-4 h-4 transition-transform ${mobileExpanded === 'custom' ? 'rotate-180' : ''}`} />
-                </button>
-                {mobileExpanded === 'custom' && <MobileSubmenu links={customServices} />}
-              </div>
-
-              {/* About - accordion */}
-              <div>
-                <button
-                  onClick={() => setMobileExpanded(mobileExpanded === 'about' ? null : 'about')}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-[#4a4a4a] hover:bg-gray-50 transition-colors"
-                >
-                  {t('nav.about')}
-                  <ChevronDown className={`w-4 h-4 transition-transform ${mobileExpanded === 'about' ? 'rotate-180' : ''}`} />
-                </button>
-                {mobileExpanded === 'about' && <MobileSubmenu links={aboutLinks} />}
-              </div>
-
-              {/* News - accordion */}
-              <div>
-                <button
-                  onClick={() => setMobileExpanded(mobileExpanded === 'news' ? null : 'news')}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-[#4a4a4a] hover:bg-gray-50 transition-colors"
-                >
-                  {t('nav.news')}
-                  <ChevronDown className={`w-4 h-4 transition-transform ${mobileExpanded === 'news' ? 'rotate-180' : ''}`} />
-                </button>
-                {mobileExpanded === 'news' && <MobileSubmenu links={newsLinks} />}
-              </div>
-
-              {/* Contact */}
-              <Link
-                href={`/${locale}/contact`}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-                  isActive('/contact') ? 'bg-[#1B2A4A] text-white' : 'text-[#4a4a4a] hover:bg-gray-50'
-                }`}
-              >
-                {t('nav.contact')}
-              </Link>
-
-              {/* Bottom actions */}
-              <div className="border-t border-gray-100 mt-3 pt-3 flex items-center justify-between px-4">
-                <div className="relative">
-                  <button
-                    onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-                    className="flex items-center gap-1 px-3 py-2 text-sm text-[#4a4a4a]"
-                  >
-                    <Globe className="w-4 h-4" />
-                    <span>{localeNames[locale as typeof locales[number]]}</span>
-                  </button>
-                  {isLangMenuOpen && (
-                    <div className="absolute left-0 bottom-full mb-2 bg-white rounded-2xl shadow-xl border py-2 min-w-[160px]">
-                      {locales.map((l) => (
-                        <button
-                          key={l}
-                          onClick={() => { switchLocale(l); setIsLangMenuOpen(false); }}
-                          className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 ${
-                            locale === l ? 'text-[#1B2A4A] font-semibold' : 'text-[#4a4a4a]'
-                          }`}
-                        >
-                          {localeNames[l]}
-                        </button>
+                  {/* Accordion content */}
+                  {isExpanded && key === 'products' && (
+                    <div className="pl-4 pb-2 space-y-0.5">
+                      <Link href={`/${locale}/products`} className="block px-4 py-2 text-sm text-gray-600 hover:text-[#E8720C] rounded-lg hover:bg-gray-50">{tm('allProducts')}</Link>
+                      {categories.map(cat => (
+                        <Link key={cat.id} href={`/${locale}/products?cat=${cat.id}`} className="block px-4 py-2 text-sm text-gray-600 hover:text-[#E8720C] rounded-lg hover:bg-gray-50">{getI18nValue(cat.i18n, locale, 'categoryName')}</Link>
                       ))}
                     </div>
                   )}
+                  {isExpanded && key === 'custom' && (
+                    <div className="pl-4 pb-2 space-y-0.5">
+                      {customServices.map((s, i) => <Link key={i} href={s.href} className="block px-4 py-2 text-sm text-gray-600 hover:text-[#E8720C] rounded-lg hover:bg-gray-50">{s.name}</Link>)}
+                    </div>
+                  )}
+                  {isExpanded && key === 'about' && (
+                    <div className="pl-4 pb-2 space-y-0.5">
+                      {aboutLinks.map((l, i) => <Link key={i} href={l.href} className="block px-4 py-2 text-sm text-gray-600 hover:text-[#E8720C] rounded-lg hover:bg-gray-50">{l.name}</Link>)}
+                    </div>
+                  )}
+                  {isExpanded && key === 'news' && (
+                    <div className="pl-4 pb-2 space-y-0.5">
+                      {newsLinks.map((l, i) => <Link key={i} href={l.href} className="block px-4 py-2 text-sm text-gray-600 hover:text-[#E8720C] rounded-lg hover:bg-gray-50">{l.name}</Link>)}
+                    </div>
+                  )}
                 </div>
-                <div className="flex items-center gap-2">
-                  <Link href={`/${locale}/auth`} className="p-2 text-[#4a4a4a]">
-                    <User className="w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
+              );
+            })}
+          </div>
+          <div className="border-t border-gray-100 mt-3 pt-3 flex items-center justify-between px-4">
+            <div className="flex gap-2">
+              <Link href={`/${locale}/contact`} className="p-2 text-gray-500 hover:text-[#E8720C] transition-colors"><Search className="w-5 h-5" /></Link>
+              <Link href={`/${locale}/auth`} className="p-2 text-gray-500 hover:text-[#E8720C] transition-colors"><User className="w-5 h-5" /></Link>
+            </div>
+            <div className="flex gap-1">
+              {locales.map(l => (
+                <button key={l} onClick={() => { switchLocale(l); setIsMobileMenuOpen(false); }} className={`px-2.5 py-1 text-xs font-medium rounded-full transition-colors ${l === locale ? 'bg-[#E8720C] text-white' : 'text-gray-500 hover:bg-gray-100'}`}>
+                  {localeNames[l]?.flag}
+                </button>
+              ))}
             </div>
           </div>
-        )}
-      </header>
-    </>
+        </div>
+      )}
+    </header>
   );
 }

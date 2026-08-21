@@ -100,7 +100,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex items-center gap-4">
             <div className="relative">
               <select className="appearance-none rounded-md border border-gray-200 bg-gray-50 py-1.5 pl-3 pr-8 text-sm focus:outline-none">
-                <option>{localeNames[locale]}</option>
+                <option>{localeNames[locale]?.name || locale}</option>
               </select>
               <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-3 w-3 -translate-y-1/2 text-gray-400" />
             </div>

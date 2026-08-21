@@ -429,7 +429,7 @@
   },
   "custom": {
     "title": "Custom Manufacturing",
-    "subtitle": "Turn your ideas into reality with our professional OEM/ODM services",
+    "subtitle": "From concept to delivery, end-to-end custom manufacturing",
     "process_title": "Customization Process",
     "process_steps": {
       "step1_title": "Submit Requirements",
@@ -474,7 +474,6 @@
     "step5Title": "Quality Inspection",
     "step6Desc": "Arrange shipping per your requirements",
     "step6Title": "Delivery",
-    "subtitle": "From concept to delivery, end-to-end custom manufacturing",
     "submitSuccess": "Request Submitted",
     "submitSuccessDesc": "We'll get back to you within 24 hours"
   },

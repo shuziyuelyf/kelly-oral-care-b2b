@@ -143,7 +143,13 @@
     "ctaTitle": "准备好开始您的项目了吗？",
     "ctaDesc": "告诉我们您的需求，24小时内获得定制报价。我们的工程团队随时准备将您的愿景变为现实。",
     "ctaBtn1": "获取报价",
-    "ctaBtn2": "联系销售"
+    "ctaBtn2": "联系销售",
+    "odmDesc": "我们的工程团队根据您的需求和规格开发定制方案。",
+    "privateLabelTitle": "自有品牌",
+    "privateLabelDesc": "定制品牌、包装和标签服务，助力您的市场布局。",
+    "requestQuote": "获取定制报价",
+    "ctaPrimary": "获取报价",
+    "ctaSecondary": "联系销售"
   },
   "about": {
     "title": "关于我们",
@@ -273,7 +279,8 @@
       "contact": "联系我们",
       "login": "登录",
       "register": "注册",
-      "admin": "后台管理"
+      "admin": "后台管理",
+      "brand": "B2B Enterprise"
     },
     "footer": {
       "allProducts": "全部产品",
