@@ -30,7 +30,6 @@ export default function Header() {
   const capsuleRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const logoRef = useRef<HTMLAnchorElement>(null);
-  const rightControlsRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
 
   // ---- Existing state ----
@@ -40,11 +39,12 @@ export default function Header() {
   const [isPanelVisible, setIsPanelVisible] = useState(false);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const [burgerExpanded, setBurgerExpanded] = useState<string | null>(null);
-  const [showLangLabel, setShowLangLabel] = useState(true);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const langCloseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const burgerAutoCloseRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLElement>(null);
   const isClickingRef = useRef(false);
+  const rightFixedRef = useRef<HTMLDivElement>(null); // language + WhatsApp only (no burger)
 
   // Scroll listener
   useEffect(() => {
@@ -84,8 +84,8 @@ export default function Header() {
     // Measure logo width
     const logoWidth = logoRef.current?.offsetWidth ?? 120;
 
-    // Measure right controls width
-    const rightWidth = rightControlsRef.current?.offsetWidth ?? 100;
+    // Measure right controls width (language + WhatsApp only, NOT the hamburger button)
+    const rightWidth = rightFixedRef.current?.offsetWidth ?? 100;
 
     // Gap between left items and logo (approximate)
     const leftLogoGap = 16;
@@ -436,52 +436,69 @@ export default function Header() {
           </Link>
 
           {/* Right: Language + WhatsApp + Burger */}
-          <div ref={rightControlsRef} className="flex items-center gap-0.5 flex-1 justify-end min-w-0">
-            {/* Language Selector */}
-            <div
-              className="relative"
-              onMouseEnter={handleLangEnter}
-              onMouseLeave={handleLangLeave}
-            >
-              <button className="p-2 text-[#173A63]/70 hover:text-[#008FD5] rounded-full hover:bg-gray-100/60 transition-colors">
-                <Globe className="w-[18px] h-[18px]" />
-              </button>
-              {isLangMenuOpen && (
-                <div className="absolute right-0 top-full pt-2 z-50">
-                  <div className="bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-2 min-w-[160px]">
-                    {locales.map(l => (
-                      <button
-                        key={l}
-                        onClick={() => { switchLocale(l); setIsLangMenuOpen(false); }}
-                        className={`flex items-center gap-3 w-full px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${l === locale ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
-                      >
-                        <span className="text-base">{localeNames[l]?.flag}</span>
-                        <span>{localeNames[l]?.name}</span>
-                      </button>
-                    ))}
+          <div className="flex items-center gap-0.5 flex-1 justify-end min-w-0">
+            {/* Language + WhatsApp (measured for progressive collapse) */}
+            <div ref={rightFixedRef} className="flex items-center gap-0.5">
+              {/* Language Selector */}
+              <div
+                className="relative"
+                onMouseEnter={handleLangEnter}
+                onMouseLeave={handleLangLeave}
+              >
+                <button className="p-2 text-[#173A63]/70 hover:text-[#008FD5] rounded-full hover:bg-gray-100/60 transition-colors">
+                  <Globe className="w-[18px] h-[18px]" />
+                </button>
+                {isLangMenuOpen && (
+                  <div className="absolute right-0 top-full pt-2 z-50">
+                    <div className="bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-2 min-w-[160px]">
+                      {locales.map(l => (
+                        <button
+                          key={l}
+                          onClick={() => { switchLocale(l); setIsLangMenuOpen(false); }}
+                          className={`flex items-center justify-between w-full px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${l === locale ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
+                        >
+                          <span>{localeNames[l]?.name}</span>
+                          {l === locale && <span className="text-[#008FD5]">✓</span>}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
 
-            {/* WhatsApp Button */}
-            <a
-              href="https://wa.me/8613800138000"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-[#21C96B] text-white text-xs font-semibold rounded-full hover:bg-[#1DB95E] transition-colors"
-            >
-              <MessageCircle className="w-4 h-4" />
-              <span className="hidden xl:inline">WhatsApp</span>
-            </a>
+              {/* WhatsApp Button */}
+              <a
+                href="https://wa.me/8613800138000"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-[#21C96B] text-white text-xs font-semibold rounded-full hover:bg-[#1DB95E] transition-colors"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span className="hidden xl:inline">WhatsApp</span>
+              </a>
+            </div>
 
             {/* Hamburger Button - only when there are overflow items */}
             {hasOverflow && (
               <button
                 className="p-2 text-[#173A63] rounded-full hover:bg-gray-100 transition-colors"
                 onClick={() => {
-                  setIsBurgerOpen(!isBurgerOpen);
+                  const next = !isBurgerOpen;
+                  setIsBurgerOpen(next);
                   setBurgerExpanded(null);
+                  // Start auto-close timer when opening
+                  if (next) {
+                    if (burgerAutoCloseRef.current) clearTimeout(burgerAutoCloseRef.current);
+                    burgerAutoCloseRef.current = setTimeout(() => {
+                      setIsBurgerOpen(false);
+                      setBurgerExpanded(null);
+                    }, 1500);
+                  } else {
+                    if (burgerAutoCloseRef.current) {
+                      clearTimeout(burgerAutoCloseRef.current);
+                      burgerAutoCloseRef.current = null;
+                    }
+                  }
                 }}
                 aria-label="Toggle menu"
               >
@@ -496,7 +513,21 @@ export default function Header() {
 
         {/* Burger Dropdown - overflow items */}
         {isBurgerOpen && hasOverflow && (
-          <div className="absolute top-full left-4 right-4 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-4 max-h-[70vh] overflow-y-auto z-50">
+          <div
+            className="absolute top-full left-4 right-4 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-4 max-h-[70vh] overflow-y-auto z-50"
+            onMouseEnter={() => {
+              if (burgerAutoCloseRef.current) {
+                clearTimeout(burgerAutoCloseRef.current);
+                burgerAutoCloseRef.current = null;
+              }
+            }}
+            onMouseLeave={() => {
+              burgerAutoCloseRef.current = setTimeout(() => {
+                setIsBurgerOpen(false);
+                setBurgerExpanded(null);
+              }, 1500);
+            }}
+          >
             <div className="space-y-1">
               {overflowItems.map(({ key, href }) => {
                 const active = isActive(href);
@@ -537,18 +568,6 @@ export default function Header() {
                   </div>
                 );
               })}
-            </div>
-            {/* WhatsApp in burger menu */}
-            <div className="border-t border-gray-100 mt-3 pt-3">
-              <a
-                href="https://wa.me/8613800138000"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 px-4 py-2.5 bg-[#21C96B] text-white text-sm font-semibold rounded-full hover:bg-[#1DB95E] transition-colors"
-              >
-                <MessageCircle className="w-4 h-4" />
-                WhatsApp
-              </a>
             </div>
           </div>
         )}
