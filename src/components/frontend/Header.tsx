@@ -389,7 +389,7 @@ export default function Header() {
 
   return (
     <header ref={headerRef} className="fixed top-3 left-0 right-0 z-50">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="mx-auto w-[94%] max-w-[1680px] px-6">
         <div
           ref={capsuleRef}
           className="flex items-center h-14 rounded-full px-4 transition-all duration-300 relative"

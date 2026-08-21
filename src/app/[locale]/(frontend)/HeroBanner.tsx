@@ -5,69 +5,70 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { trackEvent } from '@/lib/analytics';
 
+const slides = [
+  {
+    img: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=1920&q=80',
+    imgAlt: 'Oral care products',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1559650656-5d1d361ad10e?w=1920&q=80',
+    imgAlt: 'Dental care',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1571772996211-2f02c9727629?w=1920&q=80',
+    imgAlt: 'Healthy smile',
+  },
+];
+
 export default function HeroBanner() {
   const t = useTranslations('home');
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % 3);
+      setCurrent((prev) => (prev + 1) % slides.length);
     }, 5000);
     return () => clearInterval(timer);
   }, []);
 
-  const slides = [
-    {
-      title: t('heroTitle'),
-      subtitle: t('heroSubtitle'),
-      bg: 'from-[#173A63] via-[#1E4D7B] to-[#0F2A4A]',
-    },
-    {
-      title: t('plPathTitle'),
-      subtitle: t('plPathDesc'),
-      bg: 'from-[#1E4D7B] via-[#173A63] to-[#0F2A4A]',
-    },
-    {
-      title: t('oemPathTitle'),
-      subtitle: t('oemPathDesc'),
-      bg: 'from-[#0F2A4A] via-[#173A63] to-[#1E4D7B]',
-    },
-  ];
-
   return (
-    <section className="relative min-h-screen w-full overflow-hidden">
-      {/* Animated background */}
+    <section className="relative w-full overflow-hidden" style={{ minHeight: '80vh' }}>
+      {/* Background images */}
       {slides.map((slide, i) => (
         <div
           key={i}
-          className={`absolute inset-0 bg-gradient-to-br ${slide.bg} transition-opacity duration-1000 ${
+          className={`absolute inset-0 transition-opacity duration-1000 ${
             i === current ? 'opacity-100' : 'opacity-0'
           }`}
-        />
+        >
+          <img
+            src={slide.img}
+            alt={slide.imgAlt}
+            className="h-full w-full object-cover"
+            loading={i === 0 ? 'eager' : 'lazy'}
+          />
+        </div>
       ))}
 
-      {/* Subtle pattern overlay */}
-      <div className="absolute inset-0 opacity-5" style={{
-        backgroundImage: 'radial-gradient(circle at 25% 25%, white 1px, transparent 1px), radial-gradient(circle at 75% 75%, white 1px, transparent 1px)',
-        backgroundSize: '60px 60px'
-      }} />
+      {/* Navy gradient overlay for text readability */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0F2A4A]/85 via-[#173A63]/70 to-[#1E4D7B]/50" />
 
-      {/* Content */}
-      <div className="relative z-10 flex min-h-screen items-center">
-        <div className="mx-auto max-w-6xl px-6 w-full">
+      {/* Content — positioned at 40% from top */}
+      <div className="relative z-10 flex items-start w-full" style={{ paddingTop: '40vh' }}>
+        <div className="mx-auto w-[94%] max-w-[1680px] px-6">
           <div className="max-w-2xl">
             <h1
               key={`title-${current}`}
               className="animate-fade-in mb-6 font-bold leading-[1.05] tracking-tight text-white"
               style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)' }}
             >
-              {slides[current].title}
+              {current === 0 ? t('heroTitle') : current === 1 ? t('plPathTitle') : t('oemPathTitle')}
             </h1>
             <p
               key={`sub-${current}`}
               className="animate-fade-in mb-8 max-w-lg text-lg leading-relaxed text-white/85"
             >
-              {slides[current].subtitle}
+              {current === 0 ? t('heroSubtitle') : current === 1 ? t('plPathDesc') : t('oemPathDesc')}
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
@@ -95,7 +96,7 @@ export default function HeroBanner() {
 
       {/* Indicators */}
       <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 gap-2">
-        {[0, 1, 2].map((i) => (
+        {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrent(i)}
@@ -106,6 +107,13 @@ export default function HeroBanner() {
             }`}
           />
         ))}
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-24 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-1 text-white/50">
+        <div className="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-1.5">
+          <div className="w-1.5 h-1.5 rounded-full bg-white/60 animate-bounce" />
+        </div>
       </div>
     </section>
   );
