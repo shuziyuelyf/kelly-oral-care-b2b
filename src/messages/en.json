@@ -135,7 +135,16 @@
     "ctaTitle": "Ready to Start Your Project?",
     "ctaDesc": "Tell us your requirements and get a custom quote within 24 hours. Our engineering team is ready to bring your vision to life.",
     "ctaBtn1": "Request a Quote",
-    "ctaBtn2": "Contact Sales"
+    "ctaBtn2": "Contact Sales",
+    "customTitle": "Custom Manufacturing Solutions",
+    "customSubtitle": "End-to-end manufacturing services tailored to your exact specifications",
+    "factoryTour": "Factory Tour",
+    "oemTitle": "OEM Manufacturing",
+    "oemDesc": "Full-scale OEM production from prototype to mass production with strict quality control.",
+    "odmTitle": "ODM Design Services",
+    "odmDesc": "Our engineering team develops custom solutions based on your requirements and specifications.",
+    "privateLabelTitle": "Private Label",
+    "privateLabelDesc": "Custom branding, packaging, and labeling services to help you enter new markets."
   },
   "about": {
     "title": "About Us",
