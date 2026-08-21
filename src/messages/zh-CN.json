@@ -149,7 +149,12 @@
     "privateLabelDesc": "定制品牌、包装和标签服务，助力您的市场布局。",
     "requestQuote": "获取定制报价",
     "ctaPrimary": "获取报价",
-    "ctaSecondary": "联系销售"
+    "ctaSecondary": "联系销售",
+    "oemTitle": "OEM代工制造",
+    "oemDesc": "从原型到量产的全方位OEM生产，严格质量管控。",
+    "odmTitle": "ODM设计服务",
+    "customSubtitle": "按照您的精确规格提供端到端的制造服务",
+    "factoryTour": "工厂参观"
   },
   "about": {
     "title": "关于我们",
