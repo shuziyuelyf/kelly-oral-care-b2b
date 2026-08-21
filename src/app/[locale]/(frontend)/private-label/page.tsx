@@ -99,6 +99,238 @@ export default function PrivateLabelPage() {
         </div>
       </section>
 
+      {/* Ready Formulas */}
+      <section className="py-20 bg-[#F7F4EF]">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">Ready Formulas</h2>
+            <p className="text-gray-500 text-lg">Choose from our proven oral care formulas — ready for your brand</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { name: 'Hydroxyapatite Toothpaste', func: 'Enamel repair & remineralization', flavors: 'Mint, Unflavored', spec: '100g / 120g' },
+              { name: 'Whitening Toothpaste', func: 'Stain removal & brightness', flavors: 'Mint, Berry, Coconut', spec: '100g / 150g' },
+              { name: 'Sensitive Toothpaste', func: 'Pain relief & nerve protection', flavors: 'Mint, Mild Mint', spec: '100g / 120g' },
+              { name: "Kids' Toothpaste", func: 'Gentle cleaning, fluoride-free option', flavors: 'Strawberry, Watermelon, Grape', spec: '50g / 60g' },
+              { name: 'Herbal Toothpaste', func: 'Natural ingredients, gum care', flavors: 'Herbal Mint, Cinnamon', spec: '120g / 150g' },
+              { name: 'Charcoal Toothpaste', func: 'Deep cleaning & detox', flavors: 'Mint, Unflavored', spec: '100g / 120g' },
+            ].map((formula, i) => (
+              <div key={i} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-shadow">
+                <div className="w-12 h-12 bg-[#EAF7FD] rounded-xl flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-[#008FD5]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" /></svg>
+                </div>
+                <h3 className="text-lg font-bold text-[#173A63] mb-1">{formula.name}</h3>
+                <p className="text-sm text-gray-500 mb-3">{formula.func}</p>
+                <div className="text-xs text-gray-400 space-y-1 mb-4">
+                  <p><span className="font-medium text-gray-600">Flavors:</span> {formula.flavors}</p>
+                  <p><span className="font-medium text-gray-600">Spec:</span> {formula.spec}</p>
+                </div>
+                <button className="w-full py-2 text-sm font-semibold text-[#008FD5] border border-[#008FD5] rounded-full hover:bg-[#008FD5] hover:text-white transition-colors">
+                  Select Formula
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Branding Options */}
+      <section className="py-20 bg-white">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">Branding Options</h2>
+            <p className="text-gray-500 text-lg">Three levels of customization to match your budget and brand vision</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                tier: 'Logo Sticker',
+                desc: 'Apply your logo as a sticker label on our standard packaging',
+                moq: '500 pcs',
+                delivery: '2-3 weeks',
+                features: ['Your logo on existing tube/box', 'Standard packaging', 'Quick turnaround'],
+                popular: false,
+              },
+              {
+                tier: 'Custom Tube',
+                desc: 'Custom printed tube with your brand design and colors',
+                moq: '3,000 pcs',
+                delivery: '3-4 weeks',
+                features: ['Custom tube printing', 'Your colors & design', 'Custom cap color', 'Standard box'],
+                popular: true,
+              },
+              {
+                tier: 'Custom Box',
+                desc: 'Fully custom tube + outer box with premium packaging',
+                moq: '5,000 pcs',
+                delivery: '4-5 weeks',
+                features: ['Custom tube printing', 'Custom outer box', 'Premium finishes (foil, emboss)', 'Custom inserts'],
+                popular: false,
+              },
+            ].map((option, i) => (
+              <div key={i} className={`relative rounded-3xl p-8 ${option.popular ? 'bg-[#173A63] text-white shadow-xl' : 'bg-[#EAF7FD] border border-gray-100'}`}>
+                {option.popular && <div className="absolute -top-3 right-6 bg-[#008FD5] text-white text-xs font-bold px-4 py-1 rounded-full">Recommended</div>}
+                <h3 className={`text-xl font-bold mb-2 ${option.popular ? 'text-white' : 'text-[#173A63]'}`}>{option.tier}</h3>
+                <p className={`text-sm mb-4 ${option.popular ? 'text-white/70' : 'text-gray-500'}`}>{option.desc}</p>
+                <div className={`text-lg font-bold mb-1 ${option.popular ? 'text-[#008FD5]' : 'text-[#008FD5]'}`}>MOQ: {option.moq}</div>
+                <p className={`text-sm mb-6 ${option.popular ? 'text-white/60' : 'text-gray-400'}`}>Delivery: {option.delivery}</p>
+                <ul className="space-y-2 mb-6">
+                  {option.features.map((feat, j) => (
+                    <li key={j} className={`flex items-center gap-2 text-sm ${option.popular ? 'text-white/80' : 'text-gray-600'}`}>
+                      <svg className={`w-4 h-4 flex-shrink-0 ${option.popular ? 'text-[#008FD5]' : 'text-[#008FD5]'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                      {feat}
+                    </li>
+                  ))}
+                </ul>
+                <Link href="/contact" className={`block text-center rounded-full py-3 font-semibold transition-colors ${option.popular ? 'bg-white text-[#173A63] hover:bg-white/90' : 'bg-[#173A63] text-white hover:bg-[#1E4D7B]'}`}>
+                  Get Started
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Startup Packages */}
+      <section className="py-20 bg-[#F7F4EF]">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">Startup Packages</h2>
+            <p className="text-gray-500 text-lg">Pre-configured packages to launch your brand quickly</p>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[600px] bg-white rounded-2xl overflow-hidden shadow-sm">
+              <thead>
+                <tr className="bg-[#173A63] text-white">
+                  <th className="px-6 py-4 text-left font-semibold">Package</th>
+                  <th className="px-6 py-4 text-left font-semibold">Quantity</th>
+                  <th className="px-6 py-4 text-left font-semibold">Includes</th>
+                  <th className="px-6 py-4 text-left font-semibold">Delivery</th>
+                  <th className="px-6 py-4 text-left font-semibold">Starting From</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                <tr className="hover:bg-gray-50">
+                  <td className="px-6 py-4 font-semibold text-[#173A63]">Starter</td>
+                  <td className="px-6 py-4">500 pcs</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">Logo sticker, 1 formula, standard tube</td>
+                  <td className="px-6 py-4">2-3 weeks</td>
+                  <td className="px-6 py-4 font-bold text-[#008FD5]">$1,500</td>
+                </tr>
+                <tr className="hover:bg-gray-50 bg-[#EAF7FD]/50">
+                  <td className="px-6 py-4 font-semibold text-[#173A63]">Brand <span className="text-xs bg-[#008FD5] text-white px-2 py-0.5 rounded-full ml-1">Popular</span></td>
+                  <td className="px-6 py-4">1,000 pcs</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">Custom tube, 1 formula, design support</td>
+                  <td className="px-6 py-4">3-4 weeks</td>
+                  <td className="px-6 py-4 font-bold text-[#008FD5]">$2,800</td>
+                </tr>
+                <tr className="hover:bg-gray-50">
+                  <td className="px-6 py-4 font-semibold text-[#173A63]">Premium</td>
+                  <td className="px-6 py-4">3,000 pcs</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">Custom tube + box, 2 formulas, full design</td>
+                  <td className="px-6 py-4">4-5 weeks</td>
+                  <td className="px-6 py-4 font-bold text-[#008FD5]">$7,500</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* What's Included / What's Not */}
+      <section className="py-20 bg-white">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">{"What's Included"}</h2>
+            <p className="text-gray-500 text-lg">Clear scope — so you know exactly what you get</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Included */}
+            <div className="bg-[#EAF7FD] rounded-3xl p-8">
+              <h3 className="text-xl font-bold text-[#173A63] mb-6 flex items-center gap-2">
+                <svg className="w-6 h-6 text-[#008FD5]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Included in Private Label
+              </h3>
+              <ul className="space-y-3">
+                {[
+                  'Access to 50+ proven oral care formulas',
+                  'Custom branding on tubes and packaging',
+                  'Regulatory compliance documentation',
+                  'Quality inspection before shipment',
+                  'Standard shipping to your warehouse',
+                  'Product liability insurance',
+                  'Marketing materials (product photos, descriptions)',
+                  'Dedicated account manager',
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
+                    <svg className="w-5 h-5 text-[#008FD5] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {/* Not Included */}
+            <div className="bg-gray-50 rounded-3xl p-8 border border-gray-200">
+              <h3 className="text-xl font-bold text-[#173A63] mb-6 flex items-center gap-2">
+                <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
+                Not Included (Need OEM/ODM)
+              </h3>
+              <ul className="space-y-3">
+                {[
+                  'Custom formula development from scratch',
+                  'New product type not in our catalog',
+                  'Proprietary ingredient sourcing',
+                  'Clinical testing & certification',
+                  'Patent filing support',
+                  'Exclusive formula rights',
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-gray-500">
+                    <svg className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/custom" className="mt-6 inline-flex items-center gap-2 text-[#008FD5] font-semibold hover:gap-3 transition-all">
+                Need custom development? Explore OEM/ODM
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section className="py-20 bg-[#F7F4EF]">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">Project Timeline</h2>
+            <p className="text-gray-500 text-lg">{"From inquiry to delivery — here's what to expect"}</p>
+          </div>
+          <div className="relative">
+            {/* Timeline line */}
+            <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-[#008FD5]/20 hidden md:block" />
+            <div className="space-y-8 md:space-y-0 md:grid md:grid-cols-5 md:gap-4">
+              {[
+                { step: '01', title: 'Inquiry', desc: 'Submit your requirements', time: 'Day 1' },
+                { step: '02', title: 'Sample', desc: 'Receive & approve samples', time: 'Day 3-7' },
+                { step: '03', title: 'Approval', desc: 'Confirm design & formula', time: 'Day 7-10' },
+                { step: '04', title: 'Production', desc: 'Manufacturing & QC', time: 'Week 2-4' },
+                { step: '05', title: 'Delivery', desc: 'Ship to your door', time: 'Week 4-6' },
+              ].map((item, i) => (
+                <div key={i} className="relative text-center">
+                  <div className="w-14 h-14 bg-[#008FD5] rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-lg shadow-lg">
+                    {item.step}
+                  </div>
+                  <h4 className="font-bold text-[#173A63] mb-1">{item.title}</h4>
+                  <p className="text-sm text-gray-500 mb-2">{item.desc}</p>
+                  <span className="inline-block text-xs font-medium text-[#008FD5] bg-[#EAF7FD] px-3 py-1 rounded-full">{item.time}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* MOQ & Pricing */}
       <section className="py-20 bg-[#F7F4EF]">
         <div className="mx-auto max-w-6xl px-6">

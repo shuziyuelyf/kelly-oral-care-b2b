@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { trackEvent } from '@/lib/analytics';
 
 export default function HeroBanner() {
   const t = useTranslations('home');
@@ -79,6 +80,7 @@ export default function HeroBanner() {
                 href="https://wa.me/1234567890"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackEvent('whatsapp_click', { page: 'home', position: 'hero' })}
                 className="animate-fade-in rounded-full bg-[#21C96B] px-10 py-4 text-base font-semibold text-white transition-all hover:bg-[#1db85e] hover:scale-[0.98] shadow-lg flex items-center gap-2"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
