@@ -90,20 +90,21 @@ export default function Header() {
     // Burger button width (approximate, used when overflow is expected)
     const burgerWidth = 40; // p-2 + icon size
 
-    // Gap between left items and logo (approximate)
-    const leftLogoGap = 16;
-    const logoRightGap = 16;
+    // Three-zone layout: left zone | logo (centered) | right zone
+    // Left zone width = (availableWidth - logoWidth) / 2
+    // Right zone width = (availableWidth - logoWidth) / 2
+    const halfWidth = (availableWidth - logoWidth) / 2;
 
     // Check if we're in mobile mode (all items should collapse)
-    // Mobile mode: available width < logo + right controls + burger + gaps
-    const mobileThreshold = logoWidth + rightWidth + burgerWidth + leftLogoGap + logoRightGap;
-    if (availableWidth < mobileThreshold + 60) {
-      // Not enough space for even 1 item + logo + controls
+    // Mobile mode: halfWidth < right controls + burger + gaps
+    const mobileThreshold = rightWidth + burgerWidth + 16;
+    if (halfWidth < mobileThreshold + 40) {
+      // Not enough space for even 1 item + controls
       return 0;
     }
 
-    // Available width for left menu items (subtract burger width since it will be shown if overflow)
-    const leftAvailable = availableWidth - logoWidth - leftLogoGap - logoRightGap - rightWidth - burgerWidth;
+    // Available width for left menu items (subtract some gap for spacing)
+    const leftAvailable = halfWidth - 16; // 16px gap between items and logo
 
     if (leftAvailable <= 0) return 0;
 
@@ -391,22 +392,22 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-4">
         <div
           ref={capsuleRef}
-          className={`flex items-center h-14 rounded-full px-4 transition-all duration-300 ${isMobileMode ? 'justify-between' : 'justify-between'}`}
+          className="flex items-center h-14 rounded-full px-4 transition-all duration-300 relative"
           style={{ backgroundColor: isScrolled ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.85)', backdropFilter: 'blur(20px)', boxShadow: isScrolled ? '0 8px 32px rgba(0,0,0,0.12)' : '0 2px 12px rgba(0,0,0,0.06)' }}
         >
-          {/* Left: Logo (mobile mode) or Visible Menu Items (desktop mode) */}
+          {/* Left zone: Visible menu items (flex:1, takes half minus logo space) */}
           {isMobileMode ? (
-            // Mobile mode: Logo on the left
+            // Mobile mode: Logo on the left (static positioning)
             <Link
               ref={logoRef}
               href={`/${locale}`}
-              className="flex-shrink-0"
+              className="flex-shrink-0 z-10"
             >
               <span className="text-lg font-extrabold tracking-tight text-[#173A63] whitespace-nowrap">{t('nav.brand')}</span>
             </Link>
           ) : (
-            // Desktop mode: Visible menu items on the left
-            <div className="flex items-center gap-0.5 flex-1 min-w-0">
+            // Desktop mode: Left zone with visible menu items
+            <div className="flex items-center gap-0.5 flex-1 min-w-0 justify-start overflow-visible">
               {isMeasuring ? (
                 // During measurement, render all items hidden to get accurate widths
                 <div className="invisible absolute pointer-events-none">
@@ -451,18 +452,19 @@ export default function Header() {
             </div>
           )}
 
-          {/* Center: Logo (desktop mode only) */}
+          {/* Center: Logo absolutely centered (desktop mode only) */}
           {!isMobileMode && (
             <Link
+              ref={logoRef}
               href={`/${locale}`}
-              className="flex-shrink-0 mx-3"
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex-shrink-0"
             >
               <span className="text-lg font-extrabold tracking-tight text-[#173A63] whitespace-nowrap">{t('nav.brand')}</span>
             </Link>
           )}
 
-          {/* Right: Language + WhatsApp + Burger */}
-          <div className="flex items-center gap-0.5 flex-shrink-0">
+          {/* Right zone: Language + WhatsApp + Burger (flex:1) */}
+          <div className="flex items-center gap-0.5 flex-1 justify-end flex-shrink-0">
             {/* Language + WhatsApp (measured for progressive collapse) */}
             <div ref={rightFixedRef} className="flex items-center gap-0.5">
               {/* Language Selector */}
