@@ -87,12 +87,23 @@ export default function Header() {
     // Measure right controls width (language + WhatsApp only, NOT the hamburger button)
     const rightWidth = rightFixedRef.current?.offsetWidth ?? 100;
 
+    // Burger button width (approximate, used when overflow is expected)
+    const burgerWidth = 40; // p-2 + icon size
+
     // Gap between left items and logo (approximate)
     const leftLogoGap = 16;
     const logoRightGap = 16;
 
-    // Available width for left menu items
-    const leftAvailable = availableWidth - logoWidth - leftLogoGap - logoRightGap - rightWidth;
+    // Check if we're in mobile mode (all items should collapse)
+    // Mobile mode: available width < logo + right controls + burger + gaps
+    const mobileThreshold = logoWidth + rightWidth + burgerWidth + leftLogoGap + logoRightGap;
+    if (availableWidth < mobileThreshold + 60) {
+      // Not enough space for even 1 item + logo + controls
+      return 0;
+    }
+
+    // Available width for left menu items (subtract burger width since it will be shown if overflow)
+    const leftAvailable = availableWidth - logoWidth - leftLogoGap - logoRightGap - rightWidth - burgerWidth;
 
     if (leftAvailable <= 0) return 0;
 
@@ -373,70 +384,85 @@ export default function Header() {
   const visibleItems = ALL_MENU_ITEMS.slice(0, visibleCount);
   const overflowItems = ALL_MENU_ITEMS.slice(visibleCount);
   const hasOverflow = overflowItems.length > 0;
+  const isMobileMode = visibleCount === 0; // All items collapsed
 
   return (
     <header ref={headerRef} className="fixed top-3 left-0 right-0 z-50">
       <div className="max-w-6xl mx-auto px-4">
         <div
           ref={capsuleRef}
-          className={`flex items-center justify-between h-14 rounded-full px-4 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-xl shadow-xl' : 'bg-white/85 backdrop-blur-xl shadow-md'}`}
+          className={`flex items-center h-14 rounded-full px-4 transition-all duration-300 ${isMobileMode ? 'justify-between' : 'justify-between'}`}
+          style={{ backgroundColor: isScrolled ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.85)', backdropFilter: 'blur(20px)', boxShadow: isScrolled ? '0 8px 32px rgba(0,0,0,0.12)' : '0 2px 12px rgba(0,0,0,0.06)' }}
         >
-          {/* Left: Visible Menu Items */}
-          <div className="flex items-center gap-0.5 flex-1 min-w-0">
-            {isMeasuring ? (
-              // During measurement, render all items hidden to get accurate widths
-              <div className="invisible absolute pointer-events-none">
-                {ALL_MENU_ITEMS.map(({ key, href }, i) => {
+          {/* Left: Logo (mobile mode) or Visible Menu Items (desktop mode) */}
+          {isMobileMode ? (
+            // Mobile mode: Logo on the left
+            <Link
+              ref={logoRef}
+              href={`/${locale}`}
+              className="flex-shrink-0"
+            >
+              <span className="text-lg font-extrabold tracking-tight text-[#173A63] whitespace-nowrap">{t('nav.brand')}</span>
+            </Link>
+          ) : (
+            // Desktop mode: Visible menu items on the left
+            <div className="flex items-center gap-0.5 flex-1 min-w-0">
+              {isMeasuring ? (
+                // During measurement, render all items hidden to get accurate widths
+                <div className="invisible absolute pointer-events-none">
+                  {ALL_MENU_ITEMS.map(({ key, href }, i) => {
+                    const active = isActive(href);
+                    return (
+                      <div
+                        key={key}
+                        ref={el => { itemRefs.current[i] = el; }}
+                        className="inline-block"
+                      >
+                        <span className={`flex items-center gap-1 px-3 py-2 text-[13px] font-medium rounded-full whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63]'}`}>
+                          {t(`nav.${key}`)}
+                          <ChevronDown className="w-3 h-3" />
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                visibleItems.map(({ key, href }, i) => {
                   const active = isActive(href);
                   return (
                     <div
                       key={key}
                       ref={el => { itemRefs.current[i] = el; }}
-                      className="inline-block"
+                      className="relative"
+                      onMouseEnter={() => handleMenuEnter(key)}
+                      onMouseLeave={handleMenuLeave}
                     >
-                      <span className={`flex items-center gap-1 px-3 py-2 text-[13px] font-medium rounded-full whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63]'}`}>
+                      <Link
+                        href={`/${locale}${href}`}
+                        className={`flex items-center gap-1 px-3 py-2 text-[13px] font-medium rounded-full transition-all whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63] hover:text-[#008FD5] hover:bg-gray-100/60'}`}
+                      >
                         {t(`nav.${key}`)}
-                        <ChevronDown className="w-3 h-3" />
-                      </span>
+                        <ChevronDown className={`w-3 h-3 transition-transform ${activeMenu === key ? 'rotate-180' : ''}`} />
+                      </Link>
                     </div>
                   );
-                })}
-              </div>
-            ) : (
-              visibleItems.map(({ key, href }, i) => {
-                const active = isActive(href);
-                return (
-                  <div
-                    key={key}
-                    ref={el => { itemRefs.current[i] = el; }}
-                    className="relative"
-                    onMouseEnter={() => handleMenuEnter(key)}
-                    onMouseLeave={handleMenuLeave}
-                  >
-                    <Link
-                      href={`/${locale}${href}`}
-                      className={`flex items-center gap-1 px-3 py-2 text-[13px] font-medium rounded-full transition-all whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63] hover:text-[#008FD5] hover:bg-gray-100/60'}`}
-                    >
-                      {t(`nav.${key}`)}
-                      <ChevronDown className={`w-3 h-3 transition-transform ${activeMenu === key ? 'rotate-180' : ''}`} />
-                    </Link>
-                  </div>
-                );
-              })
-            )}
-          </div>
+                })
+              )}
+            </div>
+          )}
 
-          {/* Center: Logo */}
-          <Link
-            ref={logoRef}
-            href={`/${locale}`}
-            className="flex-shrink-0 mx-3"
-          >
-            <span className="text-lg font-extrabold tracking-tight text-[#173A63] whitespace-nowrap">{t('nav.brand')}</span>
-          </Link>
+          {/* Center: Logo (desktop mode only) */}
+          {!isMobileMode && (
+            <Link
+              href={`/${locale}`}
+              className="flex-shrink-0 mx-3"
+            >
+              <span className="text-lg font-extrabold tracking-tight text-[#173A63] whitespace-nowrap">{t('nav.brand')}</span>
+            </Link>
+          )}
 
           {/* Right: Language + WhatsApp + Burger */}
-          <div className="flex items-center gap-0.5 flex-1 justify-end min-w-0">
+          <div className="flex items-center gap-0.5 flex-shrink-0">
             {/* Language + WhatsApp (measured for progressive collapse) */}
             <div ref={rightFixedRef} className="flex items-center gap-0.5">
               {/* Language Selector */}
@@ -466,38 +492,39 @@ export default function Header() {
                 )}
               </div>
 
-              {/* WhatsApp Button */}
-              <a
-                href="https://wa.me/8613800138000"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-[#21C96B] text-white text-xs font-semibold rounded-full hover:bg-[#1DB95E] transition-colors"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span className="hidden xl:inline">WhatsApp</span>
-              </a>
+              {/* WhatsApp Button - hidden in mobile mode (goes into burger menu) */}
+              {!isMobileMode && (
+                <a
+                  href="https://wa.me/8613800138000"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-[#21C96B] text-white text-xs font-semibold rounded-full hover:bg-[#1DB95E] transition-colors"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span className="hidden xl:inline">WhatsApp</span>
+                </a>
+              )}
             </div>
 
-            {/* Hamburger Button - only when there are overflow items */}
-            {hasOverflow && (
+            {/* Hamburger Button - always shown in mobile mode, or when there are overflow items */}
+            {(isMobileMode || hasOverflow) && (
               <button
                 className="p-2 text-[#173A63] rounded-full hover:bg-gray-100 transition-colors"
                 onClick={() => {
                   const next = !isBurgerOpen;
                   setIsBurgerOpen(next);
                   setBurgerExpanded(null);
+                  // Always reset timer on every click
+                  if (burgerAutoCloseRef.current) {
+                    clearTimeout(burgerAutoCloseRef.current);
+                    burgerAutoCloseRef.current = null;
+                  }
                   // Start auto-close timer when opening
                   if (next) {
-                    if (burgerAutoCloseRef.current) clearTimeout(burgerAutoCloseRef.current);
                     burgerAutoCloseRef.current = setTimeout(() => {
                       setIsBurgerOpen(false);
                       setBurgerExpanded(null);
                     }, 1500);
-                  } else {
-                    if (burgerAutoCloseRef.current) {
-                      clearTimeout(burgerAutoCloseRef.current);
-                      burgerAutoCloseRef.current = null;
-                    }
                   }
                 }}
                 aria-label="Toggle menu"
@@ -511,10 +538,10 @@ export default function Header() {
         {/* Mega Menu Panels */}
         {renderMegaMenuPanel()}
 
-        {/* Burger Dropdown - overflow items */}
-        {isBurgerOpen && hasOverflow && (
+        {/* Burger Dropdown - overflow items (or all items in mobile mode) */}
+        {isBurgerOpen && (isMobileMode || hasOverflow) && (
           <div
-            className="absolute top-full left-4 right-4 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-4 max-h-[70vh] overflow-y-auto z-50"
+            className={`absolute top-full mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100/80 z-50 ${isMobileMode ? 'left-4 right-4 max-h-[80vh] overflow-y-auto' : 'left-4 right-4 max-h-[70vh] overflow-y-auto'}`}
             onMouseEnter={() => {
               if (burgerAutoCloseRef.current) {
                 clearTimeout(burgerAutoCloseRef.current);
@@ -528,46 +555,73 @@ export default function Header() {
               }, 1500);
             }}
           >
-            <div className="space-y-1">
-              {overflowItems.map(({ key, href }) => {
-                const active = isActive(href);
-                const isExpanded = burgerExpanded === key;
-                const subLinks = getSubLinks(key);
+            <div className={`${isMobileMode ? 'p-4' : 'p-4'}`}>
+              <div className="space-y-1">
+                {(isMobileMode ? ALL_MENU_ITEMS : overflowItems).map(({ key, href }) => {
+                  const active = isActive(href);
+                  const isExpanded = burgerExpanded === key;
+                  const subLinks = getSubLinks(key);
 
-                return (
-                  <div key={key}>
-                    <div className="flex items-center">
-                      <Link
-                        href={`/${locale}${href}`}
-                        className={`flex-1 flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${active ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
-                        onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
-                      >
-                        {t(`nav.${key}`)}
-                      </Link>
-                      <button
-                        onClick={() => setBurgerExpanded(isExpanded ? null : key)}
-                        className="p-2 text-gray-400 hover:text-[#173A63] transition-colors"
-                      >
-                        <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-                      </button>
-                    </div>
-                    {isExpanded && (
-                      <div className="pl-4 pb-2 space-y-0.5">
-                        {subLinks.map((l, i) => (
-                          <Link
-                            key={i}
-                            href={`/${locale}${l.href}`}
-                            className="block px-4 py-2 text-sm text-gray-600 hover:text-[#008FD5] rounded-lg hover:bg-gray-50"
-                            onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
-                          >
-                            {l.name}
-                          </Link>
-                        ))}
+                  return (
+                    <div key={key}>
+                      <div className="flex items-center">
+                        <Link
+                          href={`/${locale}${href}`}
+                          className={`flex-1 flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-colors min-h-[48px] ${active ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
+                          onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
+                        >
+                          {t(`nav.${key}`)}
+                        </Link>
+                        <button
+                          onClick={() => {
+                            setBurgerExpanded(isExpanded ? null : key);
+                            // Reset timer on submenu toggle
+                            if (burgerAutoCloseRef.current) {
+                              clearTimeout(burgerAutoCloseRef.current);
+                            }
+                            burgerAutoCloseRef.current = setTimeout(() => {
+                              setIsBurgerOpen(false);
+                              setBurgerExpanded(null);
+                            }, 1500);
+                          }}
+                          className="p-2 text-gray-400 hover:text-[#173A63] transition-colors"
+                        >
+                          <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                        </button>
                       </div>
-                    )}
-                  </div>
-                );
-              })}
+                      {isExpanded && (
+                        <div className="pl-4 pb-2 space-y-0.5">
+                          {subLinks.map((l, i) => (
+                            <Link
+                              key={i}
+                              href={`/${locale}${l.href}`}
+                              className="block px-4 py-2.5 text-sm text-gray-600 hover:text-[#008FD5] rounded-lg hover:bg-gray-50 min-h-[44px] flex items-center"
+                              onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
+                            >
+                              {l.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* WhatsApp button at bottom in mobile mode */}
+              {isMobileMode && (
+                <div className="mt-4 pt-3 border-t border-gray-100">
+                  <a
+                    href="https://wa.me/8613800138000"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-[#21C96B] text-white text-sm font-semibold rounded-xl hover:bg-[#1DB95E] transition-colors"
+                  >
+                    <MessageCircle className="w-5 h-5" />
+                    WhatsApp
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         )}
