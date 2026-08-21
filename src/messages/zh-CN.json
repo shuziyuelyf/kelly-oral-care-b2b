@@ -651,7 +651,7 @@
     "related_products": "相关产品",
     "channel_links": "购买渠道",
     "shop_name": "店铺名称",
-    "allCategories": "全部分类",
+    "allCategories": "全部产品",
     "backToList": "返回列表",
     "breadcrumb.home": "首页",
     "breadcrumb.products": "产品中心",
@@ -681,7 +681,14 @@
     "recommended": "Recommended",
     "whatsapp": "Chat on WhatsApp",
     "buy_on_store": "Buy on Store",
-    "units": "units"
+    "units": "units",
+    "sort": {
+      "default": "默认排序",
+      "priceAsc": "价格从低到高",
+      "priceDesc": "价格从高到低",
+      "sales": "销量优先"
+    },
+    "viewDetails": "查看详情"
   },
   "faq": {
     "title": "FAQ",

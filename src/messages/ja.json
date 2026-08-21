@@ -609,7 +609,7 @@
   "product": {
     "title": "製品一覧",
     "search_placeholder": "製品を検索...",
-    "categories": "カテゴリ",
+    "categories": "カテゴリー",
     "all_categories": "全カテゴリ",
     "sort_by": "並び替え",
     "sort_newest": "新着順",
@@ -633,16 +633,16 @@
     "related_products": "関連製品",
     "channel_links": "購入チャネル",
     "shop_name": "ショップ名",
-    "allCategories": "全カテゴリ",
+    "allCategories": "すべて",
     "backToList": "一覧に戻る",
     "breadcrumb.home": "ホーム",
     "breadcrumb.products": "製品",
     "hot": "人気",
     "inStock": "在庫あり",
     "inquiry": "お問い合わせ",
-    "itemsFound": "件",
+    "itemsFound": "製品",
     "lowStock": "在庫わずか",
-    "model": "型番",
+    "model": "コード",
     "new": "新着",
     "notFound": "製品が見つかりません",
     "onlineStores": "オンラインストア",
@@ -663,7 +663,14 @@
     "recommended": "Recommended",
     "whatsapp": "Chat on WhatsApp",
     "buy_on_store": "Buy on Store",
-    "units": "units"
+    "units": "units",
+    "sort": {
+      "default": "デフォルト",
+      "priceAsc": "価格：低い順",
+      "priceDesc": "価格：高い順",
+      "sales": "人気順"
+    },
+    "viewDetails": "詳細を見る"
   },
   "faq": {
     "title": "FAQ",

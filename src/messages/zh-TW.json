@@ -633,7 +633,7 @@
     "related_products": "相關產品",
     "channel_links": "購買管道",
     "shop_name": "店鋪名稱",
-    "allCategories": "全部分類",
+    "allCategories": "全部產品",
     "backToList": "返回列表",
     "breadcrumb.home": "首頁",
     "breadcrumb.products": "產品中心",
@@ -649,7 +649,7 @@
     "outOfStock": "缺貨",
     "requestQuote": "詢價",
     "sales": "銷量",
-    "searchPlaceholder": "搜尋產品...",
+    "searchPlaceholder": "搜索產品...",
     "selectSku": "選擇規格",
     "sort.default": "預設",
     "sort.priceAsc": "價格從低到高",
@@ -663,7 +663,14 @@
     "recommended": "Recommended",
     "whatsapp": "Chat on WhatsApp",
     "buy_on_store": "Buy on Store",
-    "units": "units"
+    "units": "units",
+    "sort": {
+      "default": "默认排序",
+      "priceAsc": "價格從低到高",
+      "priceDesc": "價格從高到低",
+      "sales": "銷量優先"
+    },
+    "viewDetails": "查看詳情"
   },
   "faq": {
     "title": "FAQ",

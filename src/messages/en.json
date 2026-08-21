@@ -611,7 +611,19 @@
     "whatsapp": "Chat on WhatsApp",
     "buy_on_store": "Buy on Store",
     "request_quote": "Request Quote",
-    "units": "units"
+    "units": "units",
+    "searchPlaceholder": "Search products...",
+    "sort": {
+      "default": "Default",
+      "priceAsc": "Price: Low to High",
+      "priceDesc": "Price: High to Low",
+      "sales": "Best Selling"
+    },
+    "categories": "Categories",
+    "allCategories": "All Categories",
+    "itemsFound": "products",
+    "model": "Code",
+    "viewDetails": "View Details"
   },
   "faq": {
     "title": "FAQ",

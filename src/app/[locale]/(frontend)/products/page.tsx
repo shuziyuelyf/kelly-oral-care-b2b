@@ -6,6 +6,7 @@ import { Search, Grid3X3, List } from 'lucide-react';
 import { mockProducts, mockCategories } from '@/lib/mock/data';
 import { getI18nValue } from '@/lib/utils-i18n';
 import Link from 'next/link';
+import { trackEvent } from '@/lib/analytics';
 
 export default function ProductsPage() {
   const locale = useLocale();
@@ -38,7 +39,7 @@ export default function ProductsPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <h1 className="text-2xl font-bold text-[#173A63]">{t('title')}</h1>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
             <div className="relative flex-1 sm:w-64">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
@@ -46,7 +47,7 @@ export default function ProductsPage() {
                 className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#008FD5]/20 focus:border-[#008FD5]" />
             </div>
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-              className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none">
+              className="w-full sm:w-48 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none">
               <option value="default">{t('sort.default')}</option>
               <option value="priceAsc">{t('sort.priceAsc')}</option>
               <option value="priceDesc">{t('sort.priceDesc')}</option>
@@ -65,13 +66,13 @@ export default function ProductsPage() {
             <div className="bg-white rounded-lg p-4 sticky top-24">
               <h3 className="font-semibold text-[#173A63] mb-3">{t('categories')}</h3>
               <button onClick={() => setSelectedCategory(null)}
-                className={`w-full text-left px-3 py-2 rounded text-sm ${!selectedCategory ? 'bg-orange-50 text-[#008FD5] font-medium' : 'text-gray-600 hover:bg-gray-50'}`}>
+                className={`w-full text-left px-3 py-2 rounded text-sm ${!selectedCategory ? 'bg-[#EAF7FD] text-[#008FD5] font-medium' : 'text-gray-600 hover:bg-gray-50'}`}>
                 {t('allCategories')}
               </button>
               {mockCategories.map((cat) => (
                 <div key={cat.id}>
                   <button onClick={() => setSelectedCategory(cat.id)}
-                    className={`w-full text-left px-3 py-2 rounded text-sm mt-1 ${selectedCategory === cat.id ? 'bg-orange-50 text-[#008FD5] font-medium' : 'text-gray-600 hover:bg-gray-50'}`}>
+                    className={`w-full text-left px-3 py-2 rounded text-sm mt-1 ${selectedCategory === cat.id ? 'bg-[#EAF7FD] text-[#008FD5] font-medium' : 'text-gray-600 hover:bg-gray-50'}`}>
                     {getI18nValue(cat.i18n, lang, 'categoryName')}
                   </button>
                   {cat.children?.map((sub) => (
@@ -89,14 +90,19 @@ export default function ProductsPage() {
           <div className="flex-1">
             <p className="text-sm text-gray-500 mb-4">{filteredProducts.length} {t('itemsFound')}</p>
             {viewMode === 'grid' ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProducts.map((product) => {
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 xl:gap-6">
+                {filteredProducts.map((product, index) => {
                   const name = getI18nValue(product.i18n, lang, 'name');
+                  const category = getI18nValue(mockCategories.find(c => c.id === product.categoryId)?.i18n || [], lang, 'categoryName');
                   return (
                     <div key={product.id} className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300">
-                      <Link href={`/${locale}/products/${product.id}`}>
-                        <div className="aspect-[4/3] bg-gray-50 overflow-hidden relative">
-                          <img src={product.mainImage || undefined} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                      <Link href={`/${locale}/products/${product.id}`}
+                        onClick={() => trackEvent('product_view', { product_id: String(product.id), category })}>
+                        <div className="aspect-square bg-[#F3F5F7] overflow-hidden relative">
+                          <img src={product.mainImage || undefined} alt={name}
+                            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                            loading={index < 4 ? 'eager' : 'lazy'}
+                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw" />
                           <div className="absolute top-2 left-2 flex gap-1">
                             {product.isHot && <span className="px-2 py-0.5 bg-[#008FD5] text-white text-xs rounded-full font-medium">{t('hot')}</span>}
                             {product.isNew && <span className="px-2 py-0.5 bg-[#21C96B] text-white text-xs rounded-full font-medium">{t('new')}</span>}
@@ -114,9 +120,11 @@ export default function ProductsPage() {
                       </Link>
                       <div className="px-4 pb-4 flex gap-2">
                         <Link href={`/${locale}/products/${product.id}`} className="flex-1 text-center py-2 text-xs font-medium text-[#173A63] border border-[#173A63] rounded-full hover:bg-[#173A63] hover:text-white transition-colors">
-                          Details
+                          {t('viewDetails')}
                         </Link>
-                        <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="flex-1 text-center py-2 text-xs font-medium text-white bg-[#21C96B] rounded-full hover:bg-[#1db85e] transition-colors">
+                        <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer"
+                          onClick={() => trackEvent('whatsapp_click', { page: 'products', position: 'product_card' })}
+                          className="flex-1 text-center py-2 text-xs font-medium text-white bg-[#21C96B] rounded-full hover:bg-[#1db85e] transition-colors">
                           WhatsApp
                         </a>
                       </div>
@@ -130,14 +138,14 @@ export default function ProductsPage() {
                   const name = getI18nValue(product.i18n, lang, 'name');
                   return (
                     <Link key={product.id} href={`/${locale}/products/${product.id}`} className="flex bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                      <div className="w-48 h-36 bg-gray-100 flex-shrink-0 overflow-hidden">
+                      <div className="w-48 h-36 bg-[#F3F5F7] flex-shrink-0 overflow-hidden">
                         <img src={product.mainImage || undefined} alt={name} className="w-full h-full object-cover" loading="lazy" />
                       </div>
                       <div className="p-4 flex-1">
                         <h3 className="font-semibold text-[#173A63]">{name}</h3>
                         <p className="text-sm text-gray-500 mt-1">{getI18nValue(product.i18n, lang, 'subtitle')}</p>
                         <div className="flex items-center gap-4 mt-3">
-                          <span className="text-[#008FD5] font-medium">${product.priceMin?.toLocaleString()} - ${product.priceMax?.toLocaleString()}</span>
+                          <span className="text-sm text-gray-400">MOQ: {product.minOrderQuantity} pcs</span>
                           <span className="text-sm text-gray-400">{t('model')}: {product.productCode}</span>
                         </div>
                       </div>

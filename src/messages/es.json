@@ -633,16 +633,16 @@
     "related_products": "Productos Relacionados",
     "channel_links": "Canales de Compra",
     "shop_name": "Nombre de Tienda",
-    "allCategories": "Todas las Categorías",
+    "allCategories": "Todas",
     "backToList": "Volver",
     "breadcrumb.home": "Inicio",
     "breadcrumb.products": "Productos",
     "hot": "Popular",
     "inStock": "En Stock",
     "inquiry": "Consulta",
-    "itemsFound": "encontrados",
+    "itemsFound": "productos",
     "lowStock": "Poco Stock",
-    "model": "Modelo",
+    "model": "Código",
     "new": "Nuevo",
     "notFound": "Producto no encontrado",
     "onlineStores": "Tiendas Online",
@@ -663,7 +663,14 @@
     "recommended": "Recommended",
     "whatsapp": "Chat on WhatsApp",
     "buy_on_store": "Buy on Store",
-    "units": "units"
+    "units": "units",
+    "sort": {
+      "default": "Predeterminado",
+      "priceAsc": "Precio: Menor a Mayor",
+      "priceDesc": "Precio: Mayor a Menor",
+      "sales": "Más Vendidos"
+    },
+    "viewDetails": "Ver Detalles"
   },
   "faq": {
     "title": "FAQ",
