@@ -393,7 +393,7 @@ export default function Header() {
         <div
           ref={capsuleRef}
           className="flex items-center h-14 rounded-full px-4 transition-all duration-300 relative"
-          style={{ backgroundColor: isScrolled ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.85)', backdropFilter: 'blur(20px)', boxShadow: isScrolled ? '0 8px 32px rgba(0,0,0,0.12)' : '0 2px 12px rgba(0,0,0,0.06)' }}
+          style={{ backgroundColor: isScrolled ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.92)', backdropFilter: 'blur(20px)', boxShadow: isScrolled ? '0 8px 32px rgba(0,0,0,0.12)' : '0 2px 12px rgba(0,0,0,0.06)' }}
         >
           {/* Left zone: Visible menu items (flex:1, takes half minus logo space) */}
           {isMobileMode ? (

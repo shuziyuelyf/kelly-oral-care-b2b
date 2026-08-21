@@ -34,10 +34,7 @@ export default function HeroBanner() {
   return (
     <section className="w-full">
       {/* Banner image area */}
-      <div
-        className="relative w-full overflow-hidden"
-        style={{ aspectRatio: '16 / 9' }}
-      >
+      <div className="relative w-full overflow-hidden aspect-[16/9] md:aspect-auto md:min-h-[75vh]">
         {/* Desktop (≥768px): full-screen cover background images */}
         <div className="hidden md:block absolute inset-0">
           {slides.map((slide, i) => (
