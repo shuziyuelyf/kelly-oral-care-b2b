@@ -26,6 +26,7 @@ export default function Header() {
   const headerRef = useRef<HTMLElement>(null);
   const langMenuRef = useRef<HTMLDivElement>(null);
   const [isPanelVisible, setIsPanelVisible] = useState(false);
+  const isClickingRef = useRef(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -58,6 +59,7 @@ export default function Header() {
   }, []);
 
   const handleMenuLeave = useCallback(() => {
+    if (isClickingRef.current) return;
     closeTimeoutRef.current = setTimeout(() => {
       setIsPanelVisible(false);
       setTimeout(() => setActiveMenu(null), 200);
