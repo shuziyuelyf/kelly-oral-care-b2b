@@ -130,8 +130,23 @@ export default function Header() {
   ];
 
   // ============ MEGA MENU PANELS ============
+  const panelMouseHandlers = {
+    onMouseEnter: () => {
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+        closeTimeoutRef.current = null;
+      }
+    },
+    onMouseLeave: () => {
+      closeTimeoutRef.current = setTimeout(() => {
+        setIsPanelVisible(false);
+        setTimeout(() => setActiveMenu(null), 200);
+      }, 300);
+    },
+  };
+
   const renderProductsPanel = () => (
-    <div className="absolute left-0 right-0 top-full pt-3 px-4 z-50">
+    <div className="absolute left-0 right-0 top-full pt-3 px-4 z-50" {...panelMouseHandlers}>
       <div className={`max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl border border-gray-100/80 p-8 transition-all duration-200 ${isPanelVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
         <div className="grid grid-cols-12 gap-8">
           {/* Left: Categories */}
@@ -199,7 +214,7 @@ export default function Header() {
   );
 
   const renderCustomPanel = () => (
-    <div className="absolute left-0 right-0 top-full pt-3 px-4 z-50">
+    <div className="absolute left-0 right-0 top-full pt-3 px-4 z-50" {...panelMouseHandlers}>
       <div className={`max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl border border-gray-100/80 p-8 transition-all duration-200 ${isPanelVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
         <div className="grid grid-cols-12 gap-8">
           <div className="col-span-5">
@@ -239,7 +254,7 @@ export default function Header() {
   );
 
   const renderSimpleDropdown = (links: { name: string; href: string }[]) => (
-    <div className="absolute left-0 right-0 top-full pt-3 px-4 z-50">
+    <div className="absolute left-0 right-0 top-full pt-3 px-4 z-50" {...panelMouseHandlers}>
       <div className={`max-w-xs mx-auto bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-3 transition-all duration-200 ${isPanelVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
         <ul className="space-y-0.5">
           {links.map((link, i) => (
