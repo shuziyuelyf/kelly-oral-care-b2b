@@ -267,8 +267,8 @@ export default function Header() {
   return (
     <header ref={headerRef} className="fixed top-3 left-0 right-0 z-50">
       {/* Single Pill Capsule */}
-      <div className={`max-w-6xl mx-auto px-6 transition-all duration-300 ${isScrolled ? 'shadow-xl' : 'shadow-md'}`}>
-        <div className={`flex items-center justify-between h-14 rounded-full px-6 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-xl' : 'bg-white/85 backdrop-blur-xl'}`}>
+      <div className="max-w-6xl mx-auto px-6">
+        <div className={`flex items-center justify-between h-14 rounded-full px-6 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-xl shadow-xl' : 'bg-white/85 backdrop-blur-xl shadow-md'}`}>
           {/* Left: Menu Items */}
           <div className="flex items-center gap-1 flex-1">
             {(['products', 'custom', 'about', 'news'] as MenuKey[]).map(key => {
