@@ -14,10 +14,10 @@ export default function AdminContentPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[#1B3A5C] mb-6">{t('title')}</h1>
+      <h1 className="text-2xl font-bold text-[#173A63] mb-6">{t('title')}</h1>
       <div className="flex gap-2 mb-6">
         {(['news', 'banners', 'cases'] as const).map((t2) => (
-          <button key={t2} onClick={() => setTab(t2)} className={`px-4 py-2 rounded-lg text-sm font-medium ${tab === t2 ? 'bg-[#1B3A5C] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
+          <button key={t2} onClick={() => setTab(t2)} className={`px-4 py-2 rounded-lg text-sm font-medium ${tab === t2 ? 'bg-[#173A63] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
             {t(t2)}
           </button>
         ))}
@@ -25,7 +25,7 @@ export default function AdminContentPage() {
 
       {tab === 'news' && (
         <div className="bg-white rounded-lg shadow-sm">
-          <div className="p-4 border-b flex justify-end"><button className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#E8720C] text-white rounded text-sm"><Plus className="w-3 h-3" />{t('addNews')}</button></div>
+          <div className="p-4 border-b flex justify-end"><button className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#008FD5] text-white rounded text-sm"><Plus className="w-3 h-3" />{t('addNews')}</button></div>
           <table className="w-full text-sm">
             <thead className="bg-gray-50"><tr>
               <th className="px-4 py-3 text-left text-gray-500">ID</th>
@@ -51,13 +51,13 @@ export default function AdminContentPage() {
 
       {tab === 'banners' && (
         <div className="bg-white rounded-lg shadow-sm">
-          <div className="p-4 border-b flex justify-end"><button className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#E8720C] text-white rounded text-sm"><Plus className="w-3 h-3" />{t('addBanner')}</button></div>
+          <div className="p-4 border-b flex justify-end"><button className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#008FD5] text-white rounded text-sm"><Plus className="w-3 h-3" />{t('addBanner')}</button></div>
           <div className="divide-y">
             {mockBanners.map((b) => (
               <div key={b.id} className="flex items-center gap-4 p-4">
                 <img src={b.imageUrl} alt="" className="w-24 h-14 rounded object-cover" />
                 <div className="flex-1">
-                  <p className="font-medium text-[#1B3A5C]">{getI18nValue(b.i18n, lang, 'title')}</p>
+                  <p className="font-medium text-[#173A63]">{getI18nValue(b.i18n, lang, 'title')}</p>
                   <p className="text-xs text-gray-400">{b.linkUrl}</p>
                 </div>
                 <div className="flex gap-1"><button className="p-1 hover:bg-gray-100 rounded"><Edit className="w-4 h-4 text-blue-500" /></button><button className="p-1 hover:bg-gray-100 rounded"><Trash2 className="w-4 h-4 text-red-400" /></button></div>
@@ -69,7 +69,7 @@ export default function AdminContentPage() {
 
       {tab === 'cases' && (
         <div className="bg-white rounded-lg shadow-sm">
-          <div className="p-4 border-b flex justify-end"><button className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#E8720C] text-white rounded text-sm"><Plus className="w-3 h-3" />{t('addCase')}</button></div>
+          <div className="p-4 border-b flex justify-end"><button className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#008FD5] text-white rounded text-sm"><Plus className="w-3 h-3" />{t('addCase')}</button></div>
           <table className="w-full text-sm">
             <thead className="bg-gray-50"><tr>
               <th className="px-4 py-3 text-left text-gray-500">ID</th>

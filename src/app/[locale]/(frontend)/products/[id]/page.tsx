@@ -23,7 +23,7 @@ export default function ProductDetailPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-800 mb-4">{t('notFound')}</h1>
-          <Link href={`/${locale}/products`} className="text-[#E8720C] hover:underline">{t('backToList')}</Link>
+          <Link href={`/${locale}/products`} className="text-[#008FD5] hover:underline">{t('backToList')}</Link>
         </div>
       </div>
     );
@@ -67,9 +67,9 @@ export default function ProductDetailPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-gray-500 mb-8">
-          <Link href={`/${locale}`} className="hover:text-[#E8720C]">{t('breadcrumb.home')}</Link>
+          <Link href={`/${locale}`} className="hover:text-[#008FD5]">{t('breadcrumb.home')}</Link>
           <span>/</span>
-          <Link href={`/${locale}/products`} className="hover:text-[#E8720C]">{t('breadcrumb.products')}</Link>
+          <Link href={`/${locale}/products`} className="hover:text-[#008FD5]">{t('breadcrumb.products')}</Link>
           <span>/</span>
           <span className="text-gray-800">{name}</span>
         </nav>
@@ -87,7 +87,7 @@ export default function ProductDetailPage() {
             {images.length > 1 && (
               <div className="flex gap-2">
                 {images.map((img, i) => (
-                  <button key={img.id} onClick={() => setCurrentImage(i)} className={`w-16 h-16 rounded-lg overflow-hidden border-2 ${i === currentImage ? 'border-[#E8720C]' : 'border-transparent'}`}>
+                  <button key={img.id} onClick={() => setCurrentImage(i)} className={`w-16 h-16 rounded-lg overflow-hidden border-2 ${i === currentImage ? 'border-[#008FD5]' : 'border-transparent'}`}>
                     <img src={img.imageUrl} alt="" className="w-full h-full object-cover" />
                   </button>
                 ))}
@@ -97,7 +97,7 @@ export default function ProductDetailPage() {
 
           {/* Product Info */}
           <div>
-            <h1 className="text-2xl font-bold text-[#1B3A5C]">{name}</h1>
+            <h1 className="text-2xl font-bold text-[#173A63]">{name}</h1>
             {subtitle && <p className="text-gray-500 mt-2">{subtitle}</p>}
             <div className="mt-2 text-sm text-gray-400">{t('model')}: {product.productCode}</div>
 
@@ -132,7 +132,7 @@ export default function ProductDetailPage() {
                       key={sku.id}
                       onClick={() => setSelectedSku(sku.id === selectedSku ? null : sku.id)}
                       className={`px-4 py-2 rounded-lg text-sm border transition-colors ${
-                        selectedSku === sku.id ? 'border-[#E8720C] bg-orange-50 text-[#E8720C]' : 'border-gray-200 hover:border-gray-300'
+                        selectedSku === sku.id ? 'border-[#008FD5] bg-orange-50 text-[#008FD5]' : 'border-gray-200 hover:border-gray-300'
                       }`}
                     >
                       {sku.skuCode} - ${sku.price?.toLocaleString()}
@@ -177,7 +177,7 @@ export default function ProductDetailPage() {
             {/* Inquiry Button */}
             <div className="mt-6 flex gap-3">
               <Link href={`/${locale}/contact?type=inquiry&productId=${product.id}`}
-                className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#E8720C] text-white font-medium rounded-lg hover:bg-[#d4680b] transition-colors">
+                className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#008FD5] text-white font-medium rounded-lg hover:bg-[#d4680b] transition-colors">
                 <FileText className="w-4 h-4" /> {t('requestQuote')}
               </Link>
             </div>
@@ -187,7 +187,7 @@ export default function ProductDetailPage() {
         {/* Specs Table */}
         {specs.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-xl font-bold text-[#1B3A5C] mb-4">{t('specifications')}</h2>
+            <h2 className="text-xl font-bold text-[#173A63] mb-4">{t('specifications')}</h2>
             <div className="border rounded-lg overflow-hidden">
               <table className="w-full">
                 <tbody>
@@ -206,7 +206,7 @@ export default function ProductDetailPage() {
         {/* Description */}
         {description && (
           <div className="mt-8">
-            <h2 className="text-xl font-bold text-[#1B3A5C] mb-4">{t('description')}</h2>
+            <h2 className="text-xl font-bold text-[#173A63] mb-4">{t('description')}</h2>
             <div className="prose max-w-none text-gray-600" dangerouslySetInnerHTML={{ __html: description }} />
           </div>
         )}

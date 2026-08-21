@@ -36,7 +36,7 @@ function AnimatedNumber({ value, suffix = '' }: { value: number; suffix?: string
   }, [value]);
 
   return (
-    <div ref={ref} className="text-4xl md:text-5xl font-bold text-[#1B2A4A]">
+    <div ref={ref} className="text-4xl md:text-5xl font-bold text-[#173A63]">
       {count.toLocaleString()}{suffix}
     </div>
   );
@@ -53,7 +53,7 @@ export default function StatsCounter() {
   ];
 
   return (
-    <section className="py-20 bg-[#F5F5F0]">
+    <section className="py-20 bg-[#F7F4EF]">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, i) => (

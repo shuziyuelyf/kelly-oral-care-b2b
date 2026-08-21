@@ -72,7 +72,7 @@ src/
 
 ## Design System
 - Primary: #1B3A5C (Corporate Navy)
-- Accent: #E8720C (Industrial Orange)
+- Accent: #008FD5 (Industrial Orange)
 - RTL support for Arabic (dir="rtl")
 - Responsive: mobile-first design
 

@@ -18,17 +18,17 @@ export default function FAQSection() {
   ];
 
   return (
-    <section className="py-20 bg-[#F5F5F0]">
+    <section className="py-20 bg-[#F7F4EF]">
       <div className="max-w-3xl mx-auto px-6">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1B2A4A] mb-3">{t('faqTitle')}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-3">{t('faqTitle')}</h2>
           <p className="text-[#718096]">{t('faqDesc')}</p>
         </div>
         <div className="space-y-4">
           {faqs.map((faq, i) => (
             <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm">
               <button onClick={() => setOpenIndex(openIndex === i ? null : i)} className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors">
-                <span className="font-semibold text-[#1B2A4A] pr-4">{faq.q}</span>
+                <span className="font-semibold text-[#173A63] pr-4">{faq.q}</span>
                 <ChevronDown className={`w-5 h-5 text-[#718096] flex-shrink-0 transition-transform ${openIndex === i ? 'rotate-180' : ''}`} />
               </button>
               {openIndex === i && (

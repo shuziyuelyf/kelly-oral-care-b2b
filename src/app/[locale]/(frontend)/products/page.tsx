@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { Search, SlidersHorizontal, Grid3X3, List } from 'lucide-react';
+import { Search, Grid3X3, List } from 'lucide-react';
 import { mockProducts, mockCategories } from '@/lib/mock/data';
 import { getI18nValue } from '@/lib/utils-i18n';
 import Link from 'next/link';
@@ -37,13 +37,13 @@ export default function ProductsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <h1 className="text-2xl font-bold text-[#1B3A5C]">{t('title')}</h1>
+          <h1 className="text-2xl font-bold text-[#173A63]">{t('title')}</h1>
           <div className="flex items-center gap-3">
             <div className="relative flex-1 sm:w-64">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
                 placeholder={t('searchPlaceholder')}
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20 focus:border-[#E8720C]" />
+                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#008FD5]/20 focus:border-[#008FD5]" />
             </div>
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
               className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none">
@@ -53,8 +53,8 @@ export default function ProductsPage() {
               <option value="sales">{t('sort.sales')}</option>
             </select>
             <div className="hidden sm:flex gap-1">
-              <button onClick={() => setViewMode('grid')} className={`p-2 rounded ${viewMode === 'grid' ? 'bg-[#1B3A5C] text-white' : 'bg-gray-100 text-gray-500'}`}><Grid3X3 className="w-4 h-4" /></button>
-              <button onClick={() => setViewMode('list')} className={`p-2 rounded ${viewMode === 'list' ? 'bg-[#1B3A5C] text-white' : 'bg-gray-100 text-gray-500'}`}><List className="w-4 h-4" /></button>
+              <button onClick={() => setViewMode('grid')} className={`p-2 rounded ${viewMode === 'grid' ? 'bg-[#173A63] text-white' : 'bg-gray-100 text-gray-500'}`}><Grid3X3 className="w-4 h-4" /></button>
+              <button onClick={() => setViewMode('list')} className={`p-2 rounded ${viewMode === 'list' ? 'bg-[#173A63] text-white' : 'bg-gray-100 text-gray-500'}`}><List className="w-4 h-4" /></button>
             </div>
           </div>
         </div>
@@ -63,20 +63,20 @@ export default function ProductsPage() {
           {/* Category Sidebar */}
           <aside className="hidden lg:block w-56 flex-shrink-0">
             <div className="bg-white rounded-lg p-4 sticky top-24">
-              <h3 className="font-semibold text-[#1B3A5C] mb-3">{t('categories')}</h3>
+              <h3 className="font-semibold text-[#173A63] mb-3">{t('categories')}</h3>
               <button onClick={() => setSelectedCategory(null)}
-                className={`w-full text-left px-3 py-2 rounded text-sm ${!selectedCategory ? 'bg-orange-50 text-[#E8720C] font-medium' : 'text-gray-600 hover:bg-gray-50'}`}>
+                className={`w-full text-left px-3 py-2 rounded text-sm ${!selectedCategory ? 'bg-orange-50 text-[#008FD5] font-medium' : 'text-gray-600 hover:bg-gray-50'}`}>
                 {t('allCategories')}
               </button>
               {mockCategories.map((cat) => (
                 <div key={cat.id}>
                   <button onClick={() => setSelectedCategory(cat.id)}
-                    className={`w-full text-left px-3 py-2 rounded text-sm mt-1 ${selectedCategory === cat.id ? 'bg-orange-50 text-[#E8720C] font-medium' : 'text-gray-600 hover:bg-gray-50'}`}>
+                    className={`w-full text-left px-3 py-2 rounded text-sm mt-1 ${selectedCategory === cat.id ? 'bg-orange-50 text-[#008FD5] font-medium' : 'text-gray-600 hover:bg-gray-50'}`}>
                     {getI18nValue(cat.i18n, lang, 'categoryName')}
                   </button>
                   {cat.children?.map((sub) => (
                     <button key={sub.id} onClick={() => setSelectedCategory(sub.id)}
-                      className={`w-full text-left pl-6 pr-3 py-1.5 rounded text-sm ${selectedCategory === sub.id ? 'text-[#E8720C] font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
+                      className={`w-full text-left pl-6 pr-3 py-1.5 rounded text-sm ${selectedCategory === sub.id ? 'text-[#008FD5] font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
                       {getI18nValue(sub.i18n, lang, 'categoryName')}
                     </button>
                   ))}
@@ -93,21 +93,34 @@ export default function ProductsPage() {
                 {filteredProducts.map((product) => {
                   const name = getI18nValue(product.i18n, lang, 'name');
                   return (
-                    <Link key={product.id} href={`/${locale}/products/${product.id}`} className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                      <div className="aspect-[4/3] bg-gray-100 overflow-hidden relative">
-                        <img src={product.mainImage || undefined} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
-                        {product.isHot && <span className="absolute top-2 left-2 px-2 py-0.5 bg-red-500 text-white text-xs rounded">{t('hot')}</span>}
-                        {product.isNew && <span className="absolute top-2 right-2 px-2 py-0.5 bg-green-500 text-white text-xs rounded">{t('new')}</span>}
-                      </div>
-                      <div className="p-4">
-                        <h3 className="font-semibold text-[#1B3A5C] group-hover:text-[#E8720C] transition-colors line-clamp-1">{name}</h3>
-                        <p className="text-sm text-gray-500 mt-1 line-clamp-1">{getI18nValue(product.i18n, lang, 'subtitle')}</p>
-                        <div className="flex items-center justify-between mt-3">
-                          <span className="text-[#E8720C] font-medium">${product.priceMin?.toLocaleString()}</span>
-                          <span className="text-xs text-gray-400">MOQ: {product.minOrderQuantity}</span>
+                    <div key={product.id} className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300">
+                      <Link href={`/${locale}/products/${product.id}`}>
+                        <div className="aspect-[4/3] bg-gray-50 overflow-hidden relative">
+                          <img src={product.mainImage || undefined} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                          <div className="absolute top-2 left-2 flex gap-1">
+                            {product.isHot && <span className="px-2 py-0.5 bg-[#008FD5] text-white text-xs rounded-full font-medium">{t('hot')}</span>}
+                            {product.isNew && <span className="px-2 py-0.5 bg-[#21C96B] text-white text-xs rounded-full font-medium">{t('new')}</span>}
+                          </div>
+                          {product.totalStock > 0 && <span className="absolute top-2 right-2 px-2 py-0.5 bg-[#EAF7FD] text-[#008FD5] text-xs rounded-full font-medium">In Stock</span>}
                         </div>
+                        <div className="p-4">
+                          <h3 className="font-semibold text-[#173A63] group-hover:text-[#008FD5] transition-colors line-clamp-1">{name}</h3>
+                          <p className="text-sm text-gray-500 mt-1 line-clamp-1">{getI18nValue(product.i18n, lang, 'subtitle')}</p>
+                          <div className="flex items-center gap-2 mt-3">
+                            <span className="text-xs text-gray-400">MOQ: {product.minOrderQuantity} pcs</span>
+                            <span className="text-xs text-[#21C96B] font-medium">Sample Available</span>
+                          </div>
+                        </div>
+                      </Link>
+                      <div className="px-4 pb-4 flex gap-2">
+                        <Link href={`/${locale}/products/${product.id}`} className="flex-1 text-center py-2 text-xs font-medium text-[#173A63] border border-[#173A63] rounded-full hover:bg-[#173A63] hover:text-white transition-colors">
+                          Details
+                        </Link>
+                        <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="flex-1 text-center py-2 text-xs font-medium text-white bg-[#21C96B] rounded-full hover:bg-[#1db85e] transition-colors">
+                          WhatsApp
+                        </a>
                       </div>
-                    </Link>
+                    </div>
                   );
                 })}
               </div>
@@ -121,10 +134,10 @@ export default function ProductsPage() {
                         <img src={product.mainImage || undefined} alt={name} className="w-full h-full object-cover" loading="lazy" />
                       </div>
                       <div className="p-4 flex-1">
-                        <h3 className="font-semibold text-[#1B3A5C]">{name}</h3>
+                        <h3 className="font-semibold text-[#173A63]">{name}</h3>
                         <p className="text-sm text-gray-500 mt-1">{getI18nValue(product.i18n, lang, 'subtitle')}</p>
                         <div className="flex items-center gap-4 mt-3">
-                          <span className="text-[#E8720C] font-medium">${product.priceMin?.toLocaleString()} - ${product.priceMax?.toLocaleString()}</span>
+                          <span className="text-[#008FD5] font-medium">${product.priceMin?.toLocaleString()} - ${product.priceMax?.toLocaleString()}</span>
                           <span className="text-sm text-gray-400">{t('model')}: {product.productCode}</span>
                         </div>
                       </div>
@@ -133,6 +146,24 @@ export default function ProductsPage() {
                 })}
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Cross-guidance to Private Label & OEM/ODM */}
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-[#EAF7FD] rounded-3xl p-8">
+            <h3 className="text-xl font-bold text-[#173A63] mb-2">Want to add your brand?</h3>
+            <p className="text-gray-500 text-sm mb-4">Choose from 50+ proven formulas and launch your own oral care brand.</p>
+            <Link href="/private-label" className="inline-flex items-center gap-2 text-[#008FD5] font-semibold hover:gap-3 transition-all">
+              Explore Private Label →
+            </Link>
+          </div>
+          <div className="bg-[#F7F4EF] rounded-3xl p-8">
+            <h3 className="text-xl font-bold text-[#173A63] mb-2">Need a fully custom product?</h3>
+            <p className="text-gray-500 text-sm mb-4">From formula development to finished packaging — we handle everything.</p>
+            <Link href="/custom" className="inline-flex items-center gap-2 text-[#173A63] font-semibold hover:gap-3 transition-all">
+              Explore OEM/ODM →
+            </Link>
           </div>
         </div>
       </div>

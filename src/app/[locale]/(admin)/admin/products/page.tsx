@@ -20,8 +20,8 @@ export default function AdminProductsPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-[#1B3A5C]">{t('title')}</h1>
-        <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#E8720C] text-white rounded-lg hover:bg-[#d4680b] text-sm font-medium">
+        <h1 className="text-2xl font-bold text-[#173A63]">{t('title')}</h1>
+        <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#008FD5] text-white rounded-lg hover:bg-[#d4680b] text-sm font-medium">
           <Plus className="w-4 h-4" /> {t('addProduct')}
         </button>
       </div>
@@ -31,7 +31,7 @@ export default function AdminProductsPage() {
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('searchPlaceholder')}
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E8720C]/20" />
+              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#008FD5]/20" />
           </div>
         </div>
         <div className="overflow-x-auto">
@@ -51,7 +51,7 @@ export default function AdminProductsPage() {
                 <tr key={p.id} className="border-t hover:bg-gray-50">
                   <td className="px-4 py-3">{p.id}</td>
                   <td className="px-4 py-3"><img src={p.mainImage || undefined} alt="" className="w-10 h-10 rounded object-cover" /></td>
-                  <td className="px-4 py-3 font-medium text-[#1B3A5C]">{getI18nValue(p.i18n, lang, 'name')}</td>
+                  <td className="px-4 py-3 font-medium text-[#173A63]">{getI18nValue(p.i18n, lang, 'name')}</td>
                   <td className="px-4 py-3 text-gray-500">{p.productCode}</td>
                   <td className="px-4 py-3">${p.priceMin?.toLocaleString()} - ${p.priceMax?.toLocaleString()}</td>
                   <td className="px-4 py-3">{p.totalStock}</td>

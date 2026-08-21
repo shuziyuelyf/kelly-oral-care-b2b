@@ -19,11 +19,11 @@ export default function AdminCustomersPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[#1B3A5C] mb-6">{t('title')}</h1>
+      <h1 className="text-2xl font-bold text-[#173A63] mb-6">{t('title')}</h1>
       <div className="flex gap-2 mb-4">
-        <button onClick={() => setFilter(null)} className={`px-3 py-1.5 rounded text-sm ${filter === null ? 'bg-[#1B3A5C] text-white' : 'bg-gray-100 text-gray-600'}`}>{t('all')}</button>
+        <button onClick={() => setFilter(null)} className={`px-3 py-1.5 rounded text-sm ${filter === null ? 'bg-[#173A63] text-white' : 'bg-gray-100 text-gray-600'}`}>{t('all')}</button>
         {[0, 1, 2].map((s) => (
-          <button key={s} onClick={() => setFilter(s)} className={`px-3 py-1.5 rounded text-sm ${filter === s ? 'bg-[#1B3A5C] text-white' : 'bg-gray-100 text-gray-600'}`}>{auditMap[s].label}</button>
+          <button key={s} onClick={() => setFilter(s)} className={`px-3 py-1.5 rounded text-sm ${filter === s ? 'bg-[#173A63] text-white' : 'bg-gray-100 text-gray-600'}`}>{auditMap[s].label}</button>
         ))}
       </div>
       <div className="bg-white rounded-lg shadow-sm overflow-x-auto">
@@ -39,7 +39,7 @@ export default function AdminCustomersPage() {
           <tbody>
             {filtered.map((c) => (
               <tr key={c.id} className="border-t hover:bg-gray-50">
-                <td className="px-4 py-3 font-medium text-[#1B3A5C]">{c.companyName}</td>
+                <td className="px-4 py-3 font-medium text-[#173A63]">{c.companyName}</td>
                 <td className="px-4 py-3 text-gray-500">{c.creditCode}</td>
                 <td className="px-4 py-3">{c.contactPerson}<br /><span className="text-xs text-gray-400">{c.contactEmail}</span></td>
                 <td className="px-4 py-3">{c.industry}</td>

@@ -28,7 +28,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar - Desktop */}
-      <aside className="hidden w-64 flex-shrink-0 flex-col bg-[#1B3A5C] lg:flex">
+      <aside className="hidden w-64 flex-shrink-0 flex-col bg-[#173A63] lg:flex">
         {/* Logo */}
         <div className="flex h-16 items-center gap-2 border-b border-white/10 px-6">
           <div className="flex h-8 w-8 items-center justify-center rounded bg-white/10">
@@ -65,7 +65,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-black/50" onClick={() => setSidebarOpen(false)} />
-          <aside className="absolute left-0 top-0 h-full w-64 bg-[#1B3A5C]">
+          <aside className="absolute left-0 top-0 h-full w-64 bg-[#173A63]">
             <div className="flex h-16 items-center justify-between border-b border-white/10 px-6">
               <span className="text-lg font-bold text-white">Admin</span>
               <button onClick={() => setSidebarOpen(false)} className="text-white/70 hover:text-white"><X className="h-5 w-5" /></button>
@@ -105,7 +105,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-3 w-3 -translate-y-1/2 text-gray-400" />
             </div>
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-[#1B3A5C] flex items-center justify-center">
+              <div className="h-8 w-8 rounded-full bg-[#173A63] flex items-center justify-center">
                 <span className="text-xs font-medium text-white">A</span>
               </div>
               <span className="hidden text-sm font-medium text-gray-700 sm:inline">Admin</span>

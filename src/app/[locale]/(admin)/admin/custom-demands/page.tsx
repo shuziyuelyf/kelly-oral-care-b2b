@@ -16,7 +16,7 @@ export default function AdminCustomDemandsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[#1B3A5C] mb-6">{t('title')}</h1>
+      <h1 className="text-2xl font-bold text-[#173A63] mb-6">{t('title')}</h1>
       <div className="bg-white rounded-lg shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="bg-gray-50"><tr>
@@ -32,7 +32,7 @@ export default function AdminCustomDemandsPage() {
           <tbody>
             {mockCustomDemands.map((d) => (
               <tr key={d.id} className="border-t hover:bg-gray-50">
-                <td className="px-4 py-3 font-medium text-[#1B3A5C]">{d.demandNo}</td>
+                <td className="px-4 py-3 font-medium text-[#173A63]">{d.demandNo}</td>
                 <td className="px-4 py-3">{d.companyName}</td>
                 <td className="px-4 py-3">{d.productType}</td>
                 <td className="px-4 py-3">{d.material}</td>

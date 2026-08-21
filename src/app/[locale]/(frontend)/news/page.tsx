@@ -18,17 +18,17 @@ export default function NewsPage() {
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-bold text-[#1B3A5C] mb-6">{t('title')}</h1>
+        <h1 className="text-2xl font-bold text-[#173A63] mb-6">{t('title')}</h1>
 
         {/* Category Tabs */}
         <div className="flex gap-2 mb-8">
           <button onClick={() => setSelectedCategory(null)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${!selectedCategory ? 'bg-[#1B3A5C] text-white' : 'bg-white text-gray-600 hover:bg-gray-100'}`}>
+            className={`px-4 py-2 rounded-lg text-sm font-medium ${!selectedCategory ? 'bg-[#173A63] text-white' : 'bg-white text-gray-600 hover:bg-gray-100'}`}>
             {t('all')}
           </button>
           {mockNewsCategories.map((cat) => (
             <button key={cat.id} onClick={() => setSelectedCategory(cat.id)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium ${selectedCategory === cat.id ? 'bg-[#1B3A5C] text-white' : 'bg-white text-gray-600 hover:bg-gray-100'}`}>
+              className={`px-4 py-2 rounded-lg text-sm font-medium ${selectedCategory === cat.id ? 'bg-[#173A63] text-white' : 'bg-white text-gray-600 hover:bg-gray-100'}`}>
               {getI18nValue(cat.i18n, lang, 'categoryName')}
             </button>
           ))}
@@ -46,7 +46,7 @@ export default function NewsPage() {
                   <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{news.publishedAt}</span>
                   <span className="flex items-center gap-1"><Eye className="w-3 h-3" />{news.viewCount}</span>
                 </div>
-                <h3 className="font-semibold text-[#1B3A5C] group-hover:text-[#E8720C] transition-colors line-clamp-2">
+                <h3 className="font-semibold text-[#173A63] group-hover:text-[#008FD5] transition-colors line-clamp-2">
                   {getI18nValue(news.i18n, lang, 'title')}
                 </h3>
                 <p className="text-sm text-gray-500 mt-2 line-clamp-2">{getI18nValue(news.i18n, lang, 'summary')}</p>

@@ -31,7 +31,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-[#1B2A4A] text-white">
+    <footer className="bg-[#173A63] text-white">
       {/* CTA Band */}
       <div className="border-b border-white/10">
         <div className="max-w-6xl mx-auto px-6 py-12 text-center">
@@ -40,7 +40,7 @@ export default function Footer() {
           <div className="flex flex-wrap gap-3 justify-center">
             <Link
               href={`/${locale}/contact`}
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-[#1B2A4A] font-semibold rounded-full hover:bg-gray-100 transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-[#173A63] font-semibold rounded-full hover:bg-gray-100 transition-colors"
             >
               {t('footer.getQuote')}
             </Link>

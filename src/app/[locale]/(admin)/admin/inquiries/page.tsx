@@ -19,11 +19,11 @@ export default function AdminInquiriesPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[#1B3A5C] mb-6">{t('title')}</h1>
+      <h1 className="text-2xl font-bold text-[#173A63] mb-6">{t('title')}</h1>
       <div className="flex gap-2 mb-4">
-        <button onClick={() => setStatusFilter(null)} className={`px-3 py-1.5 rounded text-sm ${statusFilter === null ? 'bg-[#1B3A5C] text-white' : 'bg-gray-100 text-gray-600'}`}>{t('all')}</button>
+        <button onClick={() => setStatusFilter(null)} className={`px-3 py-1.5 rounded text-sm ${statusFilter === null ? 'bg-[#173A63] text-white' : 'bg-gray-100 text-gray-600'}`}>{t('all')}</button>
         {[0, 1, 2, 3].map((s) => (
-          <button key={s} onClick={() => setStatusFilter(s)} className={`px-3 py-1.5 rounded text-sm ${statusFilter === s ? 'bg-[#1B3A5C] text-white' : 'bg-gray-100 text-gray-600'}`}>{statusMap[s].label}</button>
+          <button key={s} onClick={() => setStatusFilter(s)} className={`px-3 py-1.5 rounded text-sm ${statusFilter === s ? 'bg-[#173A63] text-white' : 'bg-gray-100 text-gray-600'}`}>{statusMap[s].label}</button>
         ))}
       </div>
       <div className="bg-white rounded-lg shadow-sm overflow-x-auto">
@@ -40,7 +40,7 @@ export default function AdminInquiriesPage() {
           <tbody>
             {filtered.map((inq) => (
               <tr key={inq.id} className="border-t hover:bg-gray-50">
-                <td className="px-4 py-3 font-medium text-[#1B3A5C]">{inq.inquiryNo}</td>
+                <td className="px-4 py-3 font-medium text-[#173A63]">{inq.inquiryNo}</td>
                 <td className="px-4 py-3">{inq.companyName}</td>
                 <td className="px-4 py-3">{inq.contactPerson}<br /><span className="text-xs text-gray-400">{inq.contactEmail}</span></td>
                 <td className="px-4 py-3">{inq.itemCount}</td>

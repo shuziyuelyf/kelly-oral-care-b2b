@@ -13,10 +13,10 @@ export default function AdminI18nPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[#1B3A5C] mb-6">{t('title')}</h1>
+      <h1 className="text-2xl font-bold text-[#173A63] mb-6">{t('title')}</h1>
       <div className="bg-white rounded-lg shadow-sm">
         <div className="p-4 border-b">
-          <h3 className="font-semibold text-[#1B3A5C]">{t('productTranslations')}</h3>
+          <h3 className="font-semibold text-[#173A63]">{t('productTranslations')}</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -31,7 +31,7 @@ export default function AdminI18nPage() {
             <tbody>
               {mockProducts.map((p) => (
                 <tr key={p.id} className="border-t">
-                  <td className="px-4 py-3 font-medium text-[#1B3A5C] sticky left-0 bg-white">{p.productCode}</td>
+                  <td className="px-4 py-3 font-medium text-[#173A63] sticky left-0 bg-white">{p.productCode}</td>
                   {allLangs.map((l) => {
                     const hasTranslation = (p.i18n || []).some((i) => i.langCode === l);
                     return (

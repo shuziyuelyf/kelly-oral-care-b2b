@@ -14,14 +14,14 @@ export default function AdminChannelsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[#1B3A5C] mb-6">{t('title')}</h1>
+      <h1 className="text-2xl font-bold text-[#173A63] mb-6">{t('title')}</h1>
       <div className="space-y-4">
         {productsWithChannels.map((product) => (
           <div key={product.id} className="bg-white rounded-lg shadow-sm p-5">
             <div className="flex items-center gap-3 mb-4">
               <img src={product.mainImage || undefined} alt="" className="w-12 h-12 rounded object-cover" />
               <div>
-                <h3 className="font-semibold text-[#1B3A5C]">{getI18nValue(product.i18n, lang, 'name')}</h3>
+                <h3 className="font-semibold text-[#173A63]">{getI18nValue(product.i18n, lang, 'name')}</h3>
                 <p className="text-sm text-gray-500">{product.productCode}</p>
               </div>
             </div>

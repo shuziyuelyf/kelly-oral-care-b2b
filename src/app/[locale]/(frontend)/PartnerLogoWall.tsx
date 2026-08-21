@@ -10,7 +10,7 @@ export default function PartnerLogoWall() {
     <section className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1B2A4A] mb-3">{t('partnersTitle')}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-3">{t('partnersTitle')}</h2>
           <p className="text-[#718096]">{t('partnersDesc')}</p>
         </div>
         <div className="overflow-hidden relative">
