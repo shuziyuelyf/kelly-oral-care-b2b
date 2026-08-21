@@ -526,7 +526,7 @@ export default function Header() {
                     burgerAutoCloseRef.current = setTimeout(() => {
                       setIsBurgerOpen(false);
                       setBurgerExpanded(null);
-                    }, 1500);
+                    }, 4500);
                   }
                 }}
                 aria-label="Toggle menu"
@@ -554,7 +554,7 @@ export default function Header() {
               burgerAutoCloseRef.current = setTimeout(() => {
                 setIsBurgerOpen(false);
                 setBurgerExpanded(null);
-              }, 1500);
+              }, 4500);
             }}
           >
             <div className={`${isMobileMode ? 'p-4' : 'p-4'}`}>
@@ -584,7 +584,7 @@ export default function Header() {
                             burgerAutoCloseRef.current = setTimeout(() => {
                               setIsBurgerOpen(false);
                               setBurgerExpanded(null);
-                            }, 1500);
+                            }, 4500);
                           }}
                           className="p-2 text-gray-400 hover:text-[#173A63] transition-colors"
                         >
