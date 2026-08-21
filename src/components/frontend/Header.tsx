@@ -388,12 +388,15 @@ export default function Header() {
   const isMobileMode = visibleCount === 0; // All items collapsed
 
   return (
-    <header ref={headerRef} className="fixed top-3 left-0 right-0 z-50">
+    <header ref={headerRef} className="relative md:fixed md:top-3 md:left-0 md:right-0 md:z-50">
       <div className="mx-auto w-[94%] max-w-[1680px] px-6">
         <div
           ref={capsuleRef}
-          className="flex items-center h-14 rounded-full px-4 transition-all duration-300 relative"
-          style={{ backgroundColor: isScrolled ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.92)', backdropFilter: 'blur(20px)', boxShadow: isScrolled ? '0 8px 32px rgba(0,0,0,0.12)' : '0 2px 12px rgba(0,0,0,0.06)' }}
+          className="flex items-center h-14 rounded-full px-4 transition-all duration-300 relative bg-white md:bg-white/90 md:backdrop-blur-xl"
+          style={{
+            backgroundColor: isScrolled ? 'rgba(255,255,255,0.95)' : undefined,
+            boxShadow: isScrolled ? '0 8px 32px rgba(0,0,0,0.12)' : '0 2px 12px rgba(0,0,0,0.06)'
+          }}
         >
           {/* Left zone: Visible menu items (flex:1, takes half minus logo space) */}
           {isMobileMode ? (
