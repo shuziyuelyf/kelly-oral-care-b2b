@@ -1,12 +1,12 @@
 import Link from 'next/link';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import { mockCompanyInfo } from '@/lib/mock/other';
 import { getI18nValue } from '@/lib/utils-i18n';
 
-export default function Footer() {
+export default function Footer({ locale }: { locale: string }) {
   const t = useTranslations('common');
-  const locale = useLocale();
+  // locale is now passed as prop
   const lang = locale;
   const company = mockCompanyInfo;
   const companyName = getI18nValue(company.i18n, lang, 'companyName');

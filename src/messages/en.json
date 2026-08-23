@@ -277,18 +277,20 @@
     "working_hours": "Working Hours",
     "working_hours_value": "Mon-Fri: 9:00-18:00 (GMT+8)",
     "message_title": "Send Message",
-    "form_name": "Your Name",
-    "form_email": "Email Address",
-    "form_company": "Company Name",
-    "form_subject": "Subject",
-    "form_message": "Message",
-    "form_submit": "Send Message",
-    "form_success": "Message sent successfully!",
     "businessHours": "Business Hours",
     "contactInfo": "Contact Information",
     "messageForm": "Leave a Message",
     "submitSuccess": "Message Sent",
-    "submitSuccessDesc": "We'll get back to you soon"
+    "submitSuccessDesc": "We'll get back to you soon",
+    "form": {
+      "name": "Your Name",
+      "email": "Email Address",
+      "company": "Company Name",
+      "subject": "Subject",
+      "message": "Message",
+      "submit": "Send Message",
+      "success": "Message sent successfully!"
+    }
   },
   "auth": {
     "login_title": "Customer Login",
@@ -562,15 +564,6 @@
       "step6_desc": "Arrange shipping per your requirements"
     },
     "cases_title": "Case Studies",
-    "form_title": "Submit Custom Request",
-    "form_material": "Material",
-    "form_dimensions": "Dimensions",
-    "form_quantity": "Quantity",
-    "form_craft": "Craft/Process",
-    "form_attachment": "Attachments",
-    "form_description": "Detailed Requirements",
-    "form_submit": "Submit Request",
-    "form_success": "Request submitted successfully!",
     "caseTitle": "Case Title",
     "client": "Client",
     "craft": "Craft",
@@ -591,7 +584,18 @@
     "step6Desc": "Arrange shipping per your requirements",
     "step6Title": "Delivery",
     "submitSuccess": "Request Submitted",
-    "submitSuccessDesc": "We'll get back to you within 24 hours"
+    "submitSuccessDesc": "We'll get back to you within 24 hours",
+    "form": {
+      "title": "Submit Custom Request",
+      "material": "Material",
+      "dimensions": "Dimensions",
+      "quantity": "Quantity",
+      "craft": "Craft/Process",
+      "attachment": "Attachments",
+      "description": "Detailed Requirements",
+      "submit": "Submit Request",
+      "success": "Request submitted successfully!"
+    }
   },
   "product": {
     "title": "Products",

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useCallback, useRef, useLayoutEffect } from 'react';
 import { Menu, X, Globe, ChevronDown, ChevronRight, ArrowRight, MessageCircle } from 'lucide-react';
@@ -18,10 +18,10 @@ const ALL_MENU_ITEMS: { key: NonNullable<MenuKey>; href: string }[] = [
   { key: 'resources', href: '/news' },
 ];
 
-export default function Header() {
+export default function Header({ locale }: { locale: string }) {
   const t = useTranslations('common');
   const tm = useTranslations('megaMenu');
-  const locale = useLocale();
+  // locale is now passed as prop
   const pathname = usePathname();
 
   // ---- Progressive collapse state ----
