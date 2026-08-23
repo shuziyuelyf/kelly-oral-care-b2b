@@ -21,6 +21,17 @@ export function getI18nValue<T extends AnyI18nEntry>(
 }
 
 /**
+ * Get i18n value from a Record<string, string> object (e.g., { en: '...', zh: '...' })
+ */
+export function getI18nRecordValue(
+  i18nRecord: Record<string, string> | undefined | null,
+  langCode: string
+): string {
+  if (!i18nRecord) return '';
+  return i18nRecord[langCode] || i18nRecord['en'] || Object.values(i18nRecord)[0] || '';
+}
+
+/**
  * Get i18n object for a specific locale
  */
 export function getI18nEntry<T extends AnyI18nEntry>(

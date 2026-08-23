@@ -1,180 +1,237 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
-import { Search, Grid3X3, List } from 'lucide-react';
-import { mockProducts, mockCategories } from '@/lib/mock/data';
-import { getI18nValue } from '@/lib/utils-i18n';
+import { useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { Search, Grid3X3, List, ArrowRight, ChevronRight } from 'lucide-react';
+import { mockProducts } from '@/lib/mock/products';
+import { getI18nValue, safeImageSrc } from '@/lib/utils-i18n';
 import { trackEvent } from '@/lib/analytics';
 
 export default function ProductsPage() {
-  const locale = useLocale();
   const t = useTranslations('product');
-  const lang = locale;
+  const tNav = useTranslations('nav');
+  const params = useParams();
+  const locale = (params.locale as string) || 'en';
   const [search, setSearch] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const [sortBy, setSortBy] = useState<'default' | 'priceAsc' | 'priceDesc' | 'sales'>('default');
+  const [activeCategory, setActiveCategory] = useState('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
-  const filteredProducts = useMemo(() => {
-    let result = mockProducts.filter((p) => p.status === 1);
-    if (selectedCategory) result = result.filter((p) => p.categoryId === selectedCategory);
-    if (search) {
-      const kw = search.toLowerCase();
-      result = result.filter((p) =>
-        (p.productCode || '').toLowerCase().includes(kw) ||
-        (p.i18n || []).some((i) => i.name.toLowerCase().includes(kw))
-      );
-    }
-    if (sortBy === 'priceAsc') result = [...result].sort((a, b) => (a.priceMin || 0) - (b.priceMin || 0));
-    else if (sortBy === 'priceDesc') result = [...result].sort((a, b) => (b.priceMin || 0) - (a.priceMin || 0));
-    else if (sortBy === 'sales') result = [...result].sort((a, b) => b.salesCount - a.salesCount);
-    return result;
-  }, [search, selectedCategory, sortBy]);
+  const categories = useMemo(() => {
+    const cats = new Set(mockProducts.map(p => p.categoryId));
+    return ['all', ...Array.from(cats)];
+  }, []);
+
+  const filtered = useMemo(() => {
+    return mockProducts.filter(p => {
+      const name = getI18nValue(p.i18n, locale, 'name') || '';
+      const matchSearch = !search || name.toLowerCase().includes(search.toLowerCase());
+      const matchCat = activeCategory === 'all' || String(p.categoryId) === activeCategory;
+      return matchSearch && matchCat;
+    });
+  }, [search, activeCategory, locale]);
+
+  const categoryLabels: Record<string, string> = {
+    all: t('allCategories'),
+    Toothpaste: t('catToothpaste'),
+    'Tooth Powder': t('catToothPowder'),
+    Mouthwash: t('catMouthwash'),
+    Toothbrush: t('catToothbrush'),
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <h1 className="text-2xl font-bold text-[#173A63]">{t('title')}</h1>
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
-            <div className="relative flex-1 sm:w-64">
+    <div className="min-h-screen bg-[#F7F4EF]">
+      {/* Compact Hero */}
+      <section className="bg-[#173A63] pt-28 pb-12 md:pt-32 md:pb-16">
+        <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-2">
+            {tNav('products')}
+          </h1>
+          <p className="text-white/70 text-base md:text-lg max-w-2xl">
+            {t('heroSubtitle')}
+          </p>
+        </div>
+      </section>
+
+      {/* Filter Bar */}
+      <section className="bg-white border-b border-gray-100 sticky top-16 md:top-[72px] z-30">
+        <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+          <div className="flex flex-col sm:flex-row gap-3 py-3">
+            {/* Search */}
+            <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
+              <input
+                type="text"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
                 placeholder={t('searchPlaceholder')}
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#008FD5]/20 focus:border-[#008FD5]" />
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#008FD5] focus:ring-1 focus:ring-[#008FD5]/20"
+              />
             </div>
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-              className="w-full sm:w-48 px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none">
-              <option value="default">{t('sort.default')}</option>
-              <option value="priceAsc">{t('sort.priceAsc')}</option>
-              <option value="priceDesc">{t('sort.priceDesc')}</option>
-              <option value="sales">{t('sort.sales')}</option>
-            </select>
-            <div className="hidden sm:flex gap-1">
-              <button onClick={() => setViewMode('grid')} className={`p-2 rounded ${viewMode === 'grid' ? 'bg-[#173A63] text-white' : 'bg-gray-100 text-gray-500'}`}><Grid3X3 className="w-4 h-4" /></button>
-              <button onClick={() => setViewMode('list')} className={`p-2 rounded ${viewMode === 'list' ? 'bg-[#173A63] text-white' : 'bg-gray-100 text-gray-500'}`}><List className="w-4 h-4" /></button>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex gap-8">
-          {/* Category Sidebar */}
-          <aside className="hidden lg:block w-56 flex-shrink-0">
-            <div className="bg-white rounded-lg p-4 sticky top-24">
-              <h3 className="font-semibold text-[#173A63] mb-3">{t('categories')}</h3>
-              <button onClick={() => setSelectedCategory(null)}
-                className={`w-full text-left px-3 py-2 rounded text-sm ${!selectedCategory ? 'bg-[#EAF7FD] text-[#008FD5] font-medium' : 'text-gray-600 hover:bg-gray-50'}`}>
-                {t('allCategories')}
+            {/* View Toggle */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2.5 rounded-lg transition ${viewMode === 'grid' ? 'bg-[#173A63] text-white' : 'bg-gray-100 text-gray-500'}`}
+              >
+                <Grid3X3 className="w-4 h-4" />
               </button>
-              {mockCategories.map((cat) => (
-                <div key={cat.id}>
-                  <button onClick={() => setSelectedCategory(cat.id)}
-                    className={`w-full text-left px-3 py-2 rounded text-sm mt-1 ${selectedCategory === cat.id ? 'bg-[#EAF7FD] text-[#008FD5] font-medium' : 'text-gray-600 hover:bg-gray-50'}`}>
-                    {getI18nValue(cat.i18n, lang, 'categoryName')}
-                  </button>
-                  {cat.children?.map((sub) => (
-                    <button key={sub.id} onClick={() => setSelectedCategory(sub.id)}
-                      className={`w-full text-left pl-6 pr-3 py-1.5 rounded text-sm ${selectedCategory === sub.id ? 'text-[#008FD5] font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
-                      {getI18nValue(sub.i18n, lang, 'categoryName')}
-                    </button>
-                  ))}
-                </div>
-              ))}
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-2.5 rounded-lg transition ${viewMode === 'list' ? 'bg-[#173A63] text-white' : 'bg-gray-100 text-gray-500'}`}
+              >
+                <List className="w-4 h-4" />
+              </button>
             </div>
-          </aside>
+          </div>
+          {/* Category Tabs */}
+          <div className="flex gap-2 overflow-x-auto pb-3 scrollbar-hide">
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(String(cat))}
+                className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition ${
+                  activeCategory === cat
+                    ? 'bg-[#173A63] text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {categoryLabels[cat] || cat}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          {/* Product Grid */}
-          <div className="flex-1">
-            <p className="text-sm text-gray-500 mb-4">{filteredProducts.length} {t('itemsFound')}</p>
-            {viewMode === 'grid' ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 xl:gap-6">
-                {filteredProducts.map((product, index) => {
-                  const name = getI18nValue(product.i18n, lang, 'name');
-                  const category = getI18nValue(mockCategories.find(c => c.id === product.categoryId)?.i18n || [], lang, 'categoryName');
-                  return (
-                    <div key={product.id} className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300">
-                      <Link href={`/${locale}/products/${product.id}`}
-                        onClick={() => trackEvent('product_view', { product_id: String(product.id), category })}>
-                        <div className="aspect-square bg-[#F3F5F7] overflow-hidden relative">
-                          <img src={product.mainImage || undefined} alt={name}
-                            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
-                            loading={index < 4 ? 'eager' : 'lazy'}
-                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw" />
-                          <div className="absolute top-2 left-2 flex gap-1">
-                            {product.isHot && <span className="px-2 py-0.5 bg-[#008FD5] text-white text-xs rounded-full font-medium">{t('hot')}</span>}
-                            {product.isNew && <span className="px-2 py-0.5 bg-[#21C96B] text-white text-xs rounded-full font-medium">{t('new')}</span>}
-                          </div>
-                          {product.totalStock > 0 && <span className="absolute top-2 right-2 px-2 py-0.5 bg-[#EAF7FD] text-[#008FD5] text-xs rounded-full font-medium">In Stock</span>}
-                        </div>
-                        <div className="p-4">
-                          <h3 className="font-semibold text-[#173A63] group-hover:text-[#008FD5] transition-colors line-clamp-1">{name}</h3>
-                          <p className="text-sm text-gray-500 mt-1 line-clamp-1">{getI18nValue(product.i18n, lang, 'subtitle')}</p>
-                          <div className="flex items-center gap-2 mt-3">
-                            <span className="text-xs text-gray-400">MOQ: {product.minOrderQuantity} pcs</span>
-                            <span className="text-xs text-[#21C96B] font-medium">Sample Available</span>
-                          </div>
-                        </div>
-                      </Link>
-                      <div className="px-4 pb-4 flex gap-2">
-                        <Link href={`/${locale}/products/${product.id}`} className="flex-1 text-center py-2 text-xs font-medium text-[#173A63] border border-[#173A63] rounded-full hover:bg-[#173A63] hover:text-white transition-colors">
-                          {t('viewDetails')}
-                        </Link>
-                        <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer"
-                          onClick={() => trackEvent('whatsapp_click', { page: 'products', position: 'product_card' })}
-                          className="flex-1 text-center py-2 text-xs font-medium text-white bg-[#21C96B] rounded-full hover:bg-[#1db85e] transition-colors">
-                          WhatsApp
-                        </a>
-                      </div>
+      {/* Product Grid */}
+      <section className="py-8 md:py-12">
+        <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+          <p className="text-sm text-gray-500 mb-6">
+            {filtered.length} {t('itemsFound')}
+          </p>
+          <div className={`grid gap-4 sm:gap-5 ${
+            viewMode === 'grid'
+              ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'
+              : 'grid-cols-1'
+          }`}>
+            {filtered.map((product, i) => {
+              const name = getI18nValue(product.i18n, locale, 'name') || '';
+              const subtitle = getI18nValue(product.i18n, locale, 'subtitle') || '';
+              const slug = product.slug || `product-${product.id}`;
+              return (
+                <Link
+                  key={product.id}
+                  href={`/${locale}/products/${slug}`}
+                  onClick={() => trackEvent('product_view', { product_id: slug, category: product.categoryId })}
+                  className={`group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 ${
+                    viewMode === 'list' ? 'flex' : ''
+                  }`}
+                >
+                  {/* Image */}
+                  <div className={`relative bg-[#F3F5F7] overflow-hidden ${
+                    viewMode === 'list' ? 'w-40 h-40 flex-shrink-0' : 'aspect-square'
+                  }`}>
+                    <img
+                      src={safeImageSrc(product.mainImage)}
+                      alt={name}
+                      loading={i < 4 ? 'eager' : 'lazy'}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    {/* Tags */}
+                    <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+                      {product.isHot && (
+                        <span className="px-2.5 py-1 rounded-full bg-[#173A63] text-white text-[10px] font-bold uppercase">
+                          {t('tagHot')}
+                        </span>
+                      )}
+                      {product.isNew && (
+                        <span className="px-2.5 py-1 rounded-full bg-[#38A169] text-white text-[10px] font-bold uppercase">
+                          {t('tagNew')}
+                        </span>
+                      )}
                     </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {filteredProducts.map((product) => {
-                  const name = getI18nValue(product.i18n, lang, 'name');
-                  return (
-                    <Link key={product.id} href={`/${locale}/products/${product.id}`} className="flex bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                      <div className="w-48 h-36 bg-[#F3F5F7] flex-shrink-0 overflow-hidden">
-                        <img src={product.mainImage || undefined} alt={name} className="w-full h-full object-cover" loading="lazy" />
-                      </div>
-                      <div className="p-4 flex-1">
-                        <h3 className="font-semibold text-[#173A63]">{name}</h3>
-                        <p className="text-sm text-gray-500 mt-1">{getI18nValue(product.i18n, lang, 'subtitle')}</p>
-                        <div className="flex items-center gap-4 mt-3">
-                          <span className="text-sm text-gray-400">MOQ: {product.minOrderQuantity} pcs</span>
-                          <span className="text-sm text-gray-400">{t('model')}: {product.productCode}</span>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
+                    {product.totalStock && (
+                      <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-[#EAF7FD] text-[#008FD5] text-[10px] font-semibold">
+                        {t('tagInStock')}
+                      </span>
+                    )}
+                  </div>
+                  {/* Content */}
+                  <div className={`p-4 flex flex-col ${viewMode === 'list' ? 'flex-1 justify-center' : ''}`}>
+                    <h3 className="font-bold text-[#173A63] text-base mb-1 group-hover:text-[#008FD5] transition line-clamp-1">
+                      {name}
+                    </h3>
+                    <p className="text-gray-500 text-sm mb-3 line-clamp-2">{subtitle}</p>
+                    <div className="flex items-center gap-3 text-xs text-gray-400 mb-3">
+                      <span>{t('moq')}: {product.minOrderQuantity} {t('moqUnit')}</span>
+                      {product.totalStock > 0 && (
+                        <span className="text-[#38A169] font-medium">{t('sampleAvailable')}</span>
+                      )}
+                    </div>
+                    <div className="flex gap-2 mt-auto">
+                      <span className="flex-1 text-center py-2 rounded-full border border-[#173A63] text-[#173A63] text-sm font-medium group-hover:bg-[#173A63] group-hover:text-white transition">
+                        {t('viewDetails')}
+                      </span>
+                      <a
+                        href="https://wa.me/1234567890"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={e => { e.stopPropagation(); trackEvent('whatsapp_click', { page: 'products', position: 'card' }); }}
+                        className="flex-1 text-center py-2 rounded-full bg-[#21C96B] text-white text-sm font-medium hover:bg-[#1db954] transition"
+                      >
+                        WhatsApp
+                      </a>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
+      </section>
 
-        {/* Cross-guidance to Private Label & OEM/ODM */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-[#EAF7FD] rounded-3xl p-8">
-            <h3 className="text-xl font-bold text-[#173A63] mb-2">Want to add your brand?</h3>
-            <p className="text-gray-500 text-sm mb-4">Choose from 50+ proven formulas and launch your own oral care brand.</p>
-            <Link href="/private-label" className="inline-flex items-center gap-2 text-[#008FD5] font-semibold hover:gap-3 transition-all">
-              Explore Private Label →
+      {/* Bottom CTA - Cross Guidance */}
+      <section className="py-12 md:py-16 bg-white">
+        <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Private Label CTA */}
+            <Link href={`/${locale}/private-label`} className="group relative overflow-hidden rounded-2xl bg-[#EAF7FD] p-8 md:p-10 hover:shadow-lg transition">
+              <div className="relative z-10">
+                <span className="inline-block px-3 py-1 rounded-full bg-[#008FD5]/10 text-[#008FD5] text-xs font-semibold mb-4">
+                  {t('plCtaLabel')}
+                </span>
+                <h3 className="text-xl md:text-2xl font-bold text-[#173A63] mb-2">
+                  {t('plCtaTitle')}
+                </h3>
+                <p className="text-gray-600 text-sm mb-6 max-w-md">
+                  {t('plCtaDesc')}
+                </p>
+                <span className="inline-flex items-center gap-2 text-[#008FD5] font-semibold text-sm group-hover:gap-3 transition-all">
+                  {t('plCtaButton')} <ArrowRight className="w-4 h-4" />
+                </span>
+              </div>
             </Link>
-          </div>
-          <div className="bg-[#F7F4EF] rounded-3xl p-8">
-            <h3 className="text-xl font-bold text-[#173A63] mb-2">Need a fully custom product?</h3>
-            <p className="text-gray-500 text-sm mb-4">From formula development to finished packaging — we handle everything.</p>
-            <Link href="/custom" className="inline-flex items-center gap-2 text-[#173A63] font-semibold hover:gap-3 transition-all">
-              Explore OEM/ODM →
+            {/* OEM/ODM CTA */}
+            <Link href={`/${locale}/custom`} className="group relative overflow-hidden rounded-2xl bg-[#173A63] p-8 md:p-10 hover:shadow-lg transition">
+              <div className="relative z-10">
+                <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-white text-xs font-semibold mb-4">
+                  {t('oemCtaLabel')}
+                </span>
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
+                  {t('oemCtaTitle')}
+                </h3>
+                <p className="text-white/70 text-sm mb-6 max-w-md">
+                  {t('oemCtaDesc')}
+                </p>
+                <span className="inline-flex items-center gap-2 text-white font-semibold text-sm group-hover:gap-3 transition-all">
+                  {t('oemCtaButton')} <ArrowRight className="w-4 h-4" />
+                </span>
+              </div>
             </Link>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

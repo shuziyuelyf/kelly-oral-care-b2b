@@ -623,7 +623,27 @@
     "allCategories": "All Categories",
     "itemsFound": "products",
     "model": "Code",
-    "viewDetails": "View Details"
+    "viewDetails": "View Details",
+    "heroSubtitle": "Professional oral care products for global markets. Ready-to-ship with flexible MOQ.",
+    "catToothpaste": "Toothpaste",
+    "catToothPowder": "Tooth Powder",
+    "catMouthwash": "Mouthwash",
+    "catToothbrush": "Toothbrush",
+    "tagHot": "Hot",
+    "tagNew": "New",
+    "tagInStock": "In Stock",
+    "tagSample": "Sample Available",
+    "moqUnit": "pcs",
+    "plCtaLabel": "PRIVATE LABEL",
+    "plCtaTitle": "Want to Build Your Own Brand?",
+    "plCtaDesc": "Choose from our proven formulas, add your branding, and launch in weeks.",
+    "plCtaButton": "Start Your Brand",
+    "oemCtaLabel": "OEM / ODM",
+    "oemCtaTitle": "Need Full Custom Manufacturing?",
+    "oemCtaDesc": "From formula development to finished product — we handle everything.",
+    "oemCtaButton": "Explore OEM/ODM",
+    "sampleAvailable": "Sample Available",
+    "moq": "MOQ"
   },
   "faq": {
     "title": "FAQ",
@@ -683,5 +703,24 @@
     "ctaDesc": "Tell us about your project and get a custom quote within 24 hours.",
     "ctaPrimary": "Request a Quote",
     "ctaWhatsapp": "Chat on WhatsApp"
+  },
+  "productDetail": {
+    "home": "Home",
+    "backToProducts": "Back to Products",
+    "notFound": "Product not found",
+    "whatsappUs": "Chat on WhatsApp",
+    "requestQuote": "Request a Quote",
+    "leadTime": "Lead Time",
+    "leadTimeValue": "2-4 weeks",
+    "keyFeatures": "Key Features",
+    "keyFeaturesDesc": "What makes this product stand out",
+    "specifications": "Specifications",
+    "packaging": "Packaging Options",
+    "packagingDesc": "Flexible packaging to match your brand",
+    "usage": "Usage Instructions",
+    "relatedProducts": "Related Products",
+    "faq": "Frequently Asked Questions",
+    "finalCtaTitle": "Ready to Order This Product?",
+    "finalCtaDesc": "Contact our team for pricing, samples, or custom manufacturing options."
   }
 }

@@ -19,8 +19,14 @@ src/
 │   │   ├── layout.tsx          # Root locale layout (next-intl provider)
 │   │   ├── (frontend)/         # Public-facing pages
 │   │   │   ├── page.tsx        # Home page
+│   │   │   ├── HeroBanner.tsx  # Hero banner carousel component
 │   │   │   ├── products/       # Product listing & detail
-│   │   │   ├── custom/         # Custom manufacturing
+│   │   │   │   ├── page.tsx    # Product listing (filter, search, grid)
+│   │   │   │   └── [slug]/     # Product detail page
+│   │   │   │       ├── page.tsx          # Server component (params resolver)
+│   │   │   │       └── ProductDetailClient.tsx  # Client component
+│   │   │   ├── private-label/  # Private Label page
+│   │   │   ├── custom/         # Custom manufacturing (OEM/ODM)
 │   │   │   ├── about/          # About us
 │   │   │   ├── news/           # News listing & detail
 │   │   │   ├── contact/        # Contact us
@@ -58,9 +64,13 @@ src/
 ├── messages/                   # Translation JSON files (7 languages)
 ├── lib/
 │   ├── types/index.ts          # TypeScript type definitions
-│   ├── mock/data.ts            # Mock data
+│   ├── mock/
+│   │   ├── data.ts             # General mock data (categories, banners)
+│   │   ├── products.ts         # 8 oral care products mock data
+│   │   └── productDetail.ts    # Product detail extended data (features, specs, FAQ)
+│   ├── analytics.ts            # Data tracking (dataLayer) + lead submission
 │   ├── utils.ts                # Utility functions (cn)
-│   └── utils-i18n.ts           # i18n helper functions
+│   └── utils-i18n.ts           # i18n helper functions (getI18nValue, getI18nRecordValue, safeImageSrc)
 ├── middleware.ts                # next-intl middleware
 └── server.ts                   # Custom server entry
 ```
