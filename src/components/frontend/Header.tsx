@@ -13,9 +13,9 @@ const ALL_MENU_ITEMS: { key: NonNullable<MenuKey>; href: string }[] = [
   { key: 'products', href: '/products' },
   { key: 'privateLabel', href: '/private-label' },
   { key: 'oemOdm', href: '/customized-services' },
-  { key: 'factory', href: '/about#factory' },
-  { key: 'quality', href: '/about#quality' },
-  { key: 'resources', href: '/news' },
+  { key: 'factory', href: '/factory' },
+  { key: 'quality', href: '/quality' },
+  { key: 'resources', href: '/resources' },
 ];
 
 export default function Header({ locale }: { locale: string }) {
@@ -223,15 +223,15 @@ export default function Header({ locale }: { locale: string }) {
   ];
 
   const factoryLinks = [
-    { name: tm('prodLines'), href: '/about#production-lines' },
-    { name: tm('rdCenter'), href: '/about#rd-center' },
-    { name: tm('qc'), href: '/about#quality-control' },
+    { name: tm('prodLines'), href: '/factory' },
+    { name: tm('rdCenter'), href: '/factory' },
+    { name: tm('qc'), href: '/factory' },
   ];
 
   const qualityLinks = [
-    { name: tm('certs'), href: '/about#certificates' },
-    { name: tm('testing'), href: '/about#testing' },
-    { name: tm('qualitySys'), href: '/about#quality-system' },
+    { name: tm('certs'), href: '/quality' },
+    { name: tm('testing'), href: '/quality' },
+    { name: tm('qualitySys'), href: '/quality' },
   ];
 
   const resourcesLinks = [
