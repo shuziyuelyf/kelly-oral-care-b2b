@@ -573,7 +573,9 @@ export default function Header({ locale }: { locale: string }) {
                       <>
                         {/* Parent item with sub-links: entire row toggles submenu */}
                         <button
-                          onClick={() => {
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
                             setBurgerExpanded(isExpanded ? null : key);
                             if (burgerAutoCloseRef.current) {
                               clearTimeout(burgerAutoCloseRef.current);
@@ -583,10 +585,11 @@ export default function Header({ locale }: { locale: string }) {
                               setBurgerExpanded(null);
                             }, 4500);
                           }}
-                          className={`w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-colors min-h-[48px] ${active ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
+                          className={`w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-colors min-h-[48px] cursor-pointer relative z-10 ${active ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
+                          style={{ WebkitTapHighlightColor: 'transparent' }}
                         >
-                          <span>{t(`nav.${key}`)}</span>
-                          <ChevronDown className={`w-4 h-4 transition-transform flex-shrink-0 ${isExpanded ? 'rotate-180' : ''}`} />
+                          <span className="pointer-events-none">{t(`nav.${key}`)}</span>
+                          <ChevronDown className={`w-4 h-4 transition-transform flex-shrink-0 pointer-events-none ${isExpanded ? 'rotate-180' : ''}`} />
                         </button>
                         {isExpanded && (
                           <div className="pl-4 pb-2 space-y-0.5">
