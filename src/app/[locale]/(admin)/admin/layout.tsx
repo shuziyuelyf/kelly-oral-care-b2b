@@ -8,15 +8,15 @@ import type { Locale } from '@/i18n/config';
 import { localeNames } from '@/i18n/config';
 
 const adminNavItems = [
-  { href: '/admin/dashboard', icon: LayoutDashboard, labelKey: 'dashboard' },
-  { href: '/admin/products', icon: Package, labelKey: 'products' },
-  { href: '/admin/channels', icon: Link2, labelKey: 'channels' },
-  { href: '/admin/inquiries', icon: MessageSquare, labelKey: 'inquiries' },
+  { href: '/admin/dashboard', icon: LayoutDashboard, labelKey: 'dashboard.title' },
+  { href: '/admin/products', icon: Package, labelKey: 'products.title' },
+  { href: '/admin/channels', icon: Link2, labelKey: 'channels.title' },
+  { href: '/admin/inquiries', icon: MessageSquare, labelKey: 'inquiries.title' },
   { href: '/admin/custom-demands', icon: Wrench, labelKey: 'custom_demands' },
-  { href: '/admin/content', icon: FileText, labelKey: 'content' },
-  { href: '/admin/customers', icon: Users, labelKey: 'customers' },
-  { href: '/admin/i18n', icon: Languages, labelKey: 'i18n' },
-  { href: '/admin/settings', icon: Settings, labelKey: 'settings' },
+  { href: '/admin/content', icon: FileText, labelKey: 'content.title' },
+  { href: '/admin/customers', icon: Users, labelKey: 'customers.title' },
+  { href: '/admin/i18n', icon: Languages, labelKey: 'i18n.title' },
+  { href: '/admin/settings', icon: Settings, labelKey: 'settings.title' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -47,7 +47,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-white/70 transition-colors hover:bg-white/10 hover:text-white"
               >
                 <item.icon className="h-4 w-4" />
-                {t(item.labelKey as 'dashboard' | 'products' | 'channels' | 'inquiries' | 'custom_demands' | 'content' | 'customers' | 'settings' | 'i18n')}
+                {t(item.labelKey as 'dashboard.title' | 'products.title' | 'channels.title' | 'inquiries.title' | 'custom_demands' | 'content.title' | 'customers.title' | 'i18n.title' | 'settings.title')}
               </Link>
             ))}
           </div>
@@ -80,7 +80,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-white/70 transition-colors hover:bg-white/10 hover:text-white"
                   >
                     <item.icon className="h-4 w-4" />
-                    {t(item.labelKey as 'dashboard' | 'products' | 'channels' | 'inquiries' | 'custom_demands' | 'content' | 'customers' | 'settings' | 'i18n')}
+                    {t(item.labelKey as 'dashboard.title' | 'products.title' | 'channels.title' | 'inquiries.title' | 'custom_demands' | 'content.title' | 'customers.title' | 'i18n.title' | 'settings.title')}
                   </Link>
                 ))}
               </div>

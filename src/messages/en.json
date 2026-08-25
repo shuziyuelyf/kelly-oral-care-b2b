@@ -245,7 +245,47 @@
     "finalCtaWhatsapp": "Chat on WhatsApp",
     "resourcesTitle": "Resources & Insights",
     "resourcesDesc": "Expert guidance for your oral care business",
-    "readMore": "Read More"
+    "readMore": "Read More",
+    "caseShows": "Caseshows",
+    "company_desc": "Company Desc",
+    "company_stats": {
+      "clients": "Clients",
+      "countries": "Countries",
+      "products": "Products",
+      "years": "Years"
+    },
+    "company_title": "Company Title",
+    "ctaPrimary": "Ctaprimary",
+    "ctaSecondary": "Ctasecondary",
+    "customCTA": "Customcta",
+    "customDesc": "Customdesc",
+    "customService": "Customservice",
+    "custom_cta": "Custom Cta",
+    "custom_desc": "Custom Desc",
+    "custom_title": "Custom Title",
+    "feature1Desc": "Feature1Desc",
+    "feature1Title": "Feature1Title",
+    "feature2Desc": "Feature2Desc",
+    "feature2Title": "Feature2Title",
+    "feature3Desc": "Feature3Desc",
+    "feature3Title": "Feature3Title",
+    "feature4Desc": "Feature4Desc",
+    "feature4Title": "Feature4Title",
+    "featured_products": "Featured Products",
+    "hero_cta": "Hero Cta",
+    "hero_custom": "Hero Custom",
+    "hero_subtitle": "Hero Subtitle",
+    "hero_title": "Hero Title",
+    "latestNews": "Latestnews",
+    "news_title": "News Title",
+    "partners": "Partners",
+    "partners_title": "Partners Title",
+    "recommendedProducts": "Recommendedproducts",
+    "recommendedProductsDesc": "Recommendedproductsdesc",
+    "requestQuote": "Requestquote",
+    "viewAll": "Viewall",
+    "viewProducts": "Viewproducts",
+    "view_all": "View All"
   },
   "about": {
     "title": "About Us",
@@ -255,7 +295,13 @@
     "timeline_title": "Development History",
     "cert_title": "Certifications & Honors",
     "factory_title": "Factory & Team",
-    "factory_desc": "State-of-the-art manufacturing facilities covering 50,000 sqm"
+    "factory_desc": "State-of-the-art manufacturing facilities covering 50,000 sqm",
+    "countries": "Countries",
+    "employees": "Employees",
+    "factoryArea": "Factoryarea",
+    "history": "History",
+    "honors": "Honors",
+    "yearsExperience": "Yearsexperience"
   },
   "news": {
     "title": "News & Insights",
@@ -289,7 +335,8 @@
       "subject": "Subject",
       "message": "Message",
       "submit": "Send Message",
-      "success": "Message sent successfully!"
+      "success": "Message sent successfully!",
+      "phone": "Phone"
     }
   },
   "auth": {
@@ -503,7 +550,10 @@
       "todayInquiries": "Today's Inquiries",
       "totalCustomers": "Total Customers",
       "totalInquiries": "Total Inquiries",
-      "totalProducts": "Total Products"
+      "totalProducts": "Total Products",
+      "statusDealt": "Statusdealt",
+      "statusPending": "Statuspending",
+      "statusQuoted": "Statusquoted"
     },
     "categories": "Categories",
     "custom_demands": "Custom Demands",
@@ -594,7 +644,14 @@
       "attachment": "Attachments",
       "description": "Detailed Requirements",
       "submit": "Submit Request",
-      "success": "Request submitted successfully!"
+      "success": "Request submitted successfully!",
+      "contactEmail": "Contactemail",
+      "contactName": "Contactname",
+      "productType": "Producttype",
+      "selectOption": "Selectoption",
+      "sizeSpec": "Sizespec",
+      "sizeSpecPlaceholder": "Sizespecplaceholder",
+      "uploadHint": "Uploadhint"
     }
   },
   "product": {
@@ -621,7 +678,12 @@
       "default": "Default",
       "priceAsc": "Price: Low to High",
       "priceDesc": "Price: High to Low",
-      "sales": "Best Selling"
+      "sales": "Best Selling",
+      "by": "By",
+      "name": "Name",
+      "newest": "Newest",
+      "price_asc": "Price Asc",
+      "price_desc": "Price Desc"
     },
     "categories": "Categories",
     "allCategories": "All Categories",
@@ -647,7 +709,33 @@
     "oemCtaDesc": "From formula development to finished product — we handle everything.",
     "oemCtaButton": "Explore OEM/ODM",
     "sampleAvailable": "Sample Available",
-    "moq": "MOQ"
+    "moq": "MOQ",
+    "add_inquiry": "Add Inquiry",
+    "backToList": "Backtolist",
+    "breadcrumb": {
+      "home": "Home",
+      "products": "Products"
+    },
+    "buy_online": "Buy Online",
+    "channel_links": "Channel Links",
+    "contact_whatsapp": "Contact Whatsapp",
+    "filter": "Filter",
+    "inStock": "Instock",
+    "inquiry": "Inquiry",
+    "lowStock": "Lowstock",
+    "low_stock": "Low Stock",
+    "no_results": "No Results",
+    "notFound": "Notfound",
+    "onlineStores": "Onlinestores",
+    "outOfStock": "Outofstock",
+    "price_range": "Price Range",
+    "requestQuote": "Requestquote",
+    "sales": "Sales",
+    "search_placeholder": "Search Placeholder",
+    "selectSku": "Selectsku",
+    "shop_name": "Shop Name",
+    "visitStore": "Visitstore",
+    "whatsappContact": "Whatsappcontact"
   },
   "faq": {
     "title": "FAQ",

@@ -237,7 +237,13 @@
     "timeline_title": "發展歷程",
     "cert_title": "資質榮譽",
     "factory_title": "工廠與團隊",
-    "factory_desc": "擁有50,000平方公尺現代化製造基地"
+    "factory_desc": "擁有50,000平方公尺現代化製造基地",
+    "countries": "服务国家",
+    "employees": "员工人数",
+    "factoryArea": "工厂面积",
+    "history": "发展历程",
+    "honors": "资质荣誉",
+    "yearsExperience": "年行业经验"
   },
   "news": {
     "title": "新聞資訊",
@@ -486,7 +492,10 @@
       "todayInquiries": "Today's Inquiries",
       "totalCustomers": "Total Customers",
       "totalInquiries": "Total Inquiries",
-      "totalProducts": "Total Products"
+      "totalProducts": "Total Products",
+      "statusDealt": "已成交",
+      "statusPending": "待处理",
+      "statusQuoted": "已报价"
     },
     "categories": "分類管理",
     "custom_demands": "定制需求",

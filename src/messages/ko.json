@@ -237,7 +237,13 @@
     "timeline_title": "발전 역사",
     "cert_title": "인증 및 수상",
     "factory_title": "공장 및 팀",
-    "factory_desc": "50,000㎡ 규모의 최신 제조 시설"
+    "factory_desc": "50,000㎡ 규모의 최신 제조 시설",
+    "countries": "服务国家",
+    "employees": "员工人数",
+    "factoryArea": "工厂面积",
+    "history": "发展历程",
+    "honors": "资质荣誉",
+    "yearsExperience": "年行业经验"
   },
   "news": {
     "title": "뉴스",
@@ -486,7 +492,10 @@
       "todayInquiries": "Today's Inquiries",
       "totalCustomers": "Total Customers",
       "totalInquiries": "Total Inquiries",
-      "totalProducts": "Total Products"
+      "totalProducts": "Total Products",
+      "statusDealt": "已成交",
+      "statusPending": "待处理",
+      "statusQuoted": "已报价"
     },
     "categories": "카테고리 관리",
     "custom_demands": "맞춤 요구",
