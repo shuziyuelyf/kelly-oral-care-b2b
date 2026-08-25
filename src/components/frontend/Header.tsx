@@ -309,7 +309,7 @@ export default function Header({ locale }: { locale: string }) {
           </div>
           <div className="col-span-5">
             <Link href={`/${locale}/products`} className="group relative rounded-xl overflow-hidden h-44 block">
-              <img src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=600" alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <img src="https://images.unsplash.com/photo-1559591937-abc3a5c7f3b5?w=600&q=80" alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-r from-[#173A63]/80 to-[#173A63]/30 z-10" />
               <div className="relative z-20 h-full flex flex-col justify-end p-5">
                 <p className="text-white font-bold text-lg">{tm('browseAllOralCare')}</p>
@@ -538,98 +538,98 @@ export default function Header({ locale }: { locale: string }) {
             )}
           </div>
         </div>
-
-        {/* Mega Menu Panels */}
-        {renderMegaMenuPanel()}
-
-        {/* Burger Dropdown - overflow items (or all items in mobile mode) */}
-        {isBurgerOpen && (isMobileMode || hasOverflow) && (
-          <div
-            className={`absolute top-full mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100/80 z-50 ${isMobileMode ? 'left-4 right-4 max-h-[80vh] overflow-y-auto' : 'left-4 right-4 max-h-[70vh] overflow-y-auto'}`}
-            onMouseEnter={() => {
-              if (burgerAutoCloseRef.current) {
-                clearTimeout(burgerAutoCloseRef.current);
-                burgerAutoCloseRef.current = null;
-              }
-            }}
-            onMouseLeave={() => {
-              burgerAutoCloseRef.current = setTimeout(() => {
-                setIsBurgerOpen(false);
-                setBurgerExpanded(null);
-              }, 4500);
-            }}
-          >
-            <div className={`${isMobileMode ? 'p-4' : 'p-4'}`}>
-              <div className="space-y-1">
-                {(isMobileMode ? ALL_MENU_ITEMS : overflowItems).map(({ key, href }) => {
-                  const active = isActive(href);
-                  const isExpanded = burgerExpanded === key;
-                  const subLinks = getSubLinks(key);
-
-                  return (
-                    <div key={key}>
-                      <div className="flex items-center">
-                        <Link
-                          href={`/${locale}${href}`}
-                          className={`flex-1 flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-colors min-h-[48px] ${active ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
-                          onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
-                        >
-                          {t(`nav.${key}`)}
-                        </Link>
-                        <button
-                          onClick={() => {
-                            setBurgerExpanded(isExpanded ? null : key);
-                            // Reset timer on submenu toggle
-                            if (burgerAutoCloseRef.current) {
-                              clearTimeout(burgerAutoCloseRef.current);
-                            }
-                            burgerAutoCloseRef.current = setTimeout(() => {
-                              setIsBurgerOpen(false);
-                              setBurgerExpanded(null);
-                            }, 4500);
-                          }}
-                          className="p-2 text-gray-400 hover:text-[#173A63] transition-colors"
-                        >
-                          <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-                        </button>
-                      </div>
-                      {isExpanded && (
-                        <div className="pl-4 pb-2 space-y-0.5">
-                          {subLinks.map((l, i) => (
-                            <Link
-                              key={i}
-                              href={`/${locale}${l.href}`}
-                              className="block px-4 py-2.5 text-sm text-gray-600 hover:text-[#008FD5] rounded-lg hover:bg-gray-50 min-h-[44px] flex items-center"
-                              onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
-                            >
-                              {l.name}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* WhatsApp button at bottom in mobile mode */}
-              {isMobileMode && (
-                <div className="mt-4 pt-3 border-t border-gray-100">
-                  <a
-                    href="https://wa.me/8613800138000"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-[#21C96B] text-white text-sm font-semibold rounded-xl hover:bg-[#1DB95E] transition-colors"
-                  >
-                    <MessageCircle className="w-5 h-5" />
-                    WhatsApp
-                  </a>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Mega Menu Panels - rendered outside container for full-viewport positioning */}
+      {renderMegaMenuPanel()}
+
+      {/* Burger Dropdown - overflow items (or all items in mobile mode) */}
+      {isBurgerOpen && (isMobileMode || hasOverflow) && (
+        <div
+          className={`absolute top-full mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100/80 z-50 ${isMobileMode ? 'left-4 right-4 max-h-[80vh] overflow-y-auto' : 'left-4 right-4 max-h-[70vh] overflow-y-auto'}`}
+          onMouseEnter={() => {
+            if (burgerAutoCloseRef.current) {
+              clearTimeout(burgerAutoCloseRef.current);
+              burgerAutoCloseRef.current = null;
+            }
+          }}
+          onMouseLeave={() => {
+            burgerAutoCloseRef.current = setTimeout(() => {
+              setIsBurgerOpen(false);
+              setBurgerExpanded(null);
+            }, 4500);
+          }}
+        >
+          <div className={`${isMobileMode ? 'p-4' : 'p-4'}`}>
+            <div className="space-y-1">
+              {(isMobileMode ? ALL_MENU_ITEMS : overflowItems).map(({ key, href }) => {
+                const active = isActive(href);
+                const isExpanded = burgerExpanded === key;
+                const subLinks = getSubLinks(key);
+
+                return (
+                  <div key={key}>
+                    <div className="flex items-center">
+                      <Link
+                        href={`/${locale}${href}`}
+                        className={`flex-1 flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-colors min-h-[48px] ${active ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
+                        onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
+                      >
+                        {t(`nav.${key}`)}
+                      </Link>
+                      <button
+                        onClick={() => {
+                          setBurgerExpanded(isExpanded ? null : key);
+                          // Reset timer on submenu toggle
+                          if (burgerAutoCloseRef.current) {
+                            clearTimeout(burgerAutoCloseRef.current);
+                          }
+                          burgerAutoCloseRef.current = setTimeout(() => {
+                            setIsBurgerOpen(false);
+                            setBurgerExpanded(null);
+                          }, 4500);
+                        }}
+                        className="p-2 text-gray-400 hover:text-[#173A63] transition-colors"
+                      >
+                        <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                      </button>
+                    </div>
+                    {isExpanded && (
+                      <div className="pl-4 pb-2 space-y-0.5">
+                        {subLinks.map((l, i) => (
+                          <Link
+                            key={i}
+                            href={`/${locale}${l.href}`}
+                            className="block px-4 py-2.5 text-sm text-gray-600 hover:text-[#008FD5] rounded-lg hover:bg-gray-50 min-h-[44px] flex items-center"
+                            onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
+                          >
+                            {l.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* WhatsApp button at bottom in mobile mode */}
+            {isMobileMode && (
+              <div className="mt-4 pt-3 border-t border-gray-100">
+                <a
+                  href="https://wa.me/8613800138000"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-[#21C96B] text-white text-sm font-semibold rounded-xl hover:bg-[#1DB95E] transition-colors"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  WhatsApp
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 }
