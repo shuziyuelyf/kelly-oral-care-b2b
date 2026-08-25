@@ -569,44 +569,49 @@ export default function Header({ locale }: { locale: string }) {
 
                 return (
                   <div key={key}>
-                    <div className="flex items-center">
+                    {subLinks.length > 0 ? (
+                      <>
+                        {/* Parent item with sub-links: entire row toggles submenu */}
+                        <button
+                          onClick={() => {
+                            setBurgerExpanded(isExpanded ? null : key);
+                            if (burgerAutoCloseRef.current) {
+                              clearTimeout(burgerAutoCloseRef.current);
+                            }
+                            burgerAutoCloseRef.current = setTimeout(() => {
+                              setIsBurgerOpen(false);
+                              setBurgerExpanded(null);
+                            }, 4500);
+                          }}
+                          className={`w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-colors min-h-[48px] ${active ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
+                        >
+                          <span>{t(`nav.${key}`)}</span>
+                          <ChevronDown className={`w-4 h-4 transition-transform flex-shrink-0 ${isExpanded ? 'rotate-180' : ''}`} />
+                        </button>
+                        {isExpanded && (
+                          <div className="pl-4 pb-2 space-y-0.5">
+                            {subLinks.map((l, i) => (
+                              <Link
+                                key={i}
+                                href={`/${locale}${l.href}`}
+                                className="block px-4 py-2.5 text-sm text-gray-600 hover:text-[#008FD5] rounded-lg hover:bg-gray-50 min-h-[44px] flex items-center"
+                                onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
+                              >
+                                {l.name}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      /* Item without sub-links: simple link */
                       <Link
                         href={`/${locale}${href}`}
-                        className={`flex-1 flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-colors min-h-[48px] ${active ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
+                        className={`w-full flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-colors min-h-[48px] ${active ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
                         onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
                       >
                         {t(`nav.${key}`)}
                       </Link>
-                      <button
-                        onClick={() => {
-                          setBurgerExpanded(isExpanded ? null : key);
-                          // Reset timer on submenu toggle
-                          if (burgerAutoCloseRef.current) {
-                            clearTimeout(burgerAutoCloseRef.current);
-                          }
-                          burgerAutoCloseRef.current = setTimeout(() => {
-                            setIsBurgerOpen(false);
-                            setBurgerExpanded(null);
-                          }, 4500);
-                        }}
-                        className="p-2 text-gray-400 hover:text-[#173A63] transition-colors"
-                      >
-                        <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-                      </button>
-                    </div>
-                    {isExpanded && (
-                      <div className="pl-4 pb-2 space-y-0.5">
-                        {subLinks.map((l, i) => (
-                          <Link
-                            key={i}
-                            href={`/${locale}${l.href}`}
-                            className="block px-4 py-2.5 text-sm text-gray-600 hover:text-[#008FD5] rounded-lg hover:bg-gray-50 min-h-[44px] flex items-center"
-                            onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
-                          >
-                            {l.name}
-                          </Link>
-                        ))}
-                      </div>
                     )}
                   </div>
                 );
