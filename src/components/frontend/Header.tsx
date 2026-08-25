@@ -37,6 +37,7 @@ export default function Header({ locale }: { locale: string }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState<MenuKey>(null);
   const [isPanelVisible, setIsPanelVisible] = useState(false);
+  const [panelLeft, setPanelLeft] = useState<number>(0);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const [burgerExpanded, setBurgerExpanded] = useState<string | null>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -170,6 +171,13 @@ export default function Header({ locale }: { locale: string }) {
       closeTimeoutRef.current = null;
     }
     setActiveMenu(key);
+    // Calculate panel position based on the button's position
+    const itemIndex = ALL_MENU_ITEMS.findIndex(item => item.key === key);
+    const itemEl = itemIndex >= 0 ? itemRefs.current[itemIndex] : null;
+    if (itemEl) {
+      const rect = itemEl.getBoundingClientRect();
+      setPanelLeft(rect.left);
+    }
     requestAnimationFrame(() => setIsPanelVisible(true));
   }, []);
 
@@ -269,8 +277,12 @@ export default function Header({ locale }: { locale: string }) {
 
   // ---- Mega Menu Panels ----
   const renderProductsPanel = () => (
-    <div className="absolute left-0 right-0 top-full pt-3 px-4 z-50" {...panelMouseHandlers}>
-      <div className={`max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-6 transition-all duration-200 ${isPanelVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
+    <div
+      className="absolute top-full pt-3 z-50"
+      style={{ left: panelLeft, width: 'min(680px, calc(100vw - 2rem))' }}
+      {...panelMouseHandlers}
+    >
+      <div className={`bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-6 transition-all duration-200 ${isPanelVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
         <div className="grid grid-cols-12 gap-6">
           <div className="col-span-7">
             <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">{tm('productCategories')}</p>
@@ -309,7 +321,7 @@ export default function Header({ locale }: { locale: string }) {
           </div>
           <div className="col-span-5">
             <Link href={`/${locale}/products`} className="group relative rounded-xl overflow-hidden h-44 block">
-              <img src="https://images.unsplash.com/photo-1559591937-abc3a5c7f3b5?w=600&q=80" alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&q=80" alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-r from-[#173A63]/80 to-[#173A63]/30 z-10" />
               <div className="relative z-20 h-full flex flex-col justify-end p-5">
                 <p className="text-white font-bold text-lg">{tm('browseAllOralCare')}</p>
@@ -326,8 +338,12 @@ export default function Header({ locale }: { locale: string }) {
   );
 
   const renderSimplePanel = (links: { name: string; href: string }[], imageCard?: { title: string; desc: string; href: string; image: string }) => (
-    <div className="absolute left-0 right-0 top-full pt-3 px-4 z-50" {...panelMouseHandlers}>
-      <div className={`max-w-3xl mx-auto bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-6 transition-all duration-200 ${isPanelVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
+    <div
+      className="absolute top-full pt-3 z-50"
+      style={{ left: panelLeft, width: imageCard ? 'min(680px, calc(100vw - 2rem))' : 'min(400px, calc(100vw - 2rem))' }}
+      {...panelMouseHandlers}
+    >
+      <div className={`bg-white rounded-2xl shadow-2xl border border-gray-100/80 p-6 transition-all duration-200 ${isPanelVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}>
         <div className="grid grid-cols-12 gap-6">
           <div className={imageCard ? 'col-span-7' : 'col-span-12'}>
             <ul className="space-y-0.5">
