@@ -40,7 +40,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
   return (
     <div className="min-h-screen bg-[#F7F4EF]">
       {/* Compact Hero */}
-      <section className="bg-[#173A63] pt-28 pb-12 md:pt-32 md:pb-16">
+      <section className="bg-[#173A63] pt-6 pb-8 md:pt-8 md:pb-10">
         <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
           <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-2">
             {tNav('products')}
@@ -52,7 +52,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
       </section>
 
       {/* Filter Bar */}
-      <section className="bg-white border-b border-gray-100 sticky top-16 md:top-[72px] z-30">
+      <section className="bg-white border-b border-gray-100 sticky top-14 md:top-14 z-30">
         <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
           <div className="flex flex-col sm:flex-row gap-3 py-3">
             {/* Search */}
