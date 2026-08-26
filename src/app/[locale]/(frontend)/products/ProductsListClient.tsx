@@ -126,14 +126,14 @@ export default function ProductsListClient({ locale }: { locale: string }) {
                   }`}
                 >
                   {/* Image */}
-                  <div className={`relative bg-[#F3F5F7] overflow-hidden ${
+                  <div className={`relative bg-[#F3F5F7] overflow-hidden flex items-center justify-center ${
                     viewMode === 'list' ? 'w-40 h-40 flex-shrink-0' : 'aspect-square'
                   }`}>
                     <img
                       src={safeImageSrc(product.mainImage)}
                       alt={name}
                       loading={i < 4 ? 'eager' : 'lazy'}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                     />
                     {/* Tags */}
                     <div className="absolute top-3 left-3 flex flex-col gap-1.5">
@@ -166,7 +166,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
                         <span className="text-[#38A169] font-medium">{t('sampleAvailable')}</span>
                       )}
                     </div>
-                    <div className={`flex gap-2 mt-auto ${viewMode === 'list' ? 'flex-shrink-0' : ''}`}>
+                    <div className={`flex flex-wrap gap-2 mt-auto ${viewMode === 'list' ? 'flex-shrink-0' : ''}`}>
                       <span className={`text-center py-2 rounded-full border border-[#173A63] text-[#173A63] text-sm font-medium group-hover:bg-[#173A63] group-hover:text-white transition whitespace-nowrap ${viewMode === 'list' ? 'px-4' : 'flex-1'}`}>
                         {t('viewDetails')}
                       </span>
