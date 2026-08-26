@@ -95,7 +95,7 @@ export const mockProducts: Product[] = [
   },
   {
     id: 5, categoryId: 1, productCode: 'HB-005', slug: 'herbal-toothpaste',
-    mainImage: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=600',
+    mainImage: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600',
     priceMin: 2.0, priceMax: 4.0, unit: 'pcs', minOrderQuantity: 1000,
     totalStock: 7000, salesCount: 1800, isHot: false, isRecommended: false, isNew: true,
     status: 1, sort: 5, createdAt: '2024-05-01', updatedAt: '2024-06-20',
@@ -110,7 +110,7 @@ export const mockProducts: Product[] = [
       { id: 10, productId: 5, skuCode: 'HB-005-B', price: 2.0, stock: 3500, stockWarning: 350, weight: 120, volume: '12x4x4cm', status: 1, createdAt: '2024-05-01', updatedAt: '2024-06-20' },
     ],
     images: [
-      { id: 5, productId: 5, imageUrl: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800', altText: 'Herbal Toothpaste', sort: 1, isMain: true, createdAt: '2024-05-01' },
+      { id: 5, productId: 5, imageUrl: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800', altText: 'Herbal Toothpaste', sort: 1, isMain: true, createdAt: '2024-05-01' },
     ],
     channels: [
       { id: 5, productId: 5, skuId: null, channelType: 2, shopName: null, url: 'https://wa.me/8613800138000?text=I%20am%20interested%20in%20Herbal%20Toothpaste', qrCode: null, sort: 1, status: 1, createdAt: '2024-05-01', updatedAt: '2024-05-01' },
@@ -118,7 +118,7 @@ export const mockProducts: Product[] = [
   },
   {
     id: 6, categoryId: 2, productCode: 'CP-006', slug: 'charcoal-tooth-powder',
-    mainImage: 'https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?w=600',
+    mainImage: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600',
     priceMin: 2.5, priceMax: 5.0, unit: 'pcs', minOrderQuantity: 1000,
     totalStock: 5000, salesCount: 900, isHot: false, isRecommended: true, isNew: false,
     status: 1, sort: 6, createdAt: '2024-05-15', updatedAt: '2024-06-20',
@@ -133,7 +133,7 @@ export const mockProducts: Product[] = [
       { id: 12, productId: 6, skuCode: 'CP-006-B', price: 2.5, stock: 2500, stockWarning: 250, weight: 50, volume: '7x5x5cm', status: 1, createdAt: '2024-05-15', updatedAt: '2024-06-20' },
     ],
     images: [
-      { id: 6, productId: 6, imageUrl: 'https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?w=800', altText: 'Charcoal Tooth Powder', sort: 1, isMain: true, createdAt: '2024-05-15' },
+      { id: 6, productId: 6, imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800', altText: 'Charcoal Tooth Powder', sort: 1, isMain: true, createdAt: '2024-05-15' },
     ],
     channels: [
       { id: 6, productId: 6, skuId: null, channelType: 2, shopName: null, url: 'https://wa.me/8613800138000?text=I%20am%20interested%20in%20Charcoal%20Tooth%20Powder', qrCode: null, sort: 1, status: 1, createdAt: '2024-05-15', updatedAt: '2024-05-15' },
@@ -141,7 +141,7 @@ export const mockProducts: Product[] = [
   },
   {
     id: 7, categoryId: 3, productCode: 'MW-007', slug: 'mint-mouthwash',
-    mainImage: 'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=600',
+    mainImage: 'https://images.unsplash.com/photo-1584515933487-779824d29309?w=600',
     priceMin: 1.5, priceMax: 3.5, unit: 'pcs', minOrderQuantity: 500,
     totalStock: 12000, salesCount: 3600, isHot: false, isRecommended: true, isNew: false,
     status: 1, sort: 7, createdAt: '2024-06-01', updatedAt: '2024-06-20',
@@ -156,7 +156,7 @@ export const mockProducts: Product[] = [
       { id: 14, productId: 7, skuCode: 'MW-007-B', price: 1.5, stock: 6000, stockWarning: 600, weight: 300, volume: '15x6x6cm', status: 1, createdAt: '2024-06-01', updatedAt: '2024-06-20' },
     ],
     images: [
-      { id: 7, productId: 7, imageUrl: 'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=800', altText: 'Mint Mouthwash', sort: 1, isMain: true, createdAt: '2024-06-01' },
+      { id: 7, productId: 7, imageUrl: 'https://images.unsplash.com/photo-1584515933487-779824d29309?w=800', altText: 'Mint Mouthwash', sort: 1, isMain: true, createdAt: '2024-06-01' },
     ],
     channels: [
       { id: 7, productId: 7, skuId: null, channelType: 2, shopName: null, url: 'https://wa.me/8613800138000?text=I%20am%20interested%20in%20Mint%20Mouthwash', qrCode: null, sort: 1, status: 1, createdAt: '2024-06-01', updatedAt: '2024-06-01' },
@@ -164,7 +164,7 @@ export const mockProducts: Product[] = [
   },
   {
     id: 8, categoryId: 4, productCode: 'SB-008', slug: 'soft-bristle-toothbrush',
-    mainImage: 'https://images.unsplash.com/photo-1559650656-5d1d361ad10e?w=600',
+    mainImage: 'https://images.unsplash.com/photo-1612538498456-e861df91d4d0?w=600',
     priceMin: 0.5, priceMax: 1.5, unit: 'pcs', minOrderQuantity: 2000,
     totalStock: 50000, salesCount: 15000, isHot: false, isRecommended: true, isNew: false,
     status: 1, sort: 8, createdAt: '2024-06-15', updatedAt: '2024-06-20',
@@ -179,7 +179,7 @@ export const mockProducts: Product[] = [
       { id: 16, productId: 8, skuCode: 'SB-008-B', price: 0.5, stock: 25000, stockWarning: 2500, weight: 10, volume: '18x2x2cm', status: 1, createdAt: '2024-06-15', updatedAt: '2024-06-20' },
     ],
     images: [
-      { id: 8, productId: 8, imageUrl: 'https://images.unsplash.com/photo-1559650656-5d1d361ad10e?w=800', altText: 'Soft Bristle Toothbrush', sort: 1, isMain: true, createdAt: '2024-06-15' },
+      { id: 8, productId: 8, imageUrl: 'https://images.unsplash.com/photo-1612538498456-e861df91d4d0?w=800', altText: 'Soft Bristle Toothbrush', sort: 1, isMain: true, createdAt: '2024-06-15' },
     ],
     channels: [
       { id: 8, productId: 8, skuId: null, channelType: 2, shopName: null, url: 'https://wa.me/8613800138000?text=I%20am%20interested%20in%20Soft%20Bristle%20Toothbrush', qrCode: null, sort: 1, status: 1, createdAt: '2024-06-15', updatedAt: '2024-06-15' },
