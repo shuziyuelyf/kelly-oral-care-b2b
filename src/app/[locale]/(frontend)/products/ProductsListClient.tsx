@@ -31,10 +31,10 @@ export default function ProductsListClient({ locale }: { locale: string }) {
 
   const categoryLabels: Record<string, string> = {
     all: t('allCategories'),
-    Toothpaste: t('catToothpaste'),
-    'Tooth Powder': t('catToothPowder'),
-    Mouthwash: t('catMouthwash'),
-    Toothbrush: t('catToothbrush'),
+    '1': t('catToothpaste'),
+    '2': t('catToothPowder'),
+    '3': t('catMouthwash'),
+    '4': t('catToothbrush'),
   };
 
   return (

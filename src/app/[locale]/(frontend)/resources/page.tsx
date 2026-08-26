@@ -13,7 +13,7 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
   ];
 
   const featured = [
-    { title: t('feat1Title'), desc: t('feat1Desc'), type: t('typeGuide'), img: 'https://images.unsplash.com/photo-1559591937-abc3a5e2f5a7?w=400&h=250&fit=crop' },
+    { title: t('feat1Title'), desc: t('feat1Desc'), type: t('typeGuide'), img: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=400&h=250&fit=crop' },
     { title: t('feat2Title'), desc: t('feat2Desc'), type: t('typeVideo'), img: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=250&fit=crop' },
     { title: t('feat3Title'), desc: t('feat3Desc'), type: t('typeWhitepaper'), img: 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=400&h=250&fit=crop' },
   ];

@@ -26,7 +26,7 @@ export const mockProducts: Product[] = [
   },
   {
     id: 2, categoryId: 1, productCode: 'WT-002', slug: 'whitening-toothpaste',
-    mainImage: 'https://images.unsplash.com/photo-1628359355624-855c28f0613a?w=600',
+    mainImage: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600',
     priceMin: 2.0, priceMax: 4.5, unit: 'pcs', minOrderQuantity: 500,
     totalStock: 8000, salesCount: 2800, isHot: true, isRecommended: true, isNew: false,
     status: 1, sort: 2, createdAt: '2024-02-10', updatedAt: '2024-06-15',
@@ -41,7 +41,7 @@ export const mockProducts: Product[] = [
       { id: 4, productId: 2, skuCode: 'WT-002-B', price: 2.0, stock: 4000, stockWarning: 400, weight: 120, volume: '12x4x4cm', status: 1, createdAt: '2024-02-10', updatedAt: '2024-06-15' },
     ],
     images: [
-      { id: 2, productId: 2, imageUrl: 'https://images.unsplash.com/photo-1628359355624-855c28f0613a?w=800', altText: 'Whitening Toothpaste', sort: 1, isMain: true, createdAt: '2024-02-10' },
+      { id: 2, productId: 2, imageUrl: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800', altText: 'Whitening Toothpaste', sort: 1, isMain: true, createdAt: '2024-02-10' },
     ],
     channels: [
       { id: 2, productId: 2, skuId: null, channelType: 2, shopName: null, url: 'https://wa.me/8613800138000?text=I%20am%20interested%20in%20Whitening%20Toothpaste', qrCode: null, sort: 1, status: 1, createdAt: '2024-02-10', updatedAt: '2024-02-10' },
@@ -49,7 +49,7 @@ export const mockProducts: Product[] = [
   },
   {
     id: 3, categoryId: 1, productCode: 'SR-003', slug: 'sensitive-relief-toothpaste',
-    mainImage: 'https://images.unsplash.com/photo-1612538498456-e861df91d4d1?w=600',
+    mainImage: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=600',
     priceMin: 3.0, priceMax: 6.0, unit: 'pcs', minOrderQuantity: 1000,
     totalStock: 6000, salesCount: 1500, isHot: false, isRecommended: true, isNew: false,
     status: 1, sort: 3, createdAt: '2024-03-01', updatedAt: '2024-06-10',
@@ -64,7 +64,7 @@ export const mockProducts: Product[] = [
       { id: 6, productId: 3, skuCode: 'SR-003-B', price: 3.0, stock: 3000, stockWarning: 300, weight: 120, volume: '12x4x4cm', status: 1, createdAt: '2024-03-01', updatedAt: '2024-06-10' },
     ],
     images: [
-      { id: 3, productId: 3, imageUrl: 'https://images.unsplash.com/photo-1612538498456-e861df91d4d1?w=800', altText: 'Sensitive Relief Toothpaste', sort: 1, isMain: true, createdAt: '2024-03-01' },
+      { id: 3, productId: 3, imageUrl: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800', altText: 'Sensitive Relief Toothpaste', sort: 1, isMain: true, createdAt: '2024-03-01' },
     ],
     channels: [
       { id: 3, productId: 3, skuId: null, channelType: 2, shopName: null, url: 'https://wa.me/8613800138000?text=I%20am%20interested%20in%20Sensitive%20Relief%20Toothpaste', qrCode: null, sort: 1, status: 1, createdAt: '2024-03-01', updatedAt: '2024-03-01' },
@@ -72,7 +72,7 @@ export const mockProducts: Product[] = [
   },
   {
     id: 4, categoryId: 1, productCode: 'KF-004', slug: 'kids-fluoride-toothpaste',
-    mainImage: 'https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=600',
+    mainImage: 'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=600',
     priceMin: 1.5, priceMax: 3.5, unit: 'pcs', minOrderQuantity: 1000,
     totalStock: 15000, salesCount: 4500, isHot: false, isRecommended: true, isNew: false,
     status: 1, sort: 4, createdAt: '2024-04-01', updatedAt: '2024-06-20',
@@ -87,7 +87,7 @@ export const mockProducts: Product[] = [
       { id: 8, productId: 4, skuCode: 'KF-004-B', price: 1.5, stock: 7500, stockWarning: 750, weight: 60, volume: '8x3x3cm', status: 1, createdAt: '2024-04-01', updatedAt: '2024-06-20' },
     ],
     images: [
-      { id: 4, productId: 4, imageUrl: 'https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=800', altText: 'Kids Fluoride Toothpaste', sort: 1, isMain: true, createdAt: '2024-04-01' },
+      { id: 4, productId: 4, imageUrl: 'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=800', altText: 'Kids Fluoride Toothpaste', sort: 1, isMain: true, createdAt: '2024-04-01' },
     ],
     channels: [
       { id: 4, productId: 4, skuId: null, channelType: 2, shopName: null, url: 'https://wa.me/8613800138000?text=I%20am%20interested%20in%20Kids%20Fluoride%20Toothpaste', qrCode: null, sort: 1, status: 1, createdAt: '2024-04-01', updatedAt: '2024-04-01' },

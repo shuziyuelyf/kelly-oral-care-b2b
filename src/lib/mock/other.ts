@@ -46,8 +46,8 @@ export const mockMessages: Message[] = [
 ];
 
 export const mockPartners: Partner[] = [
-  { id: 1, name: 'Siemens', logo: 'https://images.unsplash.com/photo-1611068415799-0d6e59315d22?w=200', website: 'https://siemens.com', sort: 1, status: 1, createdAt: '2024-01-01', updatedAt: '2024-01-01' },
-  { id: 2, name: 'Bosch', logo: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=200', website: 'https://bosch.com', sort: 2, status: 1, createdAt: '2024-01-01', updatedAt: '2024-01-01' },
+  { id: 1, name: 'Siemens', logo: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=200', website: 'https://siemens.com', sort: 1, status: 1, createdAt: '2024-01-01', updatedAt: '2024-01-01' },
+  { id: 2, name: 'Bosch', logo: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=200', website: 'https://bosch.com', sort: 2, status: 1, createdAt: '2024-01-01', updatedAt: '2024-01-01' },
   { id: 3, name: 'ABB', logo: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=200', website: 'https://abb.com', sort: 3, status: 1, createdAt: '2024-01-01', updatedAt: '2024-01-01' },
   { id: 4, name: 'Schneider', logo: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=200', website: 'https://schneider-electric.com', sort: 4, status: 1, createdAt: '2024-01-01', updatedAt: '2024-01-01' },
   { id: 5, name: 'Mitsubishi', logo: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=200', website: 'https://mitsubishi.com', sort: 5, status: 1, createdAt: '2024-01-01', updatedAt: '2024-01-01' },

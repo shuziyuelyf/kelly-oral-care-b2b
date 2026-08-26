@@ -123,7 +123,7 @@ export default function HomePageClient({ locale }: { locale: string }) {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {[
-              { name: 'Whitening Toothpaste', img: 'https://images.unsplash.com/photo-1559013616-5edc1f857c4b?w=400&h=400&fit=crop', moq: '5,000', tag: 'Best Seller' },
+              { name: 'Whitening Toothpaste', img: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=400&h=400&fit=crop', moq: '5,000', tag: 'Best Seller' },
               { name: 'Charcoal Toothpaste', img: 'https://images.unsplash.com/photo-1612538498456-e861df91d4d0?w=400&h=400&fit=crop', moq: '3,000', tag: 'Hot' },
               { name: 'Fresh Mouthwash', img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop', moq: '10,000', tag: 'New' },
               { name: 'Bamboo Toothbrush', img: 'https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?w=400&h=400&fit=crop', moq: '10,000', tag: 'Eco' },
@@ -328,7 +328,7 @@ export default function HomePageClient({ locale }: { locale: string }) {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { title: 'How to Start Your Own Toothpaste Brand', excerpt: 'A complete guide to launching your oral care product line with private label manufacturing.', img: 'https://images.unsplash.com/photo-1559013616-5edc1f857c4b?w=400&h=250&fit=crop', tag: 'Private Label' },
+              { title: 'How to Start Your Own Toothpaste Brand', excerpt: 'A complete guide to launching your oral care product line with private label manufacturing.', img: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=400&h=250&fit=crop', tag: 'Private Label' },
               { title: 'OEM vs ODM: Which Is Right for You?', excerpt: 'Understanding the differences between OEM and ODM manufacturing for oral care products.', img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee15e?w=400&h=250&fit=crop', tag: 'Manufacturing' },
               { title: 'Oral Care Market Trends 2026', excerpt: 'Key trends shaping the global oral care industry and opportunities for new entrants.', img: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=400&h=250&fit=crop', tag: 'Industry' },
             ].map((article, i) => (

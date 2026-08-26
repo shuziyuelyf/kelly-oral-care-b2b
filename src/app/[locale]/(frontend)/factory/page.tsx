@@ -46,8 +46,8 @@ export default async function FactoryPage({ params }: { params: Promise<{ locale
           <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12">{t('linesDesc')}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { title: t('lineToothpaste'), desc: t('lineToothpasteDesc'), img: 'https://images.unsplash.com/photo-1559591937-abc3a5e2f5a7?w=400&h=300&fit=crop' },
-              { title: t('lineToothbrush'), desc: t('lineToothbrushDesc'), img: 'https://images.unsplash.com/photo-1628359355624-855775b5c9a4?w=400&h=300&fit=crop' },
+              { title: t('lineToothpaste'), desc: t('lineToothpasteDesc'), img: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=400&h=300&fit=crop' },
+              { title: t('lineToothbrush'), desc: t('lineToothbrushDesc'), img: 'https://images.unsplash.com/photo-1559650656-5d1d361ad10e?w=400&h=300&fit=crop' },
               { title: t('lineMouthwash'), desc: t('lineMouthwashDesc'), img: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=300&fit=crop' },
             ].map((line, i) => (
               <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow">
