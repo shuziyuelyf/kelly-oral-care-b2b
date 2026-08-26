@@ -15,7 +15,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ loc
   const relatedNews = mockNews.filter((n) => n.id !== news.id && n.categoryId === news.categoryId).slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-white pt-20">
+    <div className="min-h-screen bg-white md:pt-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Link href={`/${locale}/news`} className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-[#008FD5] mb-6">
           <ArrowLeft className="w-4 h-4" /> Back to News

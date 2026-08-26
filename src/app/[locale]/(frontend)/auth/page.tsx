@@ -15,7 +15,7 @@ export default function AuthPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-20 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 md:pt-20 flex items-center justify-center">
         <div className="text-center bg-white p-8 rounded-lg shadow-sm max-w-md">
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-gray-800 mb-2">
@@ -30,7 +30,7 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 flex items-center justify-center py-12">
+    <div className="min-h-screen bg-gray-50 md:pt-20 flex items-center justify-center py-12">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-lg shadow-sm p-8">
           {/* Tabs */}

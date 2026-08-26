@@ -1,6 +1,5 @@
 import Header from '@/components/frontend/Header';
 import Footer from '@/components/frontend/Footer';
-import MobileBottomCTA from '@/components/shared/MobileBottomCTA';
 import { headers } from 'next/headers';
 
 export default async function FrontendLayout({
@@ -18,9 +17,8 @@ export default async function FrontendLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <Header locale={locale} />
-      <main className={`flex-1 pb-16 md:pb-0 ${isHome ? 'md:pt-0' : 'md:pt-14'}`}>{children}</main>
+      <main className={`flex-1 ${isHome ? 'md:pt-0' : 'md:pt-14'}`}>{children}</main>
       <Footer locale={locale} />
-      <MobileBottomCTA locale={locale} />
     </div>
   );
 }
