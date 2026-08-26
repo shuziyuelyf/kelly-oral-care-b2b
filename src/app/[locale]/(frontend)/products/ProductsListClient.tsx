@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Search, Grid3X3, List, ArrowRight } from 'lucide-react';
+import { Search, ArrowRight } from 'lucide-react';
 import { mockProducts } from '@/lib/mock/products';
 import { getI18nValue, safeImageSrc } from '@/lib/utils-i18n';
 import { trackEvent } from '@/lib/analytics';
@@ -13,7 +13,6 @@ export default function ProductsListClient({ locale }: { locale: string }) {
   const tNav = useTranslations('nav');
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   const categories = useMemo(() => {
     const cats = new Set(mockProducts.map(p => String(p.categoryId)));
@@ -54,9 +53,9 @@ export default function ProductsListClient({ locale }: { locale: string }) {
       {/* Filter Bar */}
       <section className="bg-white border-b border-gray-100 sticky top-14 z-30">
         <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
-          <div className="flex flex-col sm:flex-row gap-3 py-3">
+          <div className="py-3">
             {/* Search */}
-            <div className="relative flex-1">
+            <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
@@ -65,21 +64,6 @@ export default function ProductsListClient({ locale }: { locale: string }) {
                 placeholder={t('searchPlaceholder')}
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#008FD5] focus:ring-1 focus:ring-[#008FD5]/20"
               />
-            </div>
-            {/* View Toggle */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`p-2.5 rounded-lg transition ${viewMode === 'grid' ? 'bg-[#173A63] text-white' : 'bg-gray-100 text-gray-500'}`}
-              >
-                <Grid3X3 className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setViewMode('list')}
-                className={`p-2.5 rounded-lg transition ${viewMode === 'list' ? 'bg-[#173A63] text-white' : 'bg-gray-100 text-gray-500'}`}
-              >
-                <List className="w-4 h-4" />
-              </button>
             </div>
           </div>
           {/* Category Tabs */}
@@ -107,11 +91,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
           <p className="text-sm text-gray-500 mb-6">
             {filtered.length} {t('itemsFound')}
           </p>
-          <div className={`grid gap-4 sm:gap-5 ${
-            viewMode === 'grid'
-              ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4'
-              : 'grid-cols-1'
-          }`}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
             {filtered.map((product, i) => {
               const name = getI18nValue(product.i18n, locale, 'name') || '';
               const subtitle = getI18nValue(product.i18n, locale, 'subtitle') || '';
@@ -121,14 +101,10 @@ export default function ProductsListClient({ locale }: { locale: string }) {
                   key={product.id}
                   href={`/${locale}/products/${slug}`}
                   onClick={() => trackEvent('product_view', { product_id: slug, category: product.categoryId })}
-                  className={`group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 ${
-                    viewMode === 'list' ? 'flex items-center' : ''
-                  }`}
+                  className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex md:flex-col items-center md:items-stretch"
                 >
                   {/* Image */}
-                  <div className={`relative bg-[#F3F5F7] overflow-hidden flex items-center justify-center p-3 ${
-                    viewMode === 'list' ? 'w-40 h-40 flex-shrink-0' : 'aspect-square'
-                  }`}>
+                  <div className="relative bg-[#F3F5F7] overflow-hidden flex items-center justify-center p-3 w-32 h-32 md:w-full md:h-auto md:aspect-square flex-shrink-0 md:flex-shrink">
                     <img
                       src={safeImageSrc(product.mainImage)}
                       alt={name}
@@ -155,7 +131,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
                     )}
                   </div>
                   {/* Content */}
-                  <div className={`p-4 flex flex-col min-w-0 ${viewMode === 'list' ? 'flex-1 justify-center' : ''}`}>
+                  <div className="p-4 flex flex-col min-w-0 flex-1 md:flex-initial justify-center">
                     <h3 className="font-bold text-[#173A63] text-base mb-1 group-hover:text-[#008FD5] transition line-clamp-1">
                       {name}
                     </h3>
@@ -166,8 +142,8 @@ export default function ProductsListClient({ locale }: { locale: string }) {
                         <span className="text-[#38A169] font-medium">{t('sampleAvailable')}</span>
                       )}
                     </div>
-                    <div className={`flex flex-wrap gap-2 mt-auto ${viewMode === 'list' ? 'flex-shrink-0' : ''}`}>
-                      <span className={`text-center py-2 rounded-full border border-[#173A63] text-[#173A63] text-sm font-medium group-hover:bg-[#173A63] group-hover:text-white transition whitespace-nowrap w-full ${viewMode === 'list' ? '' : 'sm:w-auto sm:flex-1'}`}>
+                    <div className="flex flex-wrap gap-2 mt-auto">
+                      <span className="text-center py-2 rounded-full border border-[#173A63] text-[#173A63] text-sm font-medium group-hover:bg-[#173A63] group-hover:text-white transition whitespace-nowrap w-full sm:w-auto sm:flex-1">
                         {t('viewDetails')}
                       </span>
                       <a
@@ -175,7 +151,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={e => { e.stopPropagation(); trackEvent('whatsapp_click', { page: 'products', position: 'card' }); }}
-                        className={`text-center py-2 rounded-full bg-[#21C96B] text-white text-sm font-medium hover:bg-[#1db954] transition whitespace-nowrap w-full ${viewMode === 'list' ? '' : 'sm:w-auto sm:flex-1'}`}
+                        className="text-center py-2 rounded-full bg-[#21C96B] text-white text-sm font-medium hover:bg-[#1db954] transition whitespace-nowrap w-full sm:w-auto sm:flex-1"
                       >
                         WhatsApp
                       </a>
