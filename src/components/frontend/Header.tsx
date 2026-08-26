@@ -407,15 +407,15 @@ export default function Header({ locale }: { locale: string }) {
 
   return (
     <header ref={headerRef} className="sticky top-0 z-50 md:fixed md:top-0 md:left-0 md:right-0 md:z-50 md:pointer-events-none">
-      <div className="mx-auto w-[94%] max-w-[1520px] px-2 md:px-6 pt-2 md:pt-3 pointer-events-auto">
+      <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6 pt-4 md:pt-5 pointer-events-auto">
         <div
           ref={capsuleRef}
-          className={`flex items-center h-12 md:h-14 px-3 md:px-4 relative w-full rounded-full border backdrop-blur-xl transition-all duration-300
+          className={`flex items-center h-14 md:h-[68px] px-4 md:px-6 relative w-full rounded-full border backdrop-blur-2xl transition-all duration-300
             ${isScrolled
-              ? 'bg-white border-slate-200/70 shadow-[0_8px_28px_rgba(15,23,42,0.10)]'
+              ? 'bg-white/90 border-slate-200/70 shadow-[0_10px_35px_rgba(15,23,42,0.12)]'
               : isHome
-                ? 'bg-white/95 border-white/40 shadow-[0_10px_35px_rgba(15,23,42,0.12)]'
-                : 'bg-white border-slate-200/70 shadow-[0_8px_28px_rgba(15,23,42,0.08)]'
+                ? 'bg-white/55 border-white/50 shadow-[0_12px_40px_rgba(15,23,42,0.15)]'
+                : 'bg-white/80 border-slate-200/60 shadow-[0_10px_32px_rgba(15,23,42,0.10)]'
             }`}
         >
           {/* Left zone: Visible menu items (flex:1, takes half minus logo space) */}
