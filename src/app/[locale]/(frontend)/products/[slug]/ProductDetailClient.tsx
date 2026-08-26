@@ -46,7 +46,7 @@ export default function ProductDetailClient({ locale, slug }: { locale: string; 
   return (
     <div className="min-h-screen bg-[#F7F4EF]">
       {/* Breadcrumb */}
-      <nav className="bg-white border-b border-gray-100 pt-24 md:pt-28 pb-4">
+      <nav className="bg-white border-b border-gray-100 pt-4 md:pt-6 pb-4">
         <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
           <div className="flex items-center gap-2 text-sm text-gray-500">
             <Link href={`/${locale}`} className="hover:text-[#008FD5] transition">{t('home')}</Link>

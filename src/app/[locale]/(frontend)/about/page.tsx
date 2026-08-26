@@ -23,7 +23,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   ];
 
   return (
-    <div className="min-h-screen bg-white md:pt-20">
+    <div className="min-h-screen bg-white">
       {/* Hero */}
       <section className="bg-gradient-to-r from-[#173A63] to-[#2d5a8a] py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

@@ -406,11 +406,17 @@ export default function Header({ locale }: { locale: string }) {
   const isMobileMode = visibleCount === 0; // All items collapsed
 
   return (
-    <header ref={headerRef} className="sticky top-0 z-50 bg-white md:fixed md:top-0 md:left-0 md:right-0 md:z-50 md:bg-transparent">
-      <div className="mx-auto w-[94%] max-w-[1680px] px-6 md:pt-3">
+    <header ref={headerRef} className="sticky top-0 z-50 md:fixed md:top-0 md:left-0 md:right-0 md:z-50 md:pointer-events-none">
+      <div className="mx-auto w-[94%] max-w-[1520px] px-2 md:px-6 pt-2 md:pt-3 pointer-events-auto">
         <div
           ref={capsuleRef}
-          className={`flex items-center h-14 px-4 transition-all duration-300 relative bg-white rounded-full shadow-[0_2px_12px_rgba(0,0,0,0.06)] md:bg-white/90 md:backdrop-blur-xl ${isScrolled ? 'md:shadow-[0_8px_32px_rgba(0,0,0,0.12)] md:bg-white md:backdrop-blur-none' : ''}`}
+          className={`flex items-center h-12 md:h-14 px-3 md:px-4 relative w-full rounded-full border backdrop-blur-xl transition-all duration-300
+            ${isScrolled
+              ? 'bg-white border-slate-200/70 shadow-[0_8px_28px_rgba(15,23,42,0.10)]'
+              : isHome
+                ? 'bg-white/95 border-white/40 shadow-[0_10px_35px_rgba(15,23,42,0.12)]'
+                : 'bg-white border-slate-200/70 shadow-[0_8px_28px_rgba(15,23,42,0.08)]'
+            }`}
         >
           {/* Left zone: Visible menu items (flex:1, takes half minus logo space) */}
           {isMobileMode ? (

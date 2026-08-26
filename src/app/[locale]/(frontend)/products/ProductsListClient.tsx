@@ -51,7 +51,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
       </section>
 
       {/* Filter Bar */}
-      <section className="bg-white border-b border-gray-100 sticky top-14 z-30">
+      <section className="bg-white border-b border-gray-100 sticky top-0 md:top-[68px] z-30">
         <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
           <div className="py-3">
             {/* Search */}
