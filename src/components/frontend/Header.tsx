@@ -406,11 +406,11 @@ export default function Header({ locale }: { locale: string }) {
   const isMobileMode = visibleCount === 0; // All items collapsed
 
   return (
-    <header ref={headerRef} className={`relative md:fixed md:top-0 md:left-0 md:right-0 md:z-50 ${!isHome ? 'md:bg-white md:shadow-sm' : ''}`}>
+    <header ref={headerRef} className={`relative md:fixed md:top-0 md:left-0 md:right-0 md:z-50 ${!isHome ? 'md:bg-white' : ''}`}>
       <div className={`${isHome ? 'mx-auto w-[94%] max-w-[1680px] px-6 md:pt-3' : 'w-full px-4 md:px-6'}`}>
         <div
           ref={capsuleRef}
-          className={`flex items-center h-14 px-4 transition-all duration-300 relative bg-white border-b border-gray-100 shadow-none md:border-b-0 ${isHome ? 'rounded-full md:bg-white/90 md:backdrop-blur-xl' : 'md:rounded-none md:bg-white'} ${isScrolled && isHome ? 'md:shadow-[0_8px_32px_rgba(0,0,0,0.12)] md:bg-white md:backdrop-blur-none' : ''} ${!isHome ? 'md:shadow-sm' : ''}`}
+          className={`flex items-center h-14 px-4 transition-all duration-300 relative bg-white ${isHome ? 'border-b border-gray-100 shadow-none md:border-b-0 rounded-full md:bg-white/90 md:backdrop-blur-xl' : 'md:rounded-none md:bg-white md:border-b md:border-gray-100 md:shadow-none'} ${isScrolled && isHome ? 'md:shadow-[0_8px_32px_rgba(0,0,0,0.12)] md:bg-white md:backdrop-blur-none' : ''}`}
           style={{
             backgroundColor: isScrolled || !isHome ? 'rgb(255,255,255)' : undefined,
           }}
