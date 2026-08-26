@@ -155,7 +155,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
                     )}
                   </div>
                   {/* Content */}
-                  <div className={`p-4 flex flex-col ${viewMode === 'list' ? 'flex-1 justify-center' : ''}`}>
+                  <div className={`p-4 flex flex-col min-w-0 ${viewMode === 'list' ? 'flex-1 justify-center' : ''}`}>
                     <h3 className="font-bold text-[#173A63] text-base mb-1 group-hover:text-[#008FD5] transition line-clamp-1">
                       {name}
                     </h3>
@@ -166,8 +166,8 @@ export default function ProductsListClient({ locale }: { locale: string }) {
                         <span className="text-[#38A169] font-medium">{t('sampleAvailable')}</span>
                       )}
                     </div>
-                    <div className="flex gap-2 mt-auto">
-                      <span className="flex-1 text-center py-2 rounded-full border border-[#173A63] text-[#173A63] text-sm font-medium group-hover:bg-[#173A63] group-hover:text-white transition">
+                    <div className={`flex gap-2 mt-auto ${viewMode === 'list' ? 'flex-shrink-0' : ''}`}>
+                      <span className={`text-center py-2 rounded-full border border-[#173A63] text-[#173A63] text-sm font-medium group-hover:bg-[#173A63] group-hover:text-white transition whitespace-nowrap ${viewMode === 'list' ? 'px-4' : 'flex-1'}`}>
                         {t('viewDetails')}
                       </span>
                       <a
@@ -175,7 +175,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={e => { e.stopPropagation(); trackEvent('whatsapp_click', { page: 'products', position: 'card' }); }}
-                        className="flex-1 text-center py-2 rounded-full bg-[#21C96B] text-white text-sm font-medium hover:bg-[#1db954] transition"
+                        className={`text-center py-2 rounded-full bg-[#21C96B] text-white text-sm font-medium hover:bg-[#1db954] transition whitespace-nowrap ${viewMode === 'list' ? 'px-4' : 'flex-1'}`}
                       >
                         WhatsApp
                       </a>
