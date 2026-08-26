@@ -210,8 +210,10 @@ export default function Header({ locale }: { locale: string }) {
     window.location.href = newPath || '/';
   }, [pathname]);
 
+  const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
+
   const isActive = (href: string) => {
-    if (href === '/') return pathname === `/${locale}`;
+    if (href === '/') return pathname === `/${locale}` || pathname === `/${locale}/`;
     return pathname.startsWith(`/${locale}${href}`);
   };
 
@@ -408,9 +410,9 @@ export default function Header({ locale }: { locale: string }) {
       <div className="mx-auto w-[94%] max-w-[1680px] px-6">
         <div
           ref={capsuleRef}
-          className={`flex items-center h-14 rounded-full px-4 transition-all duration-300 relative bg-white border-b border-gray-100 shadow-none md:border-b-0 md:bg-white/90 md:backdrop-blur-xl ${isScrolled ? 'md:shadow-[0_8px_32px_rgba(0,0,0,0.12)]' : 'md:shadow-[0_2px_12px_rgba(0,0,0,0.06)]'}`}
+          className={`flex items-center h-14 rounded-full px-4 transition-all duration-300 relative bg-white border-b border-gray-100 shadow-none md:border-b-0 ${isHome ? 'md:bg-white/90 md:backdrop-blur-xl' : 'md:bg-white'} ${isScrolled ? 'md:shadow-[0_8px_32px_rgba(0,0,0,0.12)]' : 'md:shadow-[0_2px_12px_rgba(0,0,0,0.06)]'}`}
           style={{
-            backgroundColor: isScrolled ? 'rgba(255,255,255,0.95)' : undefined,
+            backgroundColor: isScrolled || !isHome ? 'rgba(255,255,255,1)' : undefined,
           }}
         >
           {/* Left zone: Visible menu items (flex:1, takes half minus logo space) */}
