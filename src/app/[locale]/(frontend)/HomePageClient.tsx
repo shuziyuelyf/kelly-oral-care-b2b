@@ -123,10 +123,10 @@ export default function HomePageClient({ locale }: { locale: string }) {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {[
-              { name: 'Whitening Toothpaste', img: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=400&h=400&fit=crop', moq: '5,000', tag: 'Best Seller' },
-              { name: 'Charcoal Toothpaste', img: 'https://images.unsplash.com/photo-1612538498456-e861df91d4d0?w=400&h=400&fit=crop', moq: '3,000', tag: 'Hot' },
-              { name: 'Fresh Mouthwash', img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop', moq: '10,000', tag: 'New' },
-              { name: 'Bamboo Toothbrush', img: 'https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?w=400&h=400&fit=crop', moq: '10,000', tag: 'Eco' },
+              { name: 'Whitening Toothpaste', img: 'https://s.coze.cn/image/Ub3RZ6-Y1_A/', moq: '5,000', tag: 'Best Seller' },
+              { name: 'Charcoal Toothpaste', img: 'https://s.coze.cn/image/PAuB8XyqzDg/', moq: '3,000', tag: 'Hot' },
+              { name: 'Fresh Mouthwash', img: 'https://s.coze.cn/image/vlgb0RPGJtU/', moq: '10,000', tag: 'New' },
+              { name: 'Bamboo Toothbrush', img: 'https://s.coze.cn/image/i3DeBHVayB0/', moq: '10,000', tag: 'Eco' },
             ].map((product, i) => (
               <div key={i} className="group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300">
                 <div className="relative aspect-square bg-gray-50 p-6 flex items-center justify-center overflow-hidden">

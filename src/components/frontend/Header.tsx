@@ -406,7 +406,7 @@ export default function Header({ locale }: { locale: string }) {
   const isMobileMode = visibleCount === 0; // All items collapsed
 
   return (
-    <header ref={headerRef} className={`relative md:fixed md:top-0 md:left-0 md:right-0 md:z-50 ${!isHome ? 'md:bg-white' : ''}`}>
+    <header ref={headerRef} className={`sticky top-0 z-50 bg-white md:fixed md:top-0 md:left-0 md:right-0 md:z-50 ${!isHome ? 'md:bg-white' : ''}`}>
       <div className={`${isHome ? 'mx-auto w-[94%] max-w-[1680px] px-6 md:pt-3' : 'w-full px-4 md:px-6'}`}>
         <div
           ref={capsuleRef}

@@ -3,7 +3,7 @@ import type { Product } from '../types';
 export const mockProducts: Product[] = [
   {
     id: 1, categoryId: 1, productCode: 'HAP-001', slug: 'hydroxyapatite-toothpaste',
-    mainImage: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600',
+    mainImage: 'https://s.coze.cn/image/CL4DN2Ndpkk/',
     priceMin: 2.5, priceMax: 5.0, unit: 'pcs', minOrderQuantity: 500,
     totalStock: 10000, salesCount: 3200, isHot: true, isRecommended: true, isNew: false,
     status: 1, sort: 1, createdAt: '2024-01-15', updatedAt: '2024-06-20',
@@ -18,7 +18,7 @@ export const mockProducts: Product[] = [
       { id: 2, productId: 1, skuCode: 'HAP-001-B', price: 2.5, stock: 5000, stockWarning: 500, weight: 120, volume: '12x4x4cm', status: 1, createdAt: '2024-01-15', updatedAt: '2024-06-20' },
     ],
     images: [
-      { id: 1, productId: 1, imageUrl: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800', altText: 'Hydroxyapatite Toothpaste', sort: 1, isMain: true, createdAt: '2024-01-15' },
+      { id: 1, productId: 1, imageUrl: 'https://s.coze.cn/image/CL4DN2Ndpkk/', altText: 'Hydroxyapatite Toothpaste', sort: 1, isMain: true, createdAt: '2024-01-15' },
     ],
     channels: [
       { id: 1, productId: 1, skuId: null, channelType: 2, shopName: null, url: 'https://wa.me/8613800138000?text=I%20am%20interested%20in%20Hydroxyapatite%20Toothpaste', qrCode: null, sort: 1, status: 1, createdAt: '2024-01-15', updatedAt: '2024-01-15' },
@@ -26,7 +26,7 @@ export const mockProducts: Product[] = [
   },
   {
     id: 2, categoryId: 1, productCode: 'WT-002', slug: 'whitening-toothpaste',
-    mainImage: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600',
+    mainImage: 'https://s.coze.cn/image/Ub3RZ6-Y1_A/',
     priceMin: 2.0, priceMax: 4.5, unit: 'pcs', minOrderQuantity: 500,
     totalStock: 8000, salesCount: 2800, isHot: true, isRecommended: true, isNew: false,
     status: 1, sort: 2, createdAt: '2024-02-10', updatedAt: '2024-06-15',
@@ -41,7 +41,7 @@ export const mockProducts: Product[] = [
       { id: 4, productId: 2, skuCode: 'WT-002-B', price: 2.0, stock: 4000, stockWarning: 400, weight: 120, volume: '12x4x4cm', status: 1, createdAt: '2024-02-10', updatedAt: '2024-06-15' },
     ],
     images: [
-      { id: 2, productId: 2, imageUrl: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800', altText: 'Whitening Toothpaste', sort: 1, isMain: true, createdAt: '2024-02-10' },
+      { id: 2, productId: 2, imageUrl: 'https://s.coze.cn/image/Ub3RZ6-Y1_A/', altText: 'Whitening Toothpaste', sort: 1, isMain: true, createdAt: '2024-02-10' },
     ],
     channels: [
       { id: 2, productId: 2, skuId: null, channelType: 2, shopName: null, url: 'https://wa.me/8613800138000?text=I%20am%20interested%20in%20Whitening%20Toothpaste', qrCode: null, sort: 1, status: 1, createdAt: '2024-02-10', updatedAt: '2024-02-10' },
@@ -49,7 +49,7 @@ export const mockProducts: Product[] = [
   },
   {
     id: 3, categoryId: 1, productCode: 'SR-003', slug: 'sensitive-relief-toothpaste',
-    mainImage: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=600',
+    mainImage: 'https://s.coze.cn/image/uXV8iKInfoI/',
     priceMin: 3.0, priceMax: 6.0, unit: 'pcs', minOrderQuantity: 1000,
     totalStock: 6000, salesCount: 1500, isHot: false, isRecommended: true, isNew: false,
     status: 1, sort: 3, createdAt: '2024-03-01', updatedAt: '2024-06-10',
@@ -64,7 +64,7 @@ export const mockProducts: Product[] = [
       { id: 6, productId: 3, skuCode: 'SR-003-B', price: 3.0, stock: 3000, stockWarning: 300, weight: 120, volume: '12x4x4cm', status: 1, createdAt: '2024-03-01', updatedAt: '2024-06-10' },
     ],
     images: [
-      { id: 3, productId: 3, imageUrl: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800', altText: 'Sensitive Relief Toothpaste', sort: 1, isMain: true, createdAt: '2024-03-01' },
+      { id: 3, productId: 3, imageUrl: 'https://s.coze.cn/image/uXV8iKInfoI/', altText: 'Sensitive Relief Toothpaste', sort: 1, isMain: true, createdAt: '2024-03-01' },
     ],
     channels: [
       { id: 3, productId: 3, skuId: null, channelType: 2, shopName: null, url: 'https://wa.me/8613800138000?text=I%20am%20interested%20in%20Sensitive%20Relief%20Toothpaste', qrCode: null, sort: 1, status: 1, createdAt: '2024-03-01', updatedAt: '2024-03-01' },
@@ -72,7 +72,7 @@ export const mockProducts: Product[] = [
   },
   {
     id: 4, categoryId: 1, productCode: 'KF-004', slug: 'kids-fluoride-toothpaste',
-    mainImage: 'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=600',
+    mainImage: 'https://s.coze.cn/image/iWerzalr6v8/',
     priceMin: 1.5, priceMax: 3.5, unit: 'pcs', minOrderQuantity: 1000,
     totalStock: 15000, salesCount: 4500, isHot: false, isRecommended: true, isNew: false,
     status: 1, sort: 4, createdAt: '2024-04-01', updatedAt: '2024-06-20',
@@ -87,7 +87,7 @@ export const mockProducts: Product[] = [
       { id: 8, productId: 4, skuCode: 'KF-004-B', price: 1.5, stock: 7500, stockWarning: 750, weight: 60, volume: '8x3x3cm', status: 1, createdAt: '2024-04-01', updatedAt: '2024-06-20' },
     ],
     images: [
-      { id: 4, productId: 4, imageUrl: 'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=800', altText: 'Kids Fluoride Toothpaste', sort: 1, isMain: true, createdAt: '2024-04-01' },
+      { id: 4, productId: 4, imageUrl: 'https://s.coze.cn/image/iWerzalr6v8/', altText: 'Kids Fluoride Toothpaste', sort: 1, isMain: true, createdAt: '2024-04-01' },
     ],
     channels: [
       { id: 4, productId: 4, skuId: null, channelType: 2, shopName: null, url: 'https://wa.me/8613800138000?text=I%20am%20interested%20in%20Kids%20Fluoride%20Toothpaste', qrCode: null, sort: 1, status: 1, createdAt: '2024-04-01', updatedAt: '2024-04-01' },
@@ -95,7 +95,7 @@ export const mockProducts: Product[] = [
   },
   {
     id: 5, categoryId: 1, productCode: 'HB-005', slug: 'herbal-toothpaste',
-    mainImage: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600',
+    mainImage: 'https://s.coze.cn/image/gVNsGkmnz3I/',
     priceMin: 2.0, priceMax: 4.0, unit: 'pcs', minOrderQuantity: 1000,
     totalStock: 7000, salesCount: 1800, isHot: false, isRecommended: false, isNew: true,
     status: 1, sort: 5, createdAt: '2024-05-01', updatedAt: '2024-06-20',
@@ -110,7 +110,7 @@ export const mockProducts: Product[] = [
       { id: 10, productId: 5, skuCode: 'HB-005-B', price: 2.0, stock: 3500, stockWarning: 350, weight: 120, volume: '12x4x4cm', status: 1, createdAt: '2024-05-01', updatedAt: '2024-06-20' },
     ],
     images: [
-      { id: 5, productId: 5, imageUrl: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800', altText: 'Herbal Toothpaste', sort: 1, isMain: true, createdAt: '2024-05-01' },
+      { id: 5, productId: 5, imageUrl: 'https://s.coze.cn/image/gVNsGkmnz3I/', altText: 'Herbal Toothpaste', sort: 1, isMain: true, createdAt: '2024-05-01' },
     ],
     channels: [
       { id: 5, productId: 5, skuId: null, channelType: 2, shopName: null, url: 'https://wa.me/8613800138000?text=I%20am%20interested%20in%20Herbal%20Toothpaste', qrCode: null, sort: 1, status: 1, createdAt: '2024-05-01', updatedAt: '2024-05-01' },
@@ -118,7 +118,7 @@ export const mockProducts: Product[] = [
   },
   {
     id: 6, categoryId: 2, productCode: 'CP-006', slug: 'charcoal-tooth-powder',
-    mainImage: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600',
+    mainImage: 'https://s.coze.cn/image/Ub3RZ6-Y1_A/',
     priceMin: 2.5, priceMax: 5.0, unit: 'pcs', minOrderQuantity: 1000,
     totalStock: 5000, salesCount: 900, isHot: false, isRecommended: true, isNew: false,
     status: 1, sort: 6, createdAt: '2024-05-15', updatedAt: '2024-06-20',
@@ -133,7 +133,7 @@ export const mockProducts: Product[] = [
       { id: 12, productId: 6, skuCode: 'CP-006-B', price: 2.5, stock: 2500, stockWarning: 250, weight: 50, volume: '7x5x5cm', status: 1, createdAt: '2024-05-15', updatedAt: '2024-06-20' },
     ],
     images: [
-      { id: 6, productId: 6, imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800', altText: 'Charcoal Tooth Powder', sort: 1, isMain: true, createdAt: '2024-05-15' },
+      { id: 6, productId: 6, imageUrl: 'https://s.coze.cn/image/Ub3RZ6-Y1_A/', altText: 'Charcoal Tooth Powder', sort: 1, isMain: true, createdAt: '2024-05-15' },
     ],
     channels: [
       { id: 6, productId: 6, skuId: null, channelType: 2, shopName: null, url: 'https://wa.me/8613800138000?text=I%20am%20interested%20in%20Charcoal%20Tooth%20Powder', qrCode: null, sort: 1, status: 1, createdAt: '2024-05-15', updatedAt: '2024-05-15' },
@@ -141,7 +141,7 @@ export const mockProducts: Product[] = [
   },
   {
     id: 7, categoryId: 3, productCode: 'MW-007', slug: 'mint-mouthwash',
-    mainImage: 'https://images.unsplash.com/photo-1584515933487-779824d29309?w=600',
+    mainImage: 'https://s.coze.cn/image/vlgb0RPGJtU/',
     priceMin: 1.5, priceMax: 3.5, unit: 'pcs', minOrderQuantity: 500,
     totalStock: 12000, salesCount: 3600, isHot: false, isRecommended: true, isNew: false,
     status: 1, sort: 7, createdAt: '2024-06-01', updatedAt: '2024-06-20',
@@ -156,7 +156,7 @@ export const mockProducts: Product[] = [
       { id: 14, productId: 7, skuCode: 'MW-007-B', price: 1.5, stock: 6000, stockWarning: 600, weight: 300, volume: '15x6x6cm', status: 1, createdAt: '2024-06-01', updatedAt: '2024-06-20' },
     ],
     images: [
-      { id: 7, productId: 7, imageUrl: 'https://images.unsplash.com/photo-1584515933487-779824d29309?w=800', altText: 'Mint Mouthwash', sort: 1, isMain: true, createdAt: '2024-06-01' },
+      { id: 7, productId: 7, imageUrl: 'https://s.coze.cn/image/vlgb0RPGJtU/', altText: 'Mint Mouthwash', sort: 1, isMain: true, createdAt: '2024-06-01' },
     ],
     channels: [
       { id: 7, productId: 7, skuId: null, channelType: 2, shopName: null, url: 'https://wa.me/8613800138000?text=I%20am%20interested%20in%20Mint%20Mouthwash', qrCode: null, sort: 1, status: 1, createdAt: '2024-06-01', updatedAt: '2024-06-01' },
@@ -164,7 +164,7 @@ export const mockProducts: Product[] = [
   },
   {
     id: 8, categoryId: 4, productCode: 'SB-008', slug: 'soft-bristle-toothbrush',
-    mainImage: 'https://images.unsplash.com/photo-1612538498456-e861df91d4d0?w=600',
+    mainImage: 'https://s.coze.cn/image/PAuB8XyqzDg/',
     priceMin: 0.5, priceMax: 1.5, unit: 'pcs', minOrderQuantity: 2000,
     totalStock: 50000, salesCount: 15000, isHot: false, isRecommended: true, isNew: false,
     status: 1, sort: 8, createdAt: '2024-06-15', updatedAt: '2024-06-20',
@@ -179,7 +179,7 @@ export const mockProducts: Product[] = [
       { id: 16, productId: 8, skuCode: 'SB-008-B', price: 0.5, stock: 25000, stockWarning: 2500, weight: 10, volume: '18x2x2cm', status: 1, createdAt: '2024-06-15', updatedAt: '2024-06-20' },
     ],
     images: [
-      { id: 8, productId: 8, imageUrl: 'https://images.unsplash.com/photo-1612538498456-e861df91d4d0?w=800', altText: 'Soft Bristle Toothbrush', sort: 1, isMain: true, createdAt: '2024-06-15' },
+      { id: 8, productId: 8, imageUrl: 'https://s.coze.cn/image/PAuB8XyqzDg/', altText: 'Soft Bristle Toothbrush', sort: 1, isMain: true, createdAt: '2024-06-15' },
     ],
     channels: [
       { id: 8, productId: 8, skuId: null, channelType: 2, shopName: null, url: 'https://wa.me/8613800138000?text=I%20am%20interested%20in%20Soft%20Bristle%20Toothbrush', qrCode: null, sort: 1, status: 1, createdAt: '2024-06-15', updatedAt: '2024-06-15' },
