@@ -12,7 +12,7 @@ export default function HomePageClient({ locale }: { locale: string }) {
   const t = useTranslations('home');
 
   return (
-    <div className="flex min-h-screen flex-col -mt-[68px]">
+    <div className="flex min-h-screen flex-col">
       {/* Section 1: Hero */}
       <HeroBanner />
 
