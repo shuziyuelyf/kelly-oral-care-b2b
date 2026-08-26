@@ -17,7 +17,7 @@ export default async function FrontendLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <Header locale={locale} />
-      <main className={`flex-1 ${isHome ? 'md:pt-0' : 'md:pt-14'}`}>{children}</main>
+      <main className="flex-1 md:pt-[68px]">{children}</main>
       <Footer locale={locale} />
     </div>
   );

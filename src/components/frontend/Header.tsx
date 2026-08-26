@@ -406,14 +406,11 @@ export default function Header({ locale }: { locale: string }) {
   const isMobileMode = visibleCount === 0; // All items collapsed
 
   return (
-    <header ref={headerRef} className={`sticky top-0 z-50 bg-white md:fixed md:top-0 md:left-0 md:right-0 md:z-50 ${!isHome ? 'md:bg-white' : ''}`}>
-      <div className={`${isHome ? 'mx-auto w-[94%] max-w-[1680px] px-6 md:pt-3' : 'w-full px-4 md:px-6'}`}>
+    <header ref={headerRef} className="sticky top-0 z-50 bg-white md:fixed md:top-0 md:left-0 md:right-0 md:z-50 md:bg-transparent">
+      <div className="mx-auto w-[94%] max-w-[1680px] px-6 md:pt-3">
         <div
           ref={capsuleRef}
-          className={`flex items-center h-14 px-4 transition-all duration-300 relative bg-white shadow-none ${isHome ? 'border-b border-gray-100 md:border-b-0 rounded-full md:bg-white/90 md:backdrop-blur-xl' : 'md:rounded-none md:bg-white md:border-b md:border-gray-100 md:shadow-none'} ${isScrolled && isHome ? 'md:shadow-[0_8px_32px_rgba(0,0,0,0.12)] md:bg-white md:backdrop-blur-none' : ''}`}
-          style={{
-            backgroundColor: isScrolled || !isHome ? 'rgb(255,255,255)' : undefined,
-          }}
+          className={`flex items-center h-14 px-4 transition-all duration-300 relative bg-white rounded-full shadow-[0_2px_12px_rgba(0,0,0,0.06)] md:bg-white/90 md:backdrop-blur-xl ${isScrolled ? 'md:shadow-[0_8px_32px_rgba(0,0,0,0.12)] md:bg-white md:backdrop-blur-none' : ''}`}
         >
           {/* Left zone: Visible menu items (flex:1, takes half minus logo space) */}
           {isMobileMode ? (
