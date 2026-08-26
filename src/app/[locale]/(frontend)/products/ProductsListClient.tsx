@@ -16,7 +16,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   const categories = useMemo(() => {
-    const cats = new Set(mockProducts.map(p => p.categoryId));
+    const cats = new Set(mockProducts.map(p => String(p.categoryId)));
     return ['all', ...Array.from(cats)];
   }, []);
 
@@ -94,7 +94,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
-                {categoryLabels[cat] || cat}
+                {categoryLabels[String(cat)] || cat}
               </button>
             ))}
           </div>
