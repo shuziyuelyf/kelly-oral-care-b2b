@@ -7,11 +7,13 @@ import '@/app/globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: 'B2BPro - Professional B2B Supply Chain Solutions',
-    template: '%s | B2BPro',
+    default: 'Kelly Oral Care — B2B Oral Care Manufacturer | Toothpaste, Mouthwash & Private Label',
+    template: '%s | Kelly Oral Care',
   },
-  description: 'Professional B2B industrial products supplier with global delivery capabilities. CNC machines, electronic components, raw materials, and custom manufacturing services.',
-  keywords: 'B2B, industrial products, CNC, manufacturing, wholesale, custom manufacturing, OEM, ODM',
+  description:
+    'Kelly Biotechnology is a professional B2B oral care manufacturer offering toothpaste, mouthwash, tooth powder, toothbrushes, teeth whitening, and private label / OEM / ODM custom formula and packaging solutions for global brands.',
+  keywords:
+    'oral care manufacturer, toothpaste OEM, private label toothpaste, mouthwash manufacturer, tooth powder OEM, bamboo toothbrush, teeth whitening strips, custom formula oral care, oral care B2B, Kelly Oral Care, Kelly Biotechnology',
 };
 
 export default async function LocaleLayout({

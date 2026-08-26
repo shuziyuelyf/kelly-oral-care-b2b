@@ -108,7 +108,7 @@ export default function AuthPage() {
                 </div>
               </div>
               <p className="text-xs text-gray-400">{t('registerHint')}</p>
-              <button type="submit" className="w-full py-3 bg-[#008FD5] text-white font-medium rounded-lg hover:bg-[#d4680b] transition-colors">
+              <button type="submit" className="w-full py-3 bg-[#008FD5] text-white font-medium rounded-lg hover:bg-[#0077B6] transition-colors">
                 {t('registerBtn')}
               </button>
             </form>

@@ -21,7 +21,7 @@ export default function AdminProductsPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-[#173A63]">{t('title')}</h1>
-        <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#008FD5] text-white rounded-lg hover:bg-[#d4680b] text-sm font-medium">
+        <button className="inline-flex items-center gap-2 px-4 py-2 bg-[#008FD5] text-white rounded-lg hover:bg-[#0077B6] text-sm font-medium">
           <Plus className="w-4 h-4" /> {t('addProduct')}
         </button>
       </div>
