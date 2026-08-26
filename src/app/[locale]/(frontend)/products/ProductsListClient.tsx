@@ -126,14 +126,14 @@ export default function ProductsListClient({ locale }: { locale: string }) {
                   }`}
                 >
                   {/* Image */}
-                  <div className={`relative bg-[#F3F5F7] overflow-hidden flex items-center justify-center ${
+                  <div className={`relative bg-[#F3F5F7] overflow-hidden flex items-center justify-center p-3 ${
                     viewMode === 'list' ? 'w-40 h-40 flex-shrink-0' : 'aspect-square'
                   }`}>
                     <img
                       src={safeImageSrc(product.mainImage)}
                       alt={name}
                       loading={i < 4 ? 'eager' : 'lazy'}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                      className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500"
                     />
                     {/* Tags */}
                     <div className="absolute top-3 left-3 flex flex-col gap-1.5">
