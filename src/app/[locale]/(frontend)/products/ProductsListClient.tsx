@@ -104,7 +104,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
                   className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex md:flex-col items-center md:items-stretch"
                 >
                   {/* Image */}
-                  <div className="relative bg-[#F3F5F7] overflow-hidden flex items-center justify-center p-3 w-32 h-32 md:w-full md:h-auto md:aspect-square flex-shrink-0 md:flex-shrink">
+                  <div className="relative bg-[#F3F5F7] overflow-hidden flex items-center justify-center p-2 w-40 h-40 md:w-full md:h-auto md:aspect-square flex-shrink-0 md:flex-shrink">
                     <img
                       src={safeImageSrc(product.mainImage)}
                       alt={name}
