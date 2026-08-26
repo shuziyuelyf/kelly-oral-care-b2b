@@ -7,36 +7,22 @@ export default function PartnerLogoWall() {
   const t = useTranslations('home');
 
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-3">{t('partnersTitle')}</h2>
-          <p className="text-[#718096]">{t('partnersDesc')}</p>
+    <section className="py-16 bg-white">
+      <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
+        <div className="text-center mb-10">
+          <h2 className="text-2xl md:text-3xl font-bold text-[#173A63] mb-3">{t('partnersTitle', { fallback: 'Certifications & Compliance' })}</h2>
+          <p className="text-gray-500">{t('partnersDesc', { fallback: 'Our manufacturing meets international standards' })}</p>
         </div>
-        <div className="overflow-hidden relative">
-          <div className="flex gap-16 animate-scroll">
-            {[...mockPartners, ...mockPartners].map((partner, i) => (
-              <div key={i} className="flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100">
-                <div className="w-32 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
-                  <span className="text-[#718096] font-bold text-sm">{partner.name}</span>
-                </div>
+        <div className="flex flex-wrap justify-center gap-8 md:gap-12">
+          {mockPartners.map((partner) => (
+            <div key={partner.id} className="flex items-center justify-center grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+              <div className="px-6 py-3 bg-gray-50 rounded-full border border-gray-100">
+                <span className="text-[#173A63] font-bold text-sm tracking-wide">{partner.name}</span>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
-      <style jsx>{`
-        @keyframes scroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-scroll {
-          animation: scroll 20s linear infinite;
-        }
-        .animate-scroll:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
     </section>
   );
 }

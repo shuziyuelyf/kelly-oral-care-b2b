@@ -85,7 +85,7 @@ export default function HeroBanner() {
 
         {/* Desktop content: positioned at 40% from top */}
         <div className="hidden md:flex absolute inset-0 z-10">
-          <div className="absolute top-[40%] left-0 right-0 mx-auto w-[94%] max-w-[1680px] px-6">
+          <div className="absolute top-[40%] left-0 right-0 mx-auto w-[94%] max-w-[1360px] px-6">
             <div className="max-w-2xl">
               <h1
                 key={`title-${current}`}

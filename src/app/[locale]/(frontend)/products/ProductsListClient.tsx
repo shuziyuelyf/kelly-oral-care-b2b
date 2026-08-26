@@ -40,7 +40,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
     <div className="min-h-screen bg-[#F7F4EF]">
       {/* Compact Hero */}
       <section className="bg-[#173A63] pb-8 md:pt-8 md:pb-10">
-        <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-4 md:px-6">
           <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-2">
             {tNav('products')}
           </h1>
@@ -52,7 +52,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
 
       {/* Filter Bar */}
       <section className="bg-white border-b border-gray-100 sticky top-0 md:top-[68px] z-30">
-        <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-4 md:px-6">
           <div className="py-3">
             {/* Search */}
             <div className="relative">
@@ -87,7 +87,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
 
       {/* Product Grid */}
       <section className="py-8 md:py-12">
-        <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-4 md:px-6">
           <p className="text-sm text-gray-500 mb-6">
             {filtered.length} {t('itemsFound')}
           </p>
@@ -166,7 +166,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
 
       {/* Bottom CTA - Cross Guidance */}
       <section className="py-12 md:py-16 bg-white">
-        <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-6">
             {/* Private Label CTA */}
             <Link href={`/${locale}/private-label`} className="group relative overflow-hidden rounded-2xl bg-[#EAF7FD] p-8 md:p-10 hover:shadow-lg transition">

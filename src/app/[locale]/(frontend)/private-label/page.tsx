@@ -14,7 +14,7 @@ export default function PrivateLabelPage() {
           backgroundImage: 'radial-gradient(circle at 25% 25%, white 1px, transparent 1px)',
           backgroundSize: '60px 60px'
         }} />
-        <div className="relative z-10 mx-auto max-w-6xl px-6 py-20">
+        <div className="relative z-10 mx-auto w-[94%] max-w-[1360px] px-2 md:px-6 py-20">
           <div className="max-w-2xl">
             <span className="inline-block bg-[#008FD5] text-white text-xs font-bold px-4 py-1.5 rounded-full mb-6">MOST POPULAR</span>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">{t('heroTitle')}</h1>
@@ -34,7 +34,7 @@ export default function PrivateLabelPage() {
 
       {/* Why Choose Private Label */}
       <section className="py-20 bg-white">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">{t('whyTitle')}</h2>
             <p className="text-gray-500 text-lg">{t('whyDesc')}</p>
@@ -58,7 +58,7 @@ export default function PrivateLabelPage() {
 
       {/* How It Works */}
       <section className="py-20 bg-[#F7F4EF]">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">{t('processTitle')}</h2>
             <p className="text-gray-500 text-lg">{t('processDesc')}</p>
@@ -84,7 +84,7 @@ export default function PrivateLabelPage() {
 
       {/* Available Products */}
       <section className="py-20 bg-white">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">{t('productsTitle')}</h2>
             <p className="text-gray-500 text-lg">{t('productsDesc')}</p>
@@ -101,7 +101,7 @@ export default function PrivateLabelPage() {
 
       {/* Ready Formulas */}
       <section className="py-20 bg-[#F7F4EF]">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">Ready Formulas</h2>
             <p className="text-gray-500 text-lg">Choose from our proven oral care formulas — ready for your brand</p>
@@ -136,7 +136,7 @@ export default function PrivateLabelPage() {
 
       {/* Branding Options */}
       <section className="py-20 bg-white">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">Branding Options</h2>
             <p className="text-gray-500 text-lg">Three levels of customization to match your budget and brand vision</p>
@@ -191,55 +191,20 @@ export default function PrivateLabelPage() {
         </div>
       </section>
 
-      {/* Startup Packages */}
+      {/* Startup Packages — Pricing available on request */}
       <section className="py-20 bg-[#F7F4EF]">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">Startup Packages</h2>
-            <p className="text-gray-500 text-lg">Pre-configured packages to launch your brand quickly</p>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[600px] bg-white rounded-2xl overflow-hidden shadow-sm">
-              <thead>
-                <tr className="bg-[#173A63] text-white">
-                  <th className="px-6 py-4 text-left font-semibold">Package</th>
-                  <th className="px-6 py-4 text-left font-semibold">Quantity</th>
-                  <th className="px-6 py-4 text-left font-semibold">Includes</th>
-                  <th className="px-6 py-4 text-left font-semibold">Delivery</th>
-                  <th className="px-6 py-4 text-left font-semibold">Starting From</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                <tr className="hover:bg-gray-50">
-                  <td className="px-6 py-4 font-semibold text-[#173A63]">Starter</td>
-                  <td className="px-6 py-4">500 pcs</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">Logo sticker, 1 formula, standard tube</td>
-                  <td className="px-6 py-4">2-3 weeks</td>
-                  <td className="px-6 py-4 font-bold text-[#008FD5]">$1,500</td>
-                </tr>
-                <tr className="hover:bg-gray-50 bg-[#EAF7FD]/50">
-                  <td className="px-6 py-4 font-semibold text-[#173A63]">Brand <span className="text-xs bg-[#008FD5] text-white px-2 py-0.5 rounded-full ml-1">Popular</span></td>
-                  <td className="px-6 py-4">1,000 pcs</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">Custom tube, 1 formula, design support</td>
-                  <td className="px-6 py-4">3-4 weeks</td>
-                  <td className="px-6 py-4 font-bold text-[#008FD5]">$2,800</td>
-                </tr>
-                <tr className="hover:bg-gray-50">
-                  <td className="px-6 py-4 font-semibold text-[#173A63]">Premium</td>
-                  <td className="px-6 py-4">3,000 pcs</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">Custom tube + box, 2 formulas, full design</td>
-                  <td className="px-6 py-4">4-5 weeks</td>
-                  <td className="px-6 py-4 font-bold text-[#008FD5]">$7,500</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-[#173A63] mb-4">Startup Packages</h2>
+          <p className="text-gray-500 text-lg mb-6 max-w-xl mx-auto">Pre-configured packages to launch your brand quickly. Pricing varies by product type, packaging, and quantity — contact us for a detailed quote.</p>
+          <Link href="/contact" className="inline-flex items-center gap-2 rounded-full bg-[#008FD5] px-10 py-4 text-base font-semibold text-white hover:bg-[#0070a8] transition-colors">
+            Request Pricing
+          </Link>
         </div>
       </section>
 
       {/* What's Included / What's Not */}
       <section className="py-20 bg-white">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">{"What's Included"}</h2>
             <p className="text-gray-500 text-lg">Clear scope — so you know exactly what you get</p>
@@ -301,7 +266,7 @@ export default function PrivateLabelPage() {
 
       {/* Timeline */}
       <section className="py-20 bg-[#F7F4EF]">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">Project Timeline</h2>
             <p className="text-gray-500 text-lg">{"From inquiry to delivery — here's what to expect"}</p>
@@ -333,7 +298,7 @@ export default function PrivateLabelPage() {
 
       {/* MOQ & Pricing */}
       <section className="py-20 bg-[#F7F4EF]">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">{t('moqTitle')}</h2>
             <p className="text-gray-500 text-lg">{t('moqDesc')}</p>
@@ -360,7 +325,7 @@ export default function PrivateLabelPage() {
 
       {/* FAQ */}
       <section className="py-20 bg-white">
-        <div className="mx-auto max-w-3xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-12 text-center">{t('faqTitle')}</h2>
           <div className="space-y-4">
             {[
@@ -384,7 +349,7 @@ export default function PrivateLabelPage() {
 
       {/* Final CTA */}
       <section className="py-20 bg-[#173A63]">
-        <div className="mx-auto max-w-4xl px-6 text-center">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{t('ctaTitle')}</h2>
           <p className="text-white/70 text-lg mb-8">{t('ctaDesc')}</p>
           <div className="flex flex-wrap justify-center gap-4">

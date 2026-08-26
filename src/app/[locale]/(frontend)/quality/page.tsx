@@ -9,7 +9,7 @@ export default async function QualityPage({ params }: { params: Promise<{ locale
       {/* Hero Section */}
       <section className="relative bg-[#173A63] text-white py-20 md:py-32">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1920&h=600&fit=crop')] bg-cover bg-center opacity-20" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative mx-auto w-[94%] max-w-[1360px] px-2 md:px-6 text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">{t('heroTitle')}</h1>
           <p className="text-xl text-white/80 max-w-3xl mx-auto">{t('heroSubtitle')}</p>
         </div>
@@ -17,7 +17,7 @@ export default async function QualityPage({ params }: { params: Promise<{ locale
 
       {/* Certifications */}
       <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4 text-center">{t('certTitle')}</h2>
           <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12">{t('certDesc')}</p>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -47,7 +47,7 @@ export default async function QualityPage({ params }: { params: Promise<{ locale
 
       {/* Quality Control Process */}
       <section className="py-20 bg-[#F7F4EF]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4 text-center">{t('processTitle')}</h2>
           <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12">{t('processDesc')}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -69,7 +69,7 @@ export default async function QualityPage({ params }: { params: Promise<{ locale
 
       {/* Testing Lab */}
       <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=600&h=400&fit=crop" alt="Testing Lab" className="rounded-2xl shadow-lg w-full" />

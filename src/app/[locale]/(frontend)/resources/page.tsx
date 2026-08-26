@@ -23,7 +23,7 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
       {/* Hero Section */}
       <section className="relative bg-[#173A63] text-white py-20 md:py-28">
         <div className="absolute inset-0 bg-gradient-to-br from-[#173A63] to-[#0a2540] opacity-90" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative mx-auto w-[94%] max-w-[1360px] px-2 md:px-6 text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">{t('heroTitle')}</h1>
           <p className="text-xl text-white/80 max-w-3xl mx-auto mb-8">{t('heroSubtitle')}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -39,7 +39,7 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
 
       {/* Categories */}
       <section className="py-16 bg-[#F7F4EF]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4 text-center">{t('categoriesTitle')}</h2>
           <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12">{t('categoriesDesc')}</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -56,7 +56,7 @@ export default async function ResourcesPage({ params }: { params: Promise<{ loca
 
       {/* Featured Resources */}
       <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4 text-center">{t('featuredTitle')}</h2>
           <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12">{t('featuredDesc')}</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

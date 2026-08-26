@@ -3,6 +3,9 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { trackEvent } from '@/lib/analytics';
+import { mockProducts } from '@/lib/mock/products';
+import { getI18nValue, safeImageSrc } from '@/lib/utils-i18n';
+import ProductCard from '@/components/frontend/ProductCard';
 import HeroBanner from './HeroBanner';
 import PartnerLogoWall from './PartnerLogoWall';
 import FAQSection from './FAQSection';
@@ -18,7 +21,7 @@ export default function HomePageClient({ locale }: { locale: string }) {
 
       {/* Section 2: Three-Path Routing Module */}
       <section className="py-20 bg-white">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">{t('pathsTitle')}</h2>
             <p className="text-gray-500 text-lg">{t('pathsSubtitle')}</p>
@@ -92,7 +95,7 @@ export default function HomePageClient({ locale }: { locale: string }) {
 
       {/* Section 3: Trust Bar */}
       <section className="py-10 bg-[#F7F4EF]">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div className="flex flex-col items-center gap-2">
               <svg className="w-8 h-8 text-[#008FD5]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -116,36 +119,26 @@ export default function HomePageClient({ locale }: { locale: string }) {
 
       {/* Section 4: Featured Products */}
       <section className="py-20 bg-white">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">{t('featuredTitle')}</h2>
             <p className="text-gray-500 text-lg">{t('featuredDesc')}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {[
-              { name: 'Whitening Toothpaste', img: 'https://s.coze.cn/image/Ub3RZ6-Y1_A/', moq: '5,000', tag: 'Best Seller' },
-              { name: 'Charcoal Toothpaste', img: 'https://s.coze.cn/image/PAuB8XyqzDg/', moq: '3,000', tag: 'Hot' },
-              { name: 'Fresh Mouthwash', img: 'https://s.coze.cn/image/vlgb0RPGJtU/', moq: '10,000', tag: 'New' },
-              { name: 'Bamboo Toothbrush', img: 'https://s.coze.cn/image/i3DeBHVayB0/', moq: '10,000', tag: 'Eco' },
-            ].map((product, i) => (
-              <div key={i} className="group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300">
-                <div className="relative aspect-square bg-gray-50 p-6 flex items-center justify-center overflow-hidden">
-                  <img src={product.img} alt={product.name} className="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300" />
-                  <span className="absolute top-3 left-3 bg-[#008FD5] text-white text-xs font-bold px-3 py-1 rounded-full">{product.tag}</span>
-                </div>
-                <div className="p-5">
-                  <h3 className="font-semibold text-[#173A63] mb-1">{product.name}</h3>
-                  <p className="text-sm text-gray-400 mb-3">{t('moq')}: {product.moq} pcs</p>
-                  <div className="flex gap-2">
-                    <Link href={`/${locale}/products`} onClick={() => trackEvent('product_view', { product_id: `prod-${i}`, category: 'oral-care' })} className="flex-1 text-center py-2 text-sm font-medium text-[#173A63] border border-[#173A63] rounded-full hover:bg-[#173A63] hover:text-white transition-colors">
-                      {t('viewDetails')}
-                    </Link>
-                    <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" onClick={() => trackEvent('whatsapp_click', { page: 'home', position: 'product_card' })} className="flex-1 text-center py-2 text-sm font-medium text-white bg-[#21C96B] rounded-full hover:bg-[#1db85e] transition-colors">
-                      WhatsApp
-                    </a>
-                  </div>
-                </div>
-              </div>
+            {mockProducts.slice(0, 4).map((product) => (
+              <ProductCard
+                key={product.id}
+                slug={product.slug || `product-${product.id}`}
+                name={getI18nValue(product.i18n, locale, 'name')}
+                subtitle={getI18nValue(product.i18n, locale, 'subtitle')}
+                image={safeImageSrc(product.mainImage)}
+                moq={product.minOrderQuantity}
+                isHot={product.isHot}
+                isNew={product.isNew}
+                inStock={product.totalStock > 0}
+                locale={locale}
+                viewDetailsLabel={t('viewDetails')}
+              />
             ))}
           </div>
           <div className="text-center">
@@ -159,7 +152,7 @@ export default function HomePageClient({ locale }: { locale: string }) {
 
       {/* Section 5: Start Your Own Brand (Private Label Promo) */}
       <section className="py-20 bg-[#EAF7FD]">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <span className="inline-block bg-[#008FD5] text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4">MOST POPULAR</span>
@@ -206,7 +199,7 @@ export default function HomePageClient({ locale }: { locale: string }) {
 
       {/* Section 6: Full OEM/ODM Manufacturing */}
       <section className="py-20 bg-white">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="order-2 lg:order-1">
               <div className="grid grid-cols-3 gap-3">
@@ -239,7 +232,7 @@ export default function HomePageClient({ locale }: { locale: string }) {
 
       {/* Section 7: Advanced Customization Preview */}
       <section className="py-20 bg-[#F7F4EF]">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">{t('advCustomTitle')}</h2>
             <p className="text-gray-500 text-lg">{t('advCustomDesc')}</p>
@@ -270,7 +263,7 @@ export default function HomePageClient({ locale }: { locale: string }) {
 
       {/* Section 8: Factory & Quality */}
       <section className="py-20 bg-white">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">{t('fqTitle')}</h2>
             <p className="text-gray-500 text-lg">{t('fqDesc')}</p>
@@ -304,7 +297,7 @@ export default function HomePageClient({ locale }: { locale: string }) {
 
       {/* Section 9: Final CTA */}
       <section className="py-20 bg-[#173A63]">
-        <div className="mx-auto max-w-4xl px-6 text-center">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{t('finalCtaTitle')}</h2>
           <p className="text-white/70 text-lg mb-8 max-w-2xl mx-auto">{t('finalCtaDesc')}</p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -321,7 +314,7 @@ export default function HomePageClient({ locale }: { locale: string }) {
 
       {/* Section 10: Resources / Blog */}
       <section className="py-20 bg-white">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">{t('resourcesTitle')}</h2>
             <p className="text-gray-500 text-lg">{t('resourcesDesc')}</p>

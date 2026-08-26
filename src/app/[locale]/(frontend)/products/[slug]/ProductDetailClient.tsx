@@ -47,7 +47,7 @@ export default function ProductDetailClient({ locale, slug }: { locale: string; 
     <div className="min-h-screen bg-[#F7F4EF]">
       {/* Breadcrumb */}
       <nav className="bg-white border-b border-gray-100 pt-4 md:pt-6 pb-4">
-        <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-4 md:px-6">
           <div className="flex items-center gap-2 text-sm text-gray-500">
             <Link href={`/${locale}`} className="hover:text-[#008FD5] transition">{t('home')}</Link>
             <ChevronRight className="w-3 h-3" />
@@ -60,7 +60,7 @@ export default function ProductDetailClient({ locale, slug }: { locale: string; 
 
       {/* Product Hero */}
       <section className="bg-white py-8 md:py-12">
-        <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-8 md:gap-12">
             {/* Image Gallery */}
             <div className="relative aspect-square bg-[#F3F5F7] rounded-2xl overflow-hidden">
@@ -148,7 +148,7 @@ export default function ProductDetailClient({ locale, slug }: { locale: string; 
       {/* Key Features */}
       {detail?.features && (
         <section className="py-12 md:py-16 bg-white">
-          <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+          <div className="mx-auto w-[94%] max-w-[1360px] px-4 md:px-6">
             <h2 className="text-2xl md:text-3xl font-extrabold text-[#173A63] mb-2">{t('keyFeatures')}</h2>
             <p className="text-gray-500 mb-8">{t('keyFeaturesDesc')}</p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -172,7 +172,7 @@ export default function ProductDetailClient({ locale, slug }: { locale: string; 
       {/* Specifications */}
       {detail?.specifications && (
         <section className="py-12 md:py-16 bg-[#F7F4EF]">
-          <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+          <div className="mx-auto w-[94%] max-w-[1360px] px-4 md:px-6">
             <h2 className="text-2xl md:text-3xl font-extrabold text-[#173A63] mb-8">{t('specifications')}</h2>
             <div className="bg-white rounded-2xl overflow-hidden">
               {detail.specifications.map((s, i) => (
@@ -189,7 +189,7 @@ export default function ProductDetailClient({ locale, slug }: { locale: string; 
       {/* Packaging Options */}
       {detail?.packaging && (
         <section className="py-12 md:py-16 bg-white">
-          <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+          <div className="mx-auto w-[94%] max-w-[1360px] px-4 md:px-6">
             <h2 className="text-2xl md:text-3xl font-extrabold text-[#173A63] mb-2">{t('packaging')}</h2>
             <p className="text-gray-500 mb-8">{t('packagingDesc')}</p>
             <div className="grid sm:grid-cols-3 gap-6">
@@ -210,7 +210,7 @@ export default function ProductDetailClient({ locale, slug }: { locale: string; 
       {/* Usage */}
       {detail?.usage && (
         <section className="py-12 md:py-16 bg-[#F7F4EF]">
-          <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+          <div className="mx-auto w-[94%] max-w-[1360px] px-4 md:px-6">
             <h2 className="text-2xl md:text-3xl font-extrabold text-[#173A63] mb-6">{t('usage')}</h2>
             <div className="bg-white rounded-2xl p-6 md:p-8">
               <p className="text-gray-700 leading-relaxed">{getI18nRecordValue(detail.usage, locale)}</p>
@@ -222,7 +222,7 @@ export default function ProductDetailClient({ locale, slug }: { locale: string; 
       {/* Related Products */}
       {relatedProducts.length > 0 && (
         <section className="py-12 md:py-16 bg-white">
-          <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+          <div className="mx-auto w-[94%] max-w-[1360px] px-4 md:px-6">
             <h2 className="text-2xl md:text-3xl font-extrabold text-[#173A63] mb-8">{t('relatedProducts')}</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {relatedProducts.map(rp => {
@@ -252,7 +252,7 @@ export default function ProductDetailClient({ locale, slug }: { locale: string; 
       {/* FAQ */}
       {detail?.faq && (
         <section className="py-12 md:py-16 bg-[#F7F4EF]">
-          <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6">
+          <div className="mx-auto w-[94%] max-w-[1360px] px-4 md:px-6">
             <h2 className="text-2xl md:text-3xl font-extrabold text-[#173A63] mb-8">{t('faq')}</h2>
             <div className="space-y-3">
               {detail.faq.map((item, i) => (
@@ -278,7 +278,7 @@ export default function ProductDetailClient({ locale, slug }: { locale: string; 
 
       {/* Final CTA */}
       <section className="py-12 md:py-16 bg-[#173A63]">
-        <div className="mx-auto w-[94%] max-w-[1680px] px-4 md:px-6 text-center">
+        <div className="mx-auto w-[94%] max-w-[1360px] px-4 md:px-6 text-center">
           <h2 className="text-2xl md:text-3xl font-extrabold text-white mb-3">{t('finalCtaTitle')}</h2>
           <p className="text-white/70 mb-8 max-w-xl mx-auto">{t('finalCtaDesc')}</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
