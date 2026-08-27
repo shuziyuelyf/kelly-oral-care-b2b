@@ -429,7 +429,7 @@ export default function Header({ locale }: { locale: string }) {
               ? 'backdrop-blur-xl bg-white/80 border-slate-200/70 shadow-[0_10px_35px_rgba(15,23,42,0.12)]'
               : isHome
                 ? 'backdrop-blur-2xl bg-white/55 border-white/50 shadow-[0_12px_40px_rgba(15,23,42,0.15)]'
-                : 'backdrop-blur-md bg-white/30 border-slate-200/40 shadow-[0_8px_28px_rgba(15,23,42,0.07)]'
+                : 'bg-transparent border-slate-300/60 shadow-[0_2px_16px_rgba(15,23,42,0.04)]'
             }`}
         >
           {/* Left zone: visible menu items */}
