@@ -96,7 +96,7 @@ export default function Header({ locale }: { locale: string }) {
     }
 
     // Available width for left menu items
-    const leftAvailable = halfWidth - 12;
+    const leftAvailable = halfWidth - 4;
 
     if (leftAvailable <= 0) return 0;
 
@@ -397,7 +397,7 @@ export default function Header({ locale }: { locale: string }) {
 
   return (
     <header ref={headerRef} className="sticky top-0 z-50 md:fixed md:top-0 md:left-0 md:right-0 md:z-50 md:pointer-events-none">
-      <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6 pt-4 md:pt-6 pointer-events-auto">
+      <div className="mx-auto w-[96%] max-w-[1500px] px-2 md:px-6 pt-4 md:pt-6 pointer-events-auto">
         <div
           ref={capsuleRef}
           className={`flex items-center h-14 md:h-[72px] px-5 md:px-7 relative w-full rounded-full border backdrop-blur-2xl transition-all duration-300
