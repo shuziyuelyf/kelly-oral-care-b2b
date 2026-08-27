@@ -104,8 +104,8 @@ export default function Header({ locale }: { locale: string }) {
       return 0;
     }
 
-    // Available width for left menu items (subtract some gap for spacing)
-    const leftAvailable = halfWidth - 16; // 16px gap between items and logo
+    // Available width for left menu items (subtract gap before logo)
+    const leftAvailable = halfWidth - 20; // 20px gap between last item and logo center
 
     if (leftAvailable <= 0) return 0;
 
@@ -113,13 +113,13 @@ export default function Header({ locale }: { locale: string }) {
     const itemWidths: number[] = [];
     for (let i = 0; i < ALL_MENU_ITEMS.length; i++) {
       const el = itemRefs.current[i];
-      itemWidths.push(el?.offsetWidth ?? 80);
+      itemWidths.push(el?.offsetWidth ?? 70);
     }
 
     // Count how many items fit from left to right
     let totalWidth = 0;
     let count = 0;
-    const itemGap = 2; // gap-0.5 ≈ 2px
+    const itemGap = 0; // items use px padding for spacing, no flex gap
     for (let i = 0; i < itemWidths.length; i++) {
       if (totalWidth + itemWidths[i] + (count > 0 ? itemGap : 0) <= leftAvailable) {
         totalWidth += itemWidths[i] + (count > 0 ? itemGap : 0);
@@ -430,7 +430,7 @@ export default function Header({ locale }: { locale: string }) {
             </Link>
           ) : (
             // Desktop mode: Left zone with visible menu items
-            <div className="flex items-center gap-0.5 flex-1 min-w-0 justify-start overflow-visible">
+            <div className="flex items-center gap-0 flex-1 min-w-0 justify-start overflow-visible">
               {isMeasuring ? (
                 // During measurement, render all items hidden to get accurate widths
                 <div className="invisible absolute pointer-events-none">
@@ -442,7 +442,7 @@ export default function Header({ locale }: { locale: string }) {
                         ref={el => { itemRefs.current[i] = el; }}
                         className="inline-block"
                       >
-                        <span className={`flex items-center gap-1 px-3 py-2 text-[13px] font-medium rounded-full whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63]'}`}>
+                        <span className={`flex items-center gap-0.5 px-2.5 py-2 text-[12.5px] font-medium rounded-full whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63]'}`}>
                           {t(`nav.${key}`)}
                           <ChevronDown className="w-3 h-3" />
                         </span>
@@ -463,7 +463,7 @@ export default function Header({ locale }: { locale: string }) {
                     >
                       <Link
                         href={`/${locale}${href}`}
-                        className={`flex items-center gap-1 px-3 py-2 text-[13px] font-medium rounded-full transition-all whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63] hover:text-[#008FD5] hover:bg-gray-100/60'}`}
+                        className={`flex items-center gap-0.5 px-2.5 py-2 text-[12.5px] font-medium rounded-full transition-all whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63] hover:text-[#008FD5] hover:bg-gray-100/60'}`}
                       >
                         {t(`nav.${key}`)}
                         <ChevronDown className={`w-3 h-3 transition-transform ${activeMenu === key ? 'rotate-180' : ''}`} />
@@ -567,7 +567,7 @@ export default function Header({ locale }: { locale: string }) {
       {/* Burger Dropdown - overflow items (or all items in mobile mode) */}
       {isBurgerOpen && (isMobileMode || hasOverflow) && (
         <div
-          className={`absolute top-full mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100/80 z-50 ${isMobileMode ? 'left-4 right-4 max-h-[80vh] overflow-y-auto' : 'left-4 right-4 max-h-[70vh] overflow-y-auto'}`}
+          className={`absolute top-full mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100/80 z-50 ${isMobileMode ? 'left-4 right-4 max-h-[80vh] overflow-y-auto' : 'right-4 w-[280px] max-h-[70vh] overflow-y-auto'}`}
           onMouseEnter={() => {
             if (burgerAutoCloseRef.current) {
               clearTimeout(burgerAutoCloseRef.current);
@@ -592,26 +592,39 @@ export default function Header({ locale }: { locale: string }) {
                   <div key={key}>
                     {subLinks.length > 0 ? (
                       <>
-                        {/* Parent item with sub-links: entire row toggles submenu */}
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setBurgerExpanded(isExpanded ? null : key);
-                            if (burgerAutoCloseRef.current) {
-                              clearTimeout(burgerAutoCloseRef.current);
-                            }
-                            burgerAutoCloseRef.current = setTimeout(() => {
-                              setIsBurgerOpen(false);
-                              setBurgerExpanded(null);
-                            }, 4500);
-                          }}
-                          className={`w-full flex items-center justify-between gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-colors min-h-[48px] cursor-pointer relative z-10 ${active ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
-                          style={{ WebkitTapHighlightColor: 'transparent' }}
+                        {/* Parent item: text links to page, chevron toggles submenu */}
+                        <div
+                          className={`flex items-center justify-between gap-2 rounded-xl text-sm font-medium transition-colors min-h-[48px] relative z-10 ${active ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
                         >
-                          <span className="pointer-events-none">{t(`nav.${key}`)}</span>
-                          <ChevronDown className={`w-4 h-4 transition-transform flex-shrink-0 pointer-events-none ${isExpanded ? 'rotate-180' : ''}`} />
-                        </button>
+                          <Link
+                            href={`/${locale}${href}`}
+                            className="flex-1 px-4 py-3 rounded-xl cursor-pointer"
+                            onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
+                            style={{ WebkitTapHighlightColor: 'transparent' }}
+                          >
+                            <span className="pointer-events-none">{t(`nav.${key}`)}</span>
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              setBurgerExpanded(isExpanded ? null : key);
+                              if (burgerAutoCloseRef.current) {
+                                clearTimeout(burgerAutoCloseRef.current);
+                              }
+                              burgerAutoCloseRef.current = setTimeout(() => {
+                                setIsBurgerOpen(false);
+                                setBurgerExpanded(null);
+                              }, 4500);
+                            }}
+                            className="px-4 py-3 flex items-center justify-center rounded-r-xl cursor-pointer hover:bg-black/5"
+                            style={{ WebkitTapHighlightColor: 'transparent' }}
+                            aria-label={isExpanded ? 'Collapse submenu' : 'Expand submenu'}
+                          >
+                            <ChevronDown className={`w-4 h-4 transition-transform flex-shrink-0 pointer-events-none ${isExpanded ? 'rotate-180' : ''}`} />
+                          </button>
+                        </div>
                         {isExpanded && (
                           <div className="pl-4 pb-2 space-y-0.5">
                             {subLinks.map((l, i) => (
