@@ -82,46 +82,34 @@ export default function Header({ locale }: { locale: string }) {
     const paddingRight = parseFloat(capsuleStyle.paddingRight);
     const availableWidth = capsuleWidth - paddingLeft - paddingRight;
 
-    // Measure logo width
-    const logoWidth = logoRef.current?.offsetWidth ?? 120;
+    // Single-row layout: [logo] [nav items ...] [right controls]
+    const logoWidth = logoRef.current?.offsetWidth ?? 130;
+    const rightWidth = rightFixedRef.current?.offsetWidth ?? 120;
+    const burgerWidth = 44;
+    const logoGap = 24; // gap between logo and first nav item
 
-    // Measure right controls width (language + WhatsApp only, NOT the hamburger button)
-    const rightWidth = rightFixedRef.current?.offsetWidth ?? 100;
-
-    // Burger button width (approximate, used when overflow is expected)
-    const burgerWidth = 40; // p-2 + icon size
-
-    // Three-zone layout: left zone | logo (centered) | right zone
-    // Left zone width = (availableWidth - logoWidth) / 2
-    // Right zone width = (availableWidth - logoWidth) / 2
-    const halfWidth = (availableWidth - logoWidth) / 2;
-
-    // Check if we're in mobile mode (all items should collapse)
-    // Mobile mode: halfWidth < right controls + burger + gaps
-    const mobileThreshold = rightWidth + burgerWidth + 16;
-    if (halfWidth < mobileThreshold + 40) {
-      // Not enough space for even 1 item + controls
+    // Check mobile mode: not enough space for logo + controls + burger
+    const mobileThreshold = logoWidth + rightWidth + burgerWidth + logoGap + 20;
+    if (availableWidth < mobileThreshold) {
       return 0;
     }
 
-    // Available width for left menu items (subtract gap before logo)
-    const leftAvailable = halfWidth - 20; // 20px gap between last item and logo center
-
-    if (leftAvailable <= 0) return 0;
+    // Available width for nav items
+    const navAvailable = availableWidth - logoWidth - rightWidth - logoGap - 16;
+    if (navAvailable <= 0) return 0;
 
     // Measure each item width
     const itemWidths: number[] = [];
     for (let i = 0; i < ALL_MENU_ITEMS.length; i++) {
       const el = itemRefs.current[i];
-      itemWidths.push(el?.offsetWidth ?? 70);
+      itemWidths.push(el?.offsetWidth ?? 80);
     }
 
-    // Count how many items fit from left to right
     let totalWidth = 0;
     let count = 0;
-    const itemGap = 0; // items use px padding for spacing, no flex gap
+    const itemGap = 2; // gap-0.5 between items
     for (let i = 0; i < itemWidths.length; i++) {
-      if (totalWidth + itemWidths[i] + (count > 0 ? itemGap : 0) <= leftAvailable) {
+      if (totalWidth + itemWidths[i] + (count > 0 ? itemGap : 0) <= navAvailable) {
         totalWidth += itemWidths[i] + (count > 0 ? itemGap : 0);
         count++;
       } else {
@@ -186,7 +174,7 @@ export default function Header({ locale }: { locale: string }) {
     closeTimeoutRef.current = setTimeout(() => {
       setIsPanelVisible(false);
       setTimeout(() => setActiveMenu(null), 200);
-    }, 300);
+    }, 1000);
   }, []);
 
   const handleLangEnter = useCallback(() => {
@@ -273,7 +261,7 @@ export default function Header({ locale }: { locale: string }) {
       closeTimeoutRef.current = setTimeout(() => {
         setIsPanelVisible(false);
         setTimeout(() => setActiveMenu(null), 200);
-      }, 300);
+      }, 1000);
     },
   };
 
@@ -407,10 +395,10 @@ export default function Header({ locale }: { locale: string }) {
 
   return (
     <header ref={headerRef} className="sticky top-0 z-50 md:fixed md:top-0 md:left-0 md:right-0 md:z-50 md:pointer-events-none">
-      <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6 pt-4 md:pt-5 pointer-events-auto">
+      <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6 pt-4 md:pt-6 pointer-events-auto">
         <div
           ref={capsuleRef}
-          className={`flex items-center h-14 md:h-[68px] px-4 md:px-6 relative w-full rounded-full border backdrop-blur-2xl transition-all duration-300
+          className={`flex items-center h-14 md:h-[72px] px-5 md:px-7 relative w-full rounded-full border backdrop-blur-2xl transition-all duration-300
             ${isScrolled
               ? 'bg-white/90 border-slate-200/70 shadow-[0_10px_35px_rgba(15,23,42,0.12)]'
               : isHome
@@ -418,21 +406,19 @@ export default function Header({ locale }: { locale: string }) {
                 : 'bg-white/80 border-slate-200/60 shadow-[0_10px_32px_rgba(15,23,42,0.10)]'
             }`}
         >
-          {/* Left zone: Visible menu items (flex:1, takes half minus logo space) */}
-          {isMobileMode ? (
-            // Mobile mode: Logo on the left (static positioning)
-            <Link
-              ref={logoRef}
-              href={`/${locale}`}
-              className="flex-shrink-0 z-10"
-            >
-              <span className="text-lg font-extrabold tracking-tight text-[#173A63] whitespace-nowrap">{t('nav.brand')}</span>
-            </Link>
-          ) : (
-            // Desktop mode: Left zone with visible menu items
-            <div className="flex items-center gap-0 flex-1 min-w-0 justify-start overflow-visible">
+          {/* Logo - always left on desktop, left on mobile */}
+          <Link
+            ref={logoRef}
+            href={`/${locale}`}
+            className="flex-shrink-0 z-10"
+          >
+            <span className="text-[19px] font-extrabold tracking-tight text-[#173A63] whitespace-nowrap">{t('nav.brand')}</span>
+          </Link>
+
+          {/* Nav items - after logo on desktop, hidden in mobile (goes to burger) */}
+          {!isMobileMode && (
+            <div className="flex items-center gap-0.5 ml-6 flex-1 min-w-0 justify-start overflow-visible">
               {isMeasuring ? (
-                // During measurement, render all items hidden to get accurate widths
                 <div className="invisible absolute pointer-events-none">
                   {ALL_MENU_ITEMS.map(({ key, href }, i) => {
                     const active = isActive(href);
@@ -442,9 +428,9 @@ export default function Header({ locale }: { locale: string }) {
                         ref={el => { itemRefs.current[i] = el; }}
                         className="inline-block"
                       >
-                        <span className={`flex items-center gap-0.5 px-2.5 py-2 text-[12.5px] font-medium rounded-full whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63]'}`}>
+                        <span className={`flex items-center gap-1 px-3 py-2.5 text-[13.5px] font-medium rounded-full whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63]'}`}>
                           {t(`nav.${key}`)}
-                          <ChevronDown className="w-3 h-3" />
+                          <ChevronDown className="w-3.5 h-3.5" />
                         </span>
                       </div>
                     );
@@ -463,10 +449,10 @@ export default function Header({ locale }: { locale: string }) {
                     >
                       <Link
                         href={`/${locale}${href}`}
-                        className={`flex items-center gap-0.5 px-2.5 py-2 text-[12.5px] font-medium rounded-full transition-all whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63] hover:text-[#008FD5] hover:bg-gray-100/60'}`}
+                        className={`flex items-center gap-1 px-3 py-2.5 text-[13.5px] font-medium rounded-full transition-all whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63] hover:text-[#008FD5] hover:bg-gray-100/60'}`}
                       >
                         {t(`nav.${key}`)}
-                        <ChevronDown className={`w-3 h-3 transition-transform ${activeMenu === key ? 'rotate-180' : ''}`} />
+                        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${activeMenu === key ? 'rotate-180' : ''}`} />
                       </Link>
                     </div>
                   );
@@ -475,29 +461,16 @@ export default function Header({ locale }: { locale: string }) {
             </div>
           )}
 
-          {/* Center: Logo absolutely centered (desktop mode only) */}
-          {!isMobileMode && (
-            <Link
-              ref={logoRef}
-              href={`/${locale}`}
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex-shrink-0"
-            >
-              <span className="text-lg font-extrabold tracking-tight text-[#173A63] whitespace-nowrap">{t('nav.brand')}</span>
-            </Link>
-          )}
-
-          {/* Right zone: Language + WhatsApp + Burger (flex:1) */}
-          <div className="flex items-center gap-0.5 flex-1 justify-end flex-shrink-0">
-            {/* Language + WhatsApp (measured for progressive collapse) */}
+          {/* Right zone: Language + WhatsApp + Burger */}
+          <div className={`flex items-center gap-0.5 flex-shrink-0 ${isMobileMode ? 'flex-1 justify-end' : ''}`}>
             <div ref={rightFixedRef} className="flex items-center gap-0.5">
-              {/* Language Selector */}
               <div
                 className="relative"
                 onMouseEnter={handleLangEnter}
                 onMouseLeave={handleLangLeave}
               >
-                <button className="p-2 text-[#173A63]/70 hover:text-[#008FD5] rounded-full hover:bg-gray-100/60 transition-colors">
-                  <Globe className="w-[18px] h-[18px]" />
+                <button className="p-2.5 text-[#173A63]/70 hover:text-[#008FD5] rounded-full hover:bg-gray-100/60 transition-colors">
+                  <Globe className="w-[19px] h-[19px]" />
                 </button>
                 {isLangMenuOpen && (
                   <div className="absolute right-0 top-full pt-2 z-50">
@@ -523,9 +496,9 @@ export default function Header({ locale }: { locale: string }) {
                   href="https://wa.me/8613800138000"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-[#21C96B] text-white text-xs font-semibold rounded-full hover:bg-[#1DB95E] transition-colors"
+                  className="hidden md:flex items-center gap-1.5 px-4 py-2 bg-[#21C96B] text-white text-[13px] font-semibold rounded-full hover:bg-[#1DB95E] transition-colors"
                 >
-                  <MessageCircle className="w-4 h-4" />
+                  <MessageCircle className="w-[18px] h-[18px]" />
                   <span className="hidden xl:inline">WhatsApp</span>
                 </a>
               )}
@@ -534,7 +507,7 @@ export default function Header({ locale }: { locale: string }) {
             {/* Hamburger Button - always shown in mobile mode, or when there are overflow items */}
             {(isMobileMode || hasOverflow) && (
               <button
-                className="p-2 text-[#173A63] rounded-full hover:bg-gray-100 transition-colors"
+                className="p-2.5 text-[#173A63] rounded-full hover:bg-gray-100 transition-colors"
                 onClick={() => {
                   const next = !isBurgerOpen;
                   setIsBurgerOpen(next);
@@ -554,7 +527,7 @@ export default function Header({ locale }: { locale: string }) {
                 }}
                 aria-label="Toggle menu"
               >
-                {isBurgerOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {isBurgerOpen ? <X className="w-[22px] h-[22px]" /> : <Menu className="w-[22px] h-[22px]" />}
               </button>
             )}
           </div>
