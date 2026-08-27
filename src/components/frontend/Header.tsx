@@ -426,10 +426,10 @@ export default function Header({ locale }: { locale: string }) {
           ref={capsuleRef}
           className={`flex items-center h-14 md:h-[72px] px-5 md:px-7 relative w-full rounded-full border backdrop-blur-2xl transition-all duration-300
             ${isScrolled
-              ? 'bg-white/90 border-slate-200/70 shadow-[0_10px_35px_rgba(15,23,42,0.12)]'
+              ? 'bg-white/75 border-slate-200/70 shadow-[0_10px_35px_rgba(15,23,42,0.12)]'
               : isHome
                 ? 'bg-white/55 border-white/50 shadow-[0_12px_40px_rgba(15,23,42,0.15)]'
-                : 'bg-white/80 border-slate-200/60 shadow-[0_10px_32px_rgba(15,23,42,0.10)]'
+                : 'bg-white/55 border-slate-200/50 shadow-[0_10px_32px_rgba(15,23,42,0.10)]'
             }`}
         >
           {/* Left zone: visible menu items */}
