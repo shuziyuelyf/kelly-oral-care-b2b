@@ -82,34 +82,36 @@ export default function Header({ locale }: { locale: string }) {
     const paddingRight = parseFloat(capsuleStyle.paddingRight);
     const availableWidth = capsuleWidth - paddingLeft - paddingRight;
 
-    // Single-row layout: [logo] [nav items ...] [right controls]
+    // Three-zone layout: left zone | logo (centered) | right zone
     const logoWidth = logoRef.current?.offsetWidth ?? 130;
     const rightWidth = rightFixedRef.current?.offsetWidth ?? 120;
     const burgerWidth = 44;
-    const logoGap = 24; // gap between logo and first nav item
 
-    // Check mobile mode: not enough space for logo + controls + burger
-    const mobileThreshold = logoWidth + rightWidth + burgerWidth + logoGap + 20;
-    if (availableWidth < mobileThreshold) {
+    const halfWidth = (availableWidth - logoWidth) / 2;
+
+    // Check mobile mode
+    const mobileThreshold = rightWidth + burgerWidth + 16;
+    if (halfWidth < mobileThreshold + 40) {
       return 0;
     }
 
-    // Available width for nav items
-    const navAvailable = availableWidth - logoWidth - rightWidth - logoGap - 16;
-    if (navAvailable <= 0) return 0;
+    // Available width for left menu items
+    const leftAvailable = halfWidth - 12;
+
+    if (leftAvailable <= 0) return 0;
 
     // Measure each item width
     const itemWidths: number[] = [];
     for (let i = 0; i < ALL_MENU_ITEMS.length; i++) {
       const el = itemRefs.current[i];
-      itemWidths.push(el?.offsetWidth ?? 80);
+      itemWidths.push(el?.offsetWidth ?? 75);
     }
 
     let totalWidth = 0;
     let count = 0;
-    const itemGap = 2; // gap-0.5 between items
+    const itemGap = 2; // gap-0.5
     for (let i = 0; i < itemWidths.length; i++) {
-      if (totalWidth + itemWidths[i] + (count > 0 ? itemGap : 0) <= navAvailable) {
+      if (totalWidth + itemWidths[i] + (count > 0 ? itemGap : 0) <= leftAvailable) {
         totalWidth += itemWidths[i] + (count > 0 ? itemGap : 0);
         count++;
       } else {
@@ -268,7 +270,7 @@ export default function Header({ locale }: { locale: string }) {
   // ---- Mega Menu Panels ----
   const renderProductsPanel = () => (
     <div
-      className="absolute top-full pt-3 z-50"
+      className="absolute top-full pt-3 z-50 pointer-events-auto"
       style={{ left: panelLeft, width: 'min(680px, calc(100vw - 2rem))' }}
       {...panelMouseHandlers}
     >
@@ -329,7 +331,7 @@ export default function Header({ locale }: { locale: string }) {
 
   const renderSimplePanel = (links: { name: string; href: string }[], imageCard?: { title: string; desc: string; href: string; image: string }) => (
     <div
-      className="absolute top-full pt-3 z-50"
+      className="absolute top-full pt-3 z-50 pointer-events-auto"
       style={{ left: panelLeft, width: imageCard ? 'min(680px, calc(100vw - 2rem))' : 'min(400px, calc(100vw - 2rem))' }}
       {...panelMouseHandlers}
     >
@@ -406,18 +408,17 @@ export default function Header({ locale }: { locale: string }) {
                 : 'bg-white/80 border-slate-200/60 shadow-[0_10px_32px_rgba(15,23,42,0.10)]'
             }`}
         >
-          {/* Logo - always left on desktop, left on mobile */}
-          <Link
-            ref={logoRef}
-            href={`/${locale}`}
-            className="flex-shrink-0 z-10"
-          >
-            <span className="text-[19px] font-extrabold tracking-tight text-[#173A63] whitespace-nowrap">{t('nav.brand')}</span>
-          </Link>
-
-          {/* Nav items - after logo on desktop, hidden in mobile (goes to burger) */}
-          {!isMobileMode && (
-            <div className="flex items-center gap-0.5 ml-6 flex-1 min-w-0 justify-start overflow-visible">
+          {/* Left zone: visible menu items */}
+          {isMobileMode ? (
+            <Link
+              ref={logoRef}
+              href={`/${locale}`}
+              className="flex-shrink-0 z-10"
+            >
+              <span className="text-[19px] font-extrabold tracking-tight text-[#173A63] whitespace-nowrap">{t('nav.brand')}</span>
+            </Link>
+          ) : (
+            <div className="flex items-center gap-0.5 flex-1 min-w-0 justify-start overflow-visible">
               {isMeasuring ? (
                 <div className="invisible absolute pointer-events-none">
                   {ALL_MENU_ITEMS.map(({ key, href }, i) => {
@@ -461,8 +462,19 @@ export default function Header({ locale }: { locale: string }) {
             </div>
           )}
 
+          {/* Center: Logo absolutely centered (desktop only) */}
+          {!isMobileMode && (
+            <Link
+              ref={logoRef}
+              href={`/${locale}`}
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex-shrink-0"
+            >
+              <span className="text-[19px] font-extrabold tracking-tight text-[#173A63] whitespace-nowrap">{t('nav.brand')}</span>
+            </Link>
+          )}
+
           {/* Right zone: Language + WhatsApp + Burger */}
-          <div className={`flex items-center gap-0.5 flex-shrink-0 ${isMobileMode ? 'flex-1 justify-end' : ''}`}>
+          <div className="flex items-center gap-0.5 flex-1 justify-end flex-shrink-0">
             <div ref={rightFixedRef} className="flex items-center gap-0.5">
               <div
                 className="relative"
@@ -540,7 +552,7 @@ export default function Header({ locale }: { locale: string }) {
       {/* Burger Dropdown - overflow items (or all items in mobile mode) */}
       {isBurgerOpen && (isMobileMode || hasOverflow) && (
         <div
-          className={`absolute top-full mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100/80 z-50 ${isMobileMode ? 'left-4 right-4 max-h-[80vh] overflow-y-auto' : 'right-4 w-[280px] max-h-[70vh] overflow-y-auto'}`}
+          className={`absolute top-full mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100/80 z-50 pointer-events-auto ${isMobileMode ? 'left-4 right-4 max-h-[80vh] overflow-y-auto' : 'right-4 w-[280px] max-h-[70vh] overflow-y-auto'}`}
           onMouseEnter={() => {
             if (burgerAutoCloseRef.current) {
               clearTimeout(burgerAutoCloseRef.current);
