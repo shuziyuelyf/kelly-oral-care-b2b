@@ -424,12 +424,12 @@ export default function Header({ locale }: { locale: string }) {
       <div className="mx-auto w-[97%] max-w-[1700px] px-2 md:px-6 pt-4 md:pt-6 pointer-events-auto">
         <div
           ref={capsuleRef}
-          className={`flex items-center h-14 md:h-[72px] px-5 md:px-7 relative w-full rounded-full border backdrop-blur-2xl transition-all duration-300
+          className={`flex items-center h-14 md:h-[72px] px-5 md:px-7 relative w-full rounded-full border transition-all duration-300
             ${isScrolled
-              ? 'bg-white/75 border-slate-200/70 shadow-[0_10px_35px_rgba(15,23,42,0.12)]'
+              ? 'backdrop-blur-xl bg-white/80 border-slate-200/70 shadow-[0_10px_35px_rgba(15,23,42,0.12)]'
               : isHome
-                ? 'bg-white/55 border-white/50 shadow-[0_12px_40px_rgba(15,23,42,0.15)]'
-                : 'bg-white/55 border-slate-200/50 shadow-[0_10px_32px_rgba(15,23,42,0.10)]'
+                ? 'backdrop-blur-2xl bg-white/55 border-white/50 shadow-[0_12px_40px_rgba(15,23,42,0.15)]'
+                : 'backdrop-blur-md bg-white/30 border-slate-200/40 shadow-[0_8px_28px_rgba(15,23,42,0.07)]'
             }`}
         >
           {/* Left zone: visible menu items */}
