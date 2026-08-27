@@ -35,6 +35,8 @@ export default function Header({ locale }: { locale: string }) {
   // ---- Existing state ----
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+  const lastScrollY = useRef(0);
   const [activeMenu, setActiveMenu] = useState<MenuKey>(null);
   const [isPanelVisible, setIsPanelVisible] = useState(false);
   const [panelLeft, setPanelLeft] = useState<number>(0);
@@ -47,9 +49,26 @@ export default function Header({ locale }: { locale: string }) {
   const isClickingRef = useRef(false);
   const rightFixedRef = useRef<HTMLDivElement>(null); // language + WhatsApp only (no burger)
 
-  // Scroll listener
+  // Scroll listener — detect direction for hide-on-scroll-down / show-on-scroll-up
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      setIsScrolled(currentY > 50);
+
+      // Always show at the very top
+      if (currentY < 80) {
+        setIsHidden(false);
+      } else if (currentY > lastScrollY.current + 8) {
+        // Scrolling down — hide
+        setIsHidden(true);
+        setActiveMenu(null);
+        setIsPanelVisible(false);
+      } else if (currentY < lastScrollY.current - 4) {
+        // Scrolling up — show immediately
+        setIsHidden(false);
+      }
+      lastScrollY.current = currentY;
+    };
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
@@ -396,7 +415,12 @@ export default function Header({ locale }: { locale: string }) {
   const isMobileMode = visibleCount === 0; // All items collapsed
 
   return (
-    <header ref={headerRef} className="sticky top-0 z-50 md:fixed md:top-0 md:left-0 md:right-0 md:z-50 md:pointer-events-none">
+    <header
+      ref={headerRef}
+      className={`sticky top-0 z-50 md:fixed md:left-0 md:right-0 md:z-50 md:pointer-events-none md:transition-transform md:duration-300 md:ease-out ${
+        isHidden ? 'md:-translate-y-full' : 'md:translate-y-0'
+      }`}
+    >
       <div className="mx-auto w-[97%] max-w-[1700px] px-2 md:px-6 pt-4 md:pt-6 pointer-events-auto">
         <div
           ref={capsuleRef}
