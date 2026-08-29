@@ -15,7 +15,7 @@ import { ArrowRight, Check, FlaskConical, Package, Star } from 'lucide-react';
  */
 function ProcessImage() {
   return (
-    <div className="order-3 md:col-start-2 md:row-start-1 md:row-end-[-1] md:self-center w-full animate-hero-pop my-6 md:my-0">
+    <div className="order-3 md:col-start-2 md:row-span-3 md:self-center w-full animate-hero-pop my-6 md:my-0">
       <div className="relative w-[88vw] max-w-[28rem] sm:max-w-[32rem] mx-auto md:mx-0 md:w-full md:max-w-none md:scale-[1.08]">
         <Image
           src="/images/private-label/process.png"
@@ -38,7 +38,7 @@ function ProcessImage() {
 function StepsBar({ labels }: { labels: string[] }) {
   const icons = [FlaskConical, Package, Star];
   return (
-    <div className="order-4 md:col-start-1 mt-0 md:mt-7 rounded-2xl bg-[#EAF7FD]/90 ring-1 ring-[#008FD5]/15 shadow-[0_10px_30px_rgba(23,58,99,0.08)] px-4 py-4 sm:px-6 md:py-5">
+    <div className="order-4 md:col-start-1 mt-0 md:mt-7">
       <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-x-1.5 sm:gap-x-2 md:gap-x-4">
         {labels.map((label, i) => {
           const Icon = icons[i];
@@ -68,7 +68,7 @@ export default function PrivateLabelPage() {
   return (
     <div className="flex min-h-screen flex-col">
       {/* Hero — split: left plain text group + steps bar + CTAs, right process image centered; mobile stacks with image between text and steps */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#EAF7FD] via-[#F2FBFF] to-[#F7F4EF]">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#EAF7FD] via-[#F2FBFF] to-[#F7F4EF] -mt-[88px] md:-mt-[112px]">
         <div className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[#008FD5]/10 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-[#173A63]/8 blur-3xl" />
 
