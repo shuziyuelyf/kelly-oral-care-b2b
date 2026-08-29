@@ -12,17 +12,16 @@ import { ArrowRight, Check, FlaskConical, Package, Star } from 'lucide-react';
 function BrandProcessVisual({ labels }: { labels: string[] }) {
   const icons = [FlaskConical, Package, Star];
   return (
-    <div className="order-1 md:order-2 md:flex-1 md:pl-8 w-full animate-hero-pop">
+    <div className="order-1 flex justify-center py-6 md:py-0 md:order-2 md:flex-1 md:pl-10 w-full animate-hero-pop">
       {/* Process render — transparent PNG, three product groups at ~17% / 50% / 83% */}
-      <div className="relative mx-auto w-[88vw] max-w-[26rem] sm:max-w-[30rem] md:mx-0 md:w-auto md:h-[clamp(300px,42vh,440px)]">
+      <div className="relative mx-auto w-[88vw] max-w-[26rem] sm:max-w-[30rem] aspect-[3/2] md:mx-0 md:w-full md:aspect-auto md:h-[clamp(360px,44vh,470px)] lg:h-[clamp(380px,46vh,480px)]">
         <Image
           src="/images/private-label/process.png"
           alt="Existing toothpaste product, blank packaging and finished branded product"
-          width={1536}
-          height={1024}
+          fill
           sizes="(max-width: 768px) 88vw, 45vw"
           priority
-          className="object-contain w-full h-full drop-shadow-[0_20px_40px_rgba(23,58,99,0.14)]"
+          className="object-contain drop-shadow-[0_20px_40px_rgba(23,58,99,0.14)]"
         />
       </div>
       {/* Stage labels — three equal columns align under the three product groups */}
@@ -54,7 +53,7 @@ export default function PrivateLabelPage() {
         <div className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[#008FD5]/10 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-[#173A63]/8 blur-3xl" />
 
-        <div className="relative mx-auto w-full max-w-[1360px] px-5 sm:px-8 pt-24 md:pt-32 pb-14 md:pb-20 flex flex-col md:flex-row md:items-center gap-8 md:gap-6">
+        <div className="relative mx-auto w-full max-w-[1360px] px-5 sm:px-8 pt-20 md:pt-28 pb-14 md:pb-0 md:min-h-[clamp(480px,62vh,640px)] flex flex-col md:flex-row md:items-center">
           {/* Copy */}
           <div className="order-2 md:order-1 md:flex-1 text-center md:text-left">
             <h1 className="text-[#173A63] font-extrabold tracking-tight leading-[1.08] text-3xl sm:text-4xl lg:text-5xl xl:text-[3.3rem]">
