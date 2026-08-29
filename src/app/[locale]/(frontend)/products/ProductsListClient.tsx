@@ -461,7 +461,7 @@ export default function ProductsListClient({ locale }: { locale: string }) {
                 </span>
               </div>
             </Link>
-            <Link href={`/${locale}/customized-services`} className="group relative overflow-hidden rounded-3xl bg-[#173A63] p-8 md:p-10 hover:shadow-lg transition">
+            <Link href={`/${locale}/custom`} className="group relative overflow-hidden rounded-3xl bg-[#173A63] p-8 md:p-10 hover:shadow-lg transition">
               <div className="relative z-10">
                 <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-white text-xs font-semibold mb-4">
                   {t('oemCtaLabel')}

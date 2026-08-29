@@ -12,7 +12,7 @@ type MenuKey = 'products' | 'privateLabel' | 'oemOdm' | 'factory' | 'quality' | 
 const ALL_MENU_ITEMS: { key: NonNullable<MenuKey>; href: string }[] = [
   { key: 'products', href: '/products' },
   { key: 'privateLabel', href: '/private-label' },
-  { key: 'oemOdm', href: '/customized-services' },
+  { key: 'oemOdm', href: '/custom' },
   { key: 'factory', href: '/factory' },
   { key: 'quality', href: '/quality' },
   { key: 'resources', href: '/resources' },
@@ -235,10 +235,10 @@ export default function Header({ locale }: { locale: string }) {
   ];
 
   const oemOdmLinks = [
-    { name: tm('oemMfg'), href: '/customized-services#oem' },
-    { name: tm('odmDev'), href: '/customized-services#odm' },
-    { name: tm('advCustom'), href: '/customized-services#advanced' },
-    { name: tm('sampleMoq'), href: '/customized-services#sample' },
+    { name: tm('oemMfg'), href: '/custom#oem' },
+    { name: tm('odmDev'), href: '/custom#odm' },
+    { name: tm('advCustom'), href: '/custom#advanced' },
+    { name: tm('sampleMoq'), href: '/custom#sample' },
   ];
 
   const factoryLinks = [
@@ -401,7 +401,7 @@ export default function Header({ locale }: { locale: string }) {
       case 'oemOdm': return renderSimplePanel(oemOdmLinks, {
         title: tm('oemPanelTitle'),
         desc: tm('oemPanelDesc'),
-        href: '/customized-services',
+        href: '/custom',
         image: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800',
       });
       case 'factory': return renderSimplePanel(factoryLinks);
