@@ -22,7 +22,7 @@ const slides = [
     ctaKey: 'heroCta',
     href: '/products',
     img: '/images/hero/hero-products.png',
-    fillMode: 'card' as const,
+    fillMode: 'floating' as const,
     glow: 'bg-[#008FD5]/15',
   },
   {
@@ -56,23 +56,37 @@ function ToothIcon({ className }: { className?: string }) {
 }
 
 function ProductVisual({ slide, animKey }: { slide: (typeof slides)[number]; animKey: number }) {
+  const slideImg = slide.img;
   return (
     <div key={animKey} className="animate-hero-pop relative flex flex-col items-center">
       {/* soft glow behind product */}
       <div className={`absolute top-1/2 left-1/2 h-[115%] w-[115%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl ${slide.glow}`} />
-      {slide.img ? (
-        /* Real product image inside a rounded card (works for scene photos; for
-           transparent PNGs later, swap to a plain floating image without card bg) */
-        <div className="relative w-60 h-80 sm:w-72 sm:h-96 md:w-80 md:h-[26rem] overflow-hidden rounded-[1.75rem] bg-white shadow-[0_28px_65px_rgba(23,58,99,0.22)] ring-1 ring-black/5">
-          <Image
-            src={slide.img}
-            alt="Oral care products"
-            fill
-            sizes="(max-width: 768px) 60vw, 320px"
-            className="object-cover"
-            priority={animKey === 0}
-          />
-        </div>
+      {slideImg ? (
+        slide.fillMode === 'floating' ? (
+          /* Transparent-background PNG floating directly on the light background (SNAP-style) */
+          <div className="relative w-64 sm:w-80 md:w-[22rem] aspect-[1086/1448]">
+            <Image
+              src={slideImg}
+              alt="Oral care products"
+              fill
+              sizes="(max-width: 768px) 65vw, 352px"
+              className="object-contain drop-shadow-[0_24px_45px_rgba(23,58,99,0.22)]"
+              priority={animKey === 0}
+            />
+          </div>
+        ) : (
+          /* Scene/photo image inside a rounded card */
+          <div className="relative w-60 h-80 sm:w-72 sm:h-96 md:w-80 md:h-[26rem] overflow-hidden rounded-[1.75rem] bg-white shadow-[0_28px_65px_rgba(23,58,99,0.22)] ring-1 ring-black/5">
+            <Image
+              src={slideImg}
+              alt="Oral care products"
+              fill
+              sizes="(max-width: 768px) 60vw, 320px"
+              className="object-cover"
+              priority={animKey === 0}
+            />
+          </div>
+        )
       ) : (
         /* Placeholder until a real image is provided */
         <div className="relative w-60 h-80 sm:w-72 sm:h-96 md:w-80 md:h-[26rem] rounded-[1.75rem] bg-white shadow-[0_28px_65px_rgba(23,58,99,0.18)] flex items-center justify-center">
