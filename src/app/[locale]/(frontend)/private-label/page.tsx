@@ -12,7 +12,7 @@ import { ArrowRight, Check, FlaskConical, Package, Star } from 'lucide-react';
 function BrandProcessVisual({ labels }: { labels: string[] }) {
   const icons = [FlaskConical, Package, Star];
   return (
-    <div className="w-full max-w-2xl lg:max-w-3xl mx-auto mt-10 md:mt-12 animate-hero-pop">
+    <div className="w-full animate-hero-pop md:col-start-2 md:row-start-1 md:row-end-[-1] md:flex md:flex-col md:justify-end md:pl-6 lg:pl-10">
       {/* Stage labels — sit directly above the render, navy arrows between stages */}
       <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-x-1.5 sm:gap-x-2 md:gap-x-3">
         {labels.map((label, i) => {
@@ -34,15 +34,15 @@ function BrandProcessVisual({ labels }: { labels: string[] }) {
         })}
       </div>
       {/* Process render — transparent PNG; negative top margin eats the PNG's built-in transparent padding */}
-      <div className="relative w-[92vw] max-w-[30rem] sm:max-w-[34rem] lg:max-w-[38rem] mx-auto">
+      <div className="relative w-[92vw] max-w-[30rem] sm:max-w-[34rem] mx-auto md:mx-0 md:w-full md:max-w-none">
         <Image
           src="/images/private-label/process.png"
           alt="Existing toothpaste product, blank packaging and finished branded product"
           width={1536}
           height={1024}
-          sizes="(max-width: 1024px) 92vw, 640px"
+          sizes="(max-width: 768px) 92vw, 45vw"
           priority
-          className="w-full h-auto object-contain -mt-[9%] drop-shadow-[0_20px_40px_rgba(23,58,99,0.14)]"
+          className="w-full h-auto object-contain -mt-[9%] md:-mt-[6%] drop-shadow-[0_20px_40px_rgba(23,58,99,0.14)]"
         />
       </div>
     </div>
@@ -59,17 +59,16 @@ export default function PrivateLabelPage() {
         <div className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[#008FD5]/10 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-[#173A63]/8 blur-3xl" />
 
-        <div className="relative mx-auto w-full max-w-[1100px] px-5 sm:px-8 pt-20 md:pt-28 pb-14 md:pb-16 flex flex-col items-center text-center">
-          {/* Copy */}
-          <div className="w-full">
-            <h1 className="text-[#173A63] font-extrabold tracking-tight leading-[1.08] text-3xl sm:text-4xl lg:text-5xl xl:text-[3.3rem]">
+        <div className="relative mx-auto w-full max-w-[1360px] px-5 sm:px-8 pt-20 md:pt-28 pb-14 md:pb-16 flex flex-col items-center text-center md:grid md:grid-cols-2 md:gap-x-6 lg:gap-x-10 md:items-stretch">
+          {/* Copy column elements — direct grid children on desktop */}
+            <h1 className="md:col-start-1 text-[#173A63] font-extrabold tracking-tight leading-[1.08] text-3xl sm:text-4xl lg:text-5xl xl:text-[3.3rem] md:text-left">
               {t('heroTitle')}
             </h1>
-            <p className="mx-auto mt-4 md:mt-6 max-w-xl text-sm sm:text-base lg:text-lg leading-relaxed text-slate-600">
+            <p className="md:col-start-1 mx-auto md:mx-0 mt-4 md:mt-6 max-w-xl text-sm sm:text-base lg:text-lg leading-relaxed text-slate-600 md:text-left">
               {t('heroSubtitle')}
             </p>
             {/* green checkmark points */}
-            <ul className="mt-6 md:mt-8 space-y-3 w-fit mx-auto">
+            <ul className="md:col-start-1 mt-6 md:mt-8 space-y-3 w-fit mx-auto md:mx-0">
               {['heroPoint1', 'heroPoint2', 'heroPoint3'].map((k) => (
                 <li key={k} className="flex items-center gap-3">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-[#0FAE96] text-[#0FAE96]">
@@ -83,7 +82,7 @@ export default function PrivateLabelPage() {
           {/* Process visual — between selling points and CTA buttons */}
           <BrandProcessVisual labels={[t('stepExisting'), t('stepBlank'), t('stepBrand')]} />
 
-            <div className="mt-4 md:mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
+            <div className="md:col-start-1 mt-4 md:mt-6 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 md:gap-4">
               <Link
                 href="/contact"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-[#173A63] px-9 py-3.5 text-base font-semibold text-white transition-all hover:bg-[#0F2A4A] hover:scale-[0.98] shadow-[0_12px_30px_rgba(23,58,99,0.25)]"
@@ -99,7 +98,6 @@ export default function PrivateLabelPage() {
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </div>
-          </div>
 
         </div>
       </section>
