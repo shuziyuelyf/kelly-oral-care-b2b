@@ -16,7 +16,7 @@ import { ArrowRight, Check, FlaskConical, Package, Star } from 'lucide-react';
 function ProcessImage() {
   return (
     <div className="order-3 md:col-start-2 md:row-start-1 md:row-end-[-1] md:self-center w-full animate-hero-pop my-6 md:my-0">
-      <div className="relative w-[88vw] max-w-[28rem] sm:max-w-[32rem] mx-auto md:mx-0 md:w-full md:max-w-none">
+      <div className="relative w-[88vw] max-w-[28rem] sm:max-w-[32rem] mx-auto md:mx-0 md:w-full md:max-w-none md:scale-[1.08]">
         <Image
           src="/images/private-label/process.png"
           alt="Existing toothpaste product, blank packaging and finished branded product"
@@ -38,7 +38,7 @@ function ProcessImage() {
 function StepsBar({ labels }: { labels: string[] }) {
   const icons = [FlaskConical, Package, Star];
   return (
-    <div className="order-4 md:col-start-1 mt-0 md:mt-6 rounded-2xl bg-[#EAF7FD]/90 ring-1 ring-[#008FD5]/15 shadow-[0_10px_30px_rgba(23,58,99,0.08)] px-4 py-4 sm:px-6 md:py-5">
+    <div className="order-4 md:col-start-1 mt-0 md:mt-7 rounded-2xl bg-[#EAF7FD]/90 ring-1 ring-[#008FD5]/15 shadow-[0_10px_30px_rgba(23,58,99,0.08)] px-4 py-4 sm:px-6 md:py-5">
       <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-x-1.5 sm:gap-x-2 md:gap-x-4">
         {labels.map((label, i) => {
           const Icon = icons[i];
@@ -67,23 +67,21 @@ export default function PrivateLabelPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Hero — split: left title/card/steps/CTAs, right process image; mobile stacks with image between card and steps */}
+      {/* Hero — split: left plain text group + steps bar + CTAs, right process image centered; mobile stacks with image between text and steps */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#EAF7FD] via-[#F2FBFF] to-[#F7F4EF]">
         <div className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[#008FD5]/10 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-[#173A63]/8 blur-3xl" />
 
         <div className="relative mx-auto w-full max-w-[1360px] px-5 sm:px-8 pt-20 md:pt-28 pb-14 md:pb-16 flex flex-col md:grid md:grid-cols-[1.05fr_1fr] md:gap-x-10 lg:gap-x-14 md:items-center">
-          {/* Title */}
-          <h1 className="order-1 md:col-start-1 text-center md:text-left text-[#173A63] font-extrabold tracking-tight leading-[1.08] text-3xl sm:text-4xl lg:text-5xl xl:text-[3.3rem]">
-            {t('heroTitle')}
-          </h1>
-
-          {/* White card: subtitle + green-checkmark selling points */}
-          <div className="order-2 md:col-start-1 mt-5 md:mt-7 rounded-2xl bg-white/85 backdrop-blur-sm ring-1 ring-white/70 shadow-[0_14px_35px_rgba(23,58,99,0.10)] p-5 sm:p-7 md:p-8 text-center md:text-left">
-            <p className="mx-auto md:mx-0 max-w-xl text-sm sm:text-base lg:text-lg leading-relaxed text-slate-600">
+          {/* Title + subtitle + selling points — plain text group, no card */}
+          <div className="order-1 md:col-start-1 flex flex-col items-center md:items-start text-center md:text-left">
+            <h1 className="text-[#173A63] font-extrabold tracking-tight leading-[1.08] text-3xl sm:text-4xl lg:text-5xl xl:text-[3.3rem]">
+              {t('heroTitle')}
+            </h1>
+            <p className="mt-4 md:mt-6 max-w-xl text-sm sm:text-base lg:text-lg leading-relaxed text-slate-600">
               {t('heroSubtitle')}
             </p>
-            <ul className="mt-5 md:mt-6 space-y-3 w-fit mx-auto md:mx-0">
+            <ul className="mt-6 md:mt-8 space-y-3 w-fit mx-auto md:mx-0">
               {['heroPoint1', 'heroPoint2', 'heroPoint3'].map((k) => (
                 <li key={k} className="flex items-center gap-3">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-[#0FAE96] text-[#0FAE96]">
