@@ -814,7 +814,14 @@
     "ctaTitle": "准备好创建您的品牌了吗？",
     "ctaDesc": "告诉我们您的需求，24小时内获得定制报价。",
     "ctaPrimary": "获取报价",
-    "ctaWhatsapp": "WhatsApp咨询"
+    "ctaWhatsapp": "WhatsApp咨询",
+    "heroPoint1": "成熟配方",
+    "heroPoint2": "更低起订量",
+    "heroPoint3": "快速打样",
+    "heroCta2": "申请样品",
+    "stepExisting": "现有产品",
+    "stepBlank": "空白包装",
+    "stepBrand": "品牌成品"
   },
   "productDetail": {
     "home": "首页",

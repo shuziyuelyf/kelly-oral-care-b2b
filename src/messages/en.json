@@ -814,7 +814,14 @@
     "ctaTitle": "Ready to Start Your Brand?",
     "ctaDesc": "Tell us about your project and get a custom quote within 24 hours.",
     "ctaPrimary": "Request a Quote",
-    "ctaWhatsapp": "Chat on WhatsApp"
+    "ctaWhatsapp": "Chat on WhatsApp",
+    "heroPoint1": "Proven Formula",
+    "heroPoint2": "Lower MOQ",
+    "heroPoint3": "Fast Sampling",
+    "heroCta2": "Request Sample",
+    "stepExisting": "Existing Product",
+    "stepBlank": "Blank Packaging",
+    "stepBrand": "Your Brand Mockup"
   },
   "productDetail": {
     "home": "Home",

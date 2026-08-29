@@ -814,7 +814,14 @@
     "ctaTitle": "Ready to Start Your Brand?",
     "ctaDesc": "Tell us about your project and get a custom quote within 24 hours.",
     "ctaPrimary": "Request a Quote",
-    "ctaWhatsapp": "Chat on WhatsApp"
+    "ctaWhatsapp": "Chat on WhatsApp",
+    "heroPoint1": "実証済み処方",
+    "heroPoint2": "低い最低発注数量",
+    "heroPoint3": "スピードサンプリング",
+    "heroCta2": "サンプル請求",
+    "stepExisting": "既製品",
+    "stepBlank": "無地パッケージ",
+    "stepBrand": "ブランド完成イメージ"
   },
   "productDetail": {
     "home": "Home",
