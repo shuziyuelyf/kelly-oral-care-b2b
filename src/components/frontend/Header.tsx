@@ -426,10 +426,10 @@ export default function Header({ locale }: { locale: string }) {
           ref={capsuleRef}
           className={`flex items-center h-14 md:h-[72px] px-5 md:px-7 relative w-full rounded-full border transition-all duration-300
             ${isScrolled
-              ? 'backdrop-blur-xl bg-white/80 border-slate-200/70 shadow-[0_10px_35px_rgba(15,23,42,0.12)]'
+              ? 'bg-white/85 backdrop-blur-xl border-slate-200/70 shadow-[0_8px_30px_rgba(15,23,42,0.12)] md:bg-white/80 md:backdrop-blur-xl md:border-slate-200/70 md:shadow-[0_10px_35px_rgba(15,23,42,0.12)]'
               : isHome
-                ? 'backdrop-blur-2xl bg-white/55 border-white/50 shadow-[0_12px_40px_rgba(15,23,42,0.15)]'
-                : 'bg-transparent border-slate-300/60 shadow-[0_2px_16px_rgba(15,23,42,0.04)]'
+                ? 'bg-white/45 backdrop-blur-md border-white/60 shadow-[0_2px_18px_rgba(23,58,99,0.07)] md:bg-white/55 md:backdrop-blur-2xl md:border-white/50 md:shadow-[0_12px_40px_rgba(15,23,42,0.15)]'
+                : 'bg-white/45 backdrop-blur-md border-white/60 shadow-[0_2px_18px_rgba(23,58,99,0.07)] md:bg-transparent md:backdrop-blur-none md:border-slate-300/60 md:shadow-[0_2px_16px_rgba(15,23,42,0.04)]'
             }`}
         >
           {/* Left zone: visible menu items */}
