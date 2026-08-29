@@ -84,7 +84,7 @@ export default function HeroBanner() {
       <div className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[#008FD5]/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-[#173A63]/8 blur-3xl" />
 
-      <div className="relative mx-auto w-full max-w-[1360px] px-5 sm:px-8 pt-8 md:pt-28 md:min-h-[clamp(480px,62vh,640px)] flex flex-col md:flex-row md:items-center">
+      <div className="relative mx-auto w-full max-w-[1360px] px-5 sm:px-8 pt-20 md:pt-28 md:min-h-[clamp(480px,62vh,640px)] flex flex-col md:flex-row md:items-center">
         {/* Mobile: product on top | PC: text on left */}
         {/* Product visual — mobile order-first, desktop right column */}
         <div className="order-1 flex justify-center py-8 md:order-2 md:flex-1 md:py-0 md:pl-10">

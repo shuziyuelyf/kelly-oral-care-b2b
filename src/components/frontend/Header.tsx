@@ -417,8 +417,8 @@ export default function Header({ locale }: { locale: string }) {
   return (
     <header
       ref={headerRef}
-      className={`sticky top-0 z-50 md:fixed md:left-0 md:right-0 md:z-50 md:pointer-events-none md:transition-transform md:duration-300 md:ease-out ${
-        isHidden ? 'md:-translate-y-full' : 'md:translate-y-0'
+      className={`fixed top-0 left-0 right-0 z-50 pointer-events-none transition-transform duration-300 ease-out ${
+        isHidden ? '-translate-y-full' : 'translate-y-0'
       }`}
     >
       <div className="mx-auto w-[97%] max-w-[1700px] px-2 md:px-6 pt-4 md:pt-6 pointer-events-auto">
