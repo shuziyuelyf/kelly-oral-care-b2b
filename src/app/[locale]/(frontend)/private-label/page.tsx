@@ -12,20 +12,9 @@ import { ArrowRight, Check, FlaskConical, Package, Star } from 'lucide-react';
 function BrandProcessVisual({ labels }: { labels: string[] }) {
   const icons = [FlaskConical, Package, Star];
   return (
-    <div className="order-1 flex justify-center py-6 md:py-0 md:order-2 md:flex-1 md:pl-10 w-full animate-hero-pop">
-      {/* Process render — transparent PNG, three product groups at ~17% / 50% / 83% */}
-      <div className="relative mx-auto w-[88vw] max-w-[26rem] sm:max-w-[30rem] aspect-[3/2] md:mx-0 md:w-full md:aspect-auto md:h-[clamp(360px,44vh,470px)] lg:h-[clamp(380px,46vh,480px)]">
-        <Image
-          src="/images/private-label/process.png"
-          alt="Existing toothpaste product, blank packaging and finished branded product"
-          fill
-          sizes="(max-width: 768px) 88vw, 45vw"
-          priority
-          className="object-contain drop-shadow-[0_20px_40px_rgba(23,58,99,0.14)]"
-        />
-      </div>
-      {/* Stage labels — text on top, round icon below, navy arrows between stages */}
-      <div className="mt-4 md:mt-6 grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-x-1.5 sm:gap-x-2 md:gap-x-3">
+    <div className="order-1 flex flex-col justify-center gap-4 md:gap-6 py-6 md:py-0 md:order-2 md:flex-1 md:pl-10 w-full animate-hero-pop">
+      {/* Stage labels — desktop: above the render (sits higher than the CTA buttons line); mobile: below the render */}
+      <div className="order-2 md:order-1 grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-x-1.5 sm:gap-x-2 md:gap-x-3">
         {labels.map((label, i) => {
           const Icon = icons[i];
           return (
@@ -43,6 +32,17 @@ function BrandProcessVisual({ labels }: { labels: string[] }) {
             </div>
           );
         })}
+      </div>
+      {/* Process render — transparent PNG, three product groups at ~17% / 50% / 83%; enlarged now that labels moved up */}
+      <div className="relative order-1 md:order-2 mx-auto w-[88vw] max-w-[26rem] sm:max-w-[30rem] aspect-[3/2] md:mx-0 md:w-full md:aspect-auto md:h-[clamp(380px,47vh,520px)] lg:h-[clamp(420px,52vh,560px)]">
+        <Image
+          src="/images/private-label/process.png"
+          alt="Existing toothpaste product, blank packaging and finished branded product"
+          fill
+          sizes="(max-width: 768px) 88vw, 45vw"
+          priority
+          className="object-contain drop-shadow-[0_20px_40px_rgba(23,58,99,0.14)]"
+        />
       </div>
     </div>
   );
