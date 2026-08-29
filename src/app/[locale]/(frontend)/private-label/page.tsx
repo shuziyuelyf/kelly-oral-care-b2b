@@ -2,85 +2,40 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, Check, FlaskConical, Package, Star } from 'lucide-react';
 
 /**
  * Private-label process visual: Existing Product → Blank Packaging → Your Brand.
- * CSS-built tube+box mockups; can be replaced with a real product design image later.
+ * Real design render (transparent PNG, navy arrows baked in); icon labels align under each stage.
  */
-function Mockup({ variant }: { variant: 'existing' | 'blank' | 'brand' }) {
-  const gold = 'bg-gradient-to-b from-[#f4d27a] to-[#d4af37]';
-  return (
-    <div className="flex items-end justify-center h-28 sm:h-36 md:h-44">
-      {/* box (behind) */}
-      <div
-        className={`relative z-0 w-11 sm:w-14 md:w-[4.2rem] h-24 sm:h-32 md:h-40 rounded-md shadow-[0_14px_30px_rgba(23,58,99,0.22)] ${
-          variant === 'existing'
-            ? 'bg-gradient-to-b from-[#2f8fd4] to-[#1768b3]'
-            : variant === 'blank'
-              ? 'bg-[#e7eaee]'
-              : 'bg-gradient-to-b from-[#0f5f57] to-[#0a453f] border-t-2 border-[#d4af37]'
-        }`}
-      />
-      {/* tube (front, slightly overlapping box) */}
-      <div
-        className={`relative z-10 -ml-3 sm:-ml-4 md:-ml-5 w-7 sm:w-9 md:w-[2.6rem] h-20 sm:h-28 md:h-36 rounded-t-[0.4rem] rounded-b-[0.7rem] shadow-[0_14px_30px_rgba(23,58,99,0.22)] overflow-hidden flex flex-col ${
-          variant === 'existing'
-            ? 'bg-white'
-            : variant === 'blank'
-              ? 'bg-white'
-              : 'bg-gradient-to-b from-[#12766c] to-[#0b5049]'
-        }`}
-      >
-        {/* crimp / gold top */}
-        <div className={`h-1.5 sm:h-2 shrink-0 ${variant === 'brand' ? gold : 'bg-black/10'}`} />
-        {/* body label */}
-        <div className="flex-1 flex items-center justify-center px-1">
-          {variant === 'existing' && (
-            <span className="text-[0.45rem] sm:text-[0.55rem] md:text-[0.65rem] font-black leading-[1.1] text-center text-[#173A63]">
-              FRESH<br />CARE
-            </span>
-          )}
-          {variant === 'brand' && (
-            <span className="text-[0.45rem] sm:text-[0.55rem] md:text-[0.65rem] font-black leading-[1.1] text-center text-white/95">
-              YOUR<br />BRAND
-            </span>
-          )}
-        </div>
-        {/* cap */}
-        <div className="h-2.5 sm:h-3.5 shrink-0 bg-white border-t border-black/5" />
-      </div>
-    </div>
-  );
-}
-
 function BrandProcessVisual({ labels }: { labels: string[] }) {
   const icons = [FlaskConical, Package, Star];
-  const variants = ['existing', 'blank', 'brand'] as const;
   return (
-    <div className="order-1 md:order-2 md:flex-1 md:pl-8 w-full">
-      {/* mockups + arrows — 5-col grid keeps labels aligned under each stage */}
-      <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-x-1.5 sm:gap-x-2 md:gap-x-4">
-        {variants.map((v, i) => (
-          <div key={v} className="contents">
-            <Mockup variant={v} />
-            {i < 2 && <ArrowRight className="h-5 w-5 sm:h-7 sm:w-7 md:h-8 md:w-8 text-[#173A63] justify-self-center" />}
-          </div>
-        ))}
+    <div className="order-1 md:order-2 md:flex-1 md:pl-8 w-full animate-hero-pop">
+      {/* Process render — transparent PNG, three product groups at ~17% / 50% / 83% */}
+      <div className="relative mx-auto w-[88vw] max-w-[26rem] sm:max-w-[30rem] md:mx-0 md:w-auto md:h-[clamp(300px,42vh,440px)]">
+        <Image
+          src="/images/private-label/process.png"
+          alt="Existing toothpaste product, blank packaging and finished branded product"
+          width={1536}
+          height={1024}
+          sizes="(max-width: 768px) 88vw, 45vw"
+          priority
+          className="object-contain w-full h-full drop-shadow-[0_20px_40px_rgba(23,58,99,0.14)]"
+        />
       </div>
-      <div className="mt-5 md:mt-7 grid grid-cols-[1fr_auto_1fr_auto_1fr] gap-x-1.5 sm:gap-x-2 md:gap-x-4">
+      {/* Stage labels — three equal columns align under the three product groups */}
+      <div className="mt-4 md:mt-6 grid grid-cols-3 gap-2">
         {labels.map((label, i) => {
           const Icon = icons[i];
           return (
-            <div key={i} className="contents">
-              <div className="flex flex-col items-center gap-2 md:gap-2.5">
-                <span className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-[#EAF7FD] text-[#173A63] ring-1 ring-[#008FD5]/15">
-                  <Icon className="h-5 w-5 md:h-6 md:w-6" />
-                </span>
-                <p className="text-[0.68rem] sm:text-xs md:text-sm font-bold text-[#173A63] text-center leading-tight">{label}</p>
-                <span className="h-0.5 w-8 md:w-10 rounded-full bg-[#0FAE96]" />
-              </div>
-              {i < 2 && <span />}
+            <div key={i} className="flex flex-col items-center gap-1.5 md:gap-2.5">
+              <span className="flex h-9 w-9 md:h-11 md:w-11 items-center justify-center rounded-full bg-[#EAF7FD] text-[#173A63] ring-1 ring-[#008FD5]/15">
+                <Icon className="h-4 w-4 md:h-5 md:w-5" />
+              </span>
+              <p className="text-[0.68rem] sm:text-xs md:text-sm font-bold text-[#173A63] text-center leading-tight">{label}</p>
+              <span className="h-0.5 w-7 md:w-10 rounded-full bg-[#0FAE96]" />
             </div>
           );
         })}
