@@ -260,13 +260,16 @@ export default function Header({ locale }: { locale: string }) {
   ];
 
   const getSubLinks = (key: NonNullable<MenuKey>) => {
+    // Mobile burger menu only: first item is the parent page entry ("Overview"),
+    // so the whole parent row can be a toggle button without losing page access.
+    const overview = (href: string) => ({ name: t(`nav.${key}`), href });
     switch (key) {
       case 'products': return [{ name: tm('allProducts'), href: '/products' }, { name: tm('toothpaste'), href: '/products?cat=toothpaste' }, { name: tm('mouthwash'), href: '/products?cat=mouthwash' }, { name: tm('toothPowder'), href: '/products?cat=tooth-powder' }, { name: tm('toothbrush'), href: '/products?cat=toothbrush' }];
-      case 'privateLabel': return privateLabelLinks;
-      case 'oemOdm': return oemOdmLinks;
+      case 'privateLabel': return [overview('/private-label'), ...privateLabelLinks];
+      case 'oemOdm': return [overview('/custom'), ...oemOdmLinks];
       case 'factory': return factoryLinks;
       case 'quality': return qualityLinks;
-      case 'resources': return resourcesLinks;
+      case 'resources': return [overview('/resources'), ...resourcesLinks];
     }
   };
 
@@ -601,39 +604,26 @@ export default function Header({ locale }: { locale: string }) {
                   <div key={key}>
                     {subLinks.length > 0 ? (
                       <>
-                        {/* Parent item: text links to page, chevron toggles submenu */}
-                        <div
-                          className={`flex items-center justify-between gap-2 rounded-xl text-sm font-medium transition-colors min-h-[48px] relative z-10 ${active ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50'}`}
+                        {/* Parent item: the WHOLE row toggles the submenu (SNAP-style) */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setBurgerExpanded(isExpanded ? null : key);
+                            if (burgerAutoCloseRef.current) {
+                              clearTimeout(burgerAutoCloseRef.current);
+                            }
+                            burgerAutoCloseRef.current = setTimeout(() => {
+                              setIsBurgerOpen(false);
+                              setBurgerExpanded(null);
+                            }, 4500);
+                          }}
+                          className={`w-full flex items-center justify-between gap-2 px-4 rounded-xl text-sm font-medium transition-colors min-h-[48px] cursor-pointer ${active ? 'bg-[#008FD5]/10 text-[#008FD5]' : 'text-[#173A63] hover:bg-gray-50 active:bg-gray-100'}`}
+                          style={{ WebkitTapHighlightColor: 'transparent' }}
+                          aria-expanded={isExpanded}
                         >
-                          <Link
-                            href={`/${locale}${href}`}
-                            className="flex-1 px-4 py-3 rounded-xl cursor-pointer"
-                            onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
-                            style={{ WebkitTapHighlightColor: 'transparent' }}
-                          >
-                            <span className="pointer-events-none">{t(`nav.${key}`)}</span>
-                          </Link>
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              e.preventDefault();
-                              setBurgerExpanded(isExpanded ? null : key);
-                              if (burgerAutoCloseRef.current) {
-                                clearTimeout(burgerAutoCloseRef.current);
-                              }
-                              burgerAutoCloseRef.current = setTimeout(() => {
-                                setIsBurgerOpen(false);
-                                setBurgerExpanded(null);
-                              }, 4500);
-                            }}
-                            className="px-4 py-3 flex items-center justify-center rounded-r-xl cursor-pointer hover:bg-black/5"
-                            style={{ WebkitTapHighlightColor: 'transparent' }}
-                            aria-label={isExpanded ? 'Collapse submenu' : 'Expand submenu'}
-                          >
-                            <ChevronDown className={`w-4 h-4 transition-transform flex-shrink-0 pointer-events-none ${isExpanded ? 'rotate-180' : ''}`} />
-                          </button>
-                        </div>
+                          <span>{t(`nav.${key}`)}</span>
+                          <ChevronDown className={`w-4 h-4 transition-transform flex-shrink-0 ${isExpanded ? 'rotate-180' : ''}`} />
+                        </button>
                         {isExpanded && (
                           <div className="pl-4 pb-2 space-y-0.5">
                             {subLinks.map((l, i) => (
