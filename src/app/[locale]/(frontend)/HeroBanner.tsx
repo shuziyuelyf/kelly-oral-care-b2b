@@ -63,20 +63,22 @@ function ProductVisual({ slide, animKey }: { slide: (typeof slides)[number]; ani
       <div className={`absolute top-1/2 left-1/2 h-[115%] w-[115%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl ${slide.glow}`} />
       {slideImg ? (
         slide.fillMode === 'floating' ? (
-          /* Transparent-background PNG floating directly on the light background (SNAP-style) */
-          <div className="relative w-64 sm:w-80 md:w-[22rem] aspect-[1086/1448]">
+          /* Transparent-background PNG floating directly on the light background (SNAP-style).
+             Height-driven so the product fills the right column; scale compensates for the
+             transparent padding inside the PNG canvas. */
+          <div className="relative aspect-[1086/1448] w-[70vw] max-w-[19rem] sm:max-w-[22rem] md:w-auto md:max-w-none md:h-[clamp(400px,50vh,540px)] lg:h-[clamp(440px,55vh,600px)]">
             <Image
               src={slideImg}
               alt="Oral care products"
               fill
-              sizes="(max-width: 768px) 65vw, 352px"
-              className="object-contain drop-shadow-[0_24px_45px_rgba(23,58,99,0.22)]"
+              sizes="(max-width: 768px) 70vw, 480px"
+              className="object-contain scale-[1.14] drop-shadow-[0_24px_45px_rgba(23,58,99,0.22)]"
               priority={animKey === 0}
             />
           </div>
         ) : (
           /* Scene/photo image inside a rounded card */
-          <div className="relative w-60 h-80 sm:w-72 sm:h-96 md:w-80 md:h-[26rem] overflow-hidden rounded-[1.75rem] bg-white shadow-[0_28px_65px_rgba(23,58,99,0.22)] ring-1 ring-black/5">
+          <div className="relative aspect-[1086/1448] w-[70vw] max-w-[19rem] sm:max-w-[22rem] md:w-auto md:max-w-none md:h-[clamp(400px,50vh,540px)] lg:h-[clamp(440px,55vh,600px)] overflow-hidden rounded-[1.75rem] bg-white shadow-[0_28px_65px_rgba(23,58,99,0.22)] ring-1 ring-black/5">
             <Image
               src={slideImg}
               alt="Oral care products"
@@ -89,7 +91,7 @@ function ProductVisual({ slide, animKey }: { slide: (typeof slides)[number]; ani
         )
       ) : (
         /* Placeholder until a real image is provided */
-        <div className="relative w-60 h-80 sm:w-72 sm:h-96 md:w-80 md:h-[26rem] rounded-[1.75rem] bg-white shadow-[0_28px_65px_rgba(23,58,99,0.18)] flex items-center justify-center">
+        <div className="relative aspect-[1086/1448] w-[70vw] max-w-[19rem] sm:max-w-[22rem] md:w-auto md:max-w-none md:h-[clamp(400px,50vh,540px)] lg:h-[clamp(440px,55vh,600px)] rounded-[1.75rem] bg-white shadow-[0_28px_65px_rgba(23,58,99,0.18)] flex items-center justify-center">
           <div className={`flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-2xl bg-gradient-to-br text-white ${slide.accent}`}>
             <ToothIcon className="h-11 w-11 sm:h-14 sm:w-14" />
           </div>
