@@ -3,15 +3,17 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { trackEvent } from '@/lib/analytics';
 
 /**
  * SNAP-style split hero banner.
- * PC: text left + product PNG right on a soft-light background (no dark overlay).
- * Mobile: product image on top, text below, CTA full width — nothing is clamped.
+ * PC: text left + product visual right on a soft-light background (no dark overlay).
+ * Mobile: product visual on top, text below, CTA full width — nothing is clamped.
  *
- * Replace <ProductPlaceholder> with <img src="slide.productImg" className="h-full w-auto object-contain" />
- * once real transparent-background product PNGs are available.
+ * Transparent-background product PNGs can float directly (fillMode = 'floating').
+ * Scene/photo images are shown inside a rounded card (fillMode = 'card').
+ * Drop real files into /public/images/hero/ and set `img` per slide.
  */
 const slides = [
   {
@@ -19,7 +21,8 @@ const slides = [
     descKey: 'heroSubtitle',
     ctaKey: 'heroCta',
     href: '/products',
-    accent: 'from-[#008FD5] to-[#173A63]',
+    img: '/images/hero/hero-products.png',
+    fillMode: 'card' as const,
     glow: 'bg-[#008FD5]/15',
   },
   {
@@ -27,6 +30,8 @@ const slides = [
     descKey: 'plPathDesc',
     ctaKey: 'plPathCta',
     href: '/private-label',
+    img: null,
+    fillMode: 'card' as const,
     accent: 'from-[#0EA5E9] to-[#0369A1]',
     glow: 'bg-[#0EA5E9]/15',
   },
@@ -35,10 +40,12 @@ const slides = [
     descKey: 'oemPathDesc',
     ctaKey: 'oemPathCta',
     href: '/custom',
+    img: null,
+    fillMode: 'card' as const,
     accent: 'from-[#173A63] to-[#0F2A4A]',
     glow: 'bg-[#173A63]/12',
   },
-] as const;
+];
 
 function ToothIcon({ className }: { className?: string }) {
   return (
@@ -48,19 +55,34 @@ function ToothIcon({ className }: { className?: string }) {
   );
 }
 
-function ProductPlaceholder({ accent, glow, animKey }: { accent: string; glow: string; animKey: number }) {
+function ProductVisual({ slide, animKey }: { slide: (typeof slides)[number]; animKey: number }) {
   return (
     <div key={animKey} className="animate-hero-pop relative flex flex-col items-center">
       {/* soft glow behind product */}
-      <div className={`absolute top-1/2 left-1/2 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl ${glow}`} />
-      {/* product card (replace with transparent product PNG later) */}
-      <div className="relative w-36 h-48 sm:w-44 sm:h-56 md:w-52 md:h-64 rounded-3xl bg-white shadow-[0_24px_60px_rgba(23,58,99,0.18)] flex items-center justify-center">
-        <div className={`flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl bg-gradient-to-br text-white ${accent}`}>
-          <ToothIcon className="h-9 w-9 sm:h-11 sm:w-11" />
+      <div className={`absolute top-1/2 left-1/2 h-[115%] w-[115%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl ${slide.glow}`} />
+      {slide.img ? (
+        /* Real product image inside a rounded card (works for scene photos; for
+           transparent PNGs later, swap to a plain floating image without card bg) */
+        <div className="relative w-60 h-80 sm:w-72 sm:h-96 md:w-80 md:h-[26rem] overflow-hidden rounded-[1.75rem] bg-white shadow-[0_28px_65px_rgba(23,58,99,0.22)] ring-1 ring-black/5">
+          <Image
+            src={slide.img}
+            alt="Oral care products"
+            fill
+            sizes="(max-width: 768px) 60vw, 320px"
+            className="object-cover"
+            priority={animKey === 0}
+          />
         </div>
-      </div>
+      ) : (
+        /* Placeholder until a real image is provided */
+        <div className="relative w-60 h-80 sm:w-72 sm:h-96 md:w-80 md:h-[26rem] rounded-[1.75rem] bg-white shadow-[0_28px_65px_rgba(23,58,99,0.18)] flex items-center justify-center">
+          <div className={`flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-2xl bg-gradient-to-br text-white ${slide.accent}`}>
+            <ToothIcon className="h-11 w-11 sm:h-14 sm:w-14" />
+          </div>
+        </div>
+      )}
       {/* floor shadow */}
-      <div className="mt-4 h-3 w-28 sm:w-36 rounded-[100%] bg-[#173A63]/15 blur-md" />
+      <div className="mt-4 h-3 w-32 sm:w-40 rounded-[100%] bg-[#173A63]/15 blur-md" />
     </div>
   );
 }
@@ -88,7 +110,7 @@ export default function HeroBanner() {
         {/* Mobile: product on top | PC: text on left */}
         {/* Product visual — mobile order-first, desktop right column */}
         <div className="order-1 flex justify-center py-8 md:order-2 md:flex-1 md:py-0 md:pl-10">
-          <ProductPlaceholder accent={slide.accent} glow={slide.glow} animKey={current} />
+          <ProductVisual slide={slide} animKey={current} />
         </div>
 
         {/* Text block — mobile centered below image, desktop left column */}
