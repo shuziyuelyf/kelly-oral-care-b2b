@@ -9,19 +9,44 @@ import { ArrowRight, Check, FlaskConical, Package, Star } from 'lucide-react';
  * Private-label process visual: Existing Product → Blank Packaging → Your Brand.
  * Real design render (transparent PNG, navy arrows baked in); icon labels align under each stage.
  */
-function BrandProcessVisual({ labels }: { labels: string[] }) {
+/**
+ * Process render — right column on desktop (spans full height, vertically centered);
+ * on mobile it stacks between the white card and the steps bar.
+ */
+function ProcessImage() {
+  return (
+    <div className="order-3 md:col-start-2 md:row-start-1 md:row-end-[-1] md:self-center w-full animate-hero-pop my-6 md:my-0">
+      <div className="relative w-[88vw] max-w-[28rem] sm:max-w-[32rem] mx-auto md:mx-0 md:w-full md:max-w-none">
+        <Image
+          src="/images/private-label/process.png"
+          alt="Existing toothpaste product, blank packaging and finished branded product"
+          width={1536}
+          height={1024}
+          sizes="(max-width: 768px) 88vw, 45vw"
+          priority
+          className="w-full h-auto object-contain drop-shadow-[0_20px_40px_rgba(23,58,99,0.14)]"
+        />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Steps bar — soft-blue card sitting above the CTA buttons (left column on desktop);
+ * label text on top, white round icon below, teal underline; navy arrows between stages.
+ */
+function StepsBar({ labels }: { labels: string[] }) {
   const icons = [FlaskConical, Package, Star];
   return (
-    <div className="w-full animate-hero-pop md:col-start-2 md:row-start-1 md:row-end-[-1] md:flex md:flex-col md:justify-end md:pl-6 lg:pl-10">
-      {/* Stage labels — sit directly above the render, navy arrows between stages */}
-      <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-x-1.5 sm:gap-x-2 md:gap-x-3">
+    <div className="order-4 md:col-start-1 mt-0 md:mt-6 rounded-2xl bg-[#EAF7FD]/90 ring-1 ring-[#008FD5]/15 shadow-[0_10px_30px_rgba(23,58,99,0.08)] px-4 py-4 sm:px-6 md:py-5">
+      <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-x-1.5 sm:gap-x-2 md:gap-x-4">
         {labels.map((label, i) => {
           const Icon = icons[i];
           return (
             <div key={i} className="contents">
               <div className="flex flex-col items-center gap-1.5 md:gap-2">
                 <p className="text-[0.68rem] sm:text-xs md:text-sm font-bold text-[#173A63] text-center leading-tight">{label}</p>
-                <span className="flex h-9 w-9 md:h-11 md:w-11 items-center justify-center rounded-full bg-[#EAF7FD] text-[#173A63] ring-1 ring-[#008FD5]/15">
+                <span className="flex h-9 w-9 md:h-11 md:w-11 items-center justify-center rounded-full bg-white text-[#173A63] ring-1 ring-[#008FD5]/20 shadow-sm">
                   <Icon className="h-4 w-4 md:h-5 md:w-5" />
                 </span>
                 <span className="h-0.5 w-7 md:w-10 rounded-full bg-[#0FAE96]" />
@@ -33,18 +58,6 @@ function BrandProcessVisual({ labels }: { labels: string[] }) {
           );
         })}
       </div>
-      {/* Process render — transparent PNG; negative top margin eats the PNG's built-in transparent padding */}
-      <div className="relative w-[92vw] max-w-[30rem] sm:max-w-[34rem] mx-auto md:mx-0 md:w-full md:max-w-none">
-        <Image
-          src="/images/private-label/process.png"
-          alt="Existing toothpaste product, blank packaging and finished branded product"
-          width={1536}
-          height={1024}
-          sizes="(max-width: 768px) 92vw, 45vw"
-          priority
-          className="w-full h-auto object-contain -mt-[9%] md:-mt-[6%] drop-shadow-[0_20px_40px_rgba(23,58,99,0.14)]"
-        />
-      </div>
     </div>
   );
 }
@@ -54,21 +67,23 @@ export default function PrivateLabelPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Hero — single column: title, subtitle, selling points, process visual, CTAs */}
+      {/* Hero — split: left title/card/steps/CTAs, right process image; mobile stacks with image between card and steps */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#EAF7FD] via-[#F2FBFF] to-[#F7F4EF]">
         <div className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[#008FD5]/10 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-[#173A63]/8 blur-3xl" />
 
-        <div className="relative mx-auto w-full max-w-[1360px] px-5 sm:px-8 pt-20 md:pt-28 pb-14 md:pb-16 flex flex-col items-center text-center md:grid md:grid-cols-2 md:gap-x-6 lg:gap-x-10 md:items-stretch">
-          {/* Copy column elements — direct grid children on desktop */}
-            <h1 className="md:col-start-1 text-[#173A63] font-extrabold tracking-tight leading-[1.08] text-3xl sm:text-4xl lg:text-5xl xl:text-[3.3rem] md:text-left">
-              {t('heroTitle')}
-            </h1>
-            <p className="md:col-start-1 mx-auto md:mx-0 mt-4 md:mt-6 max-w-xl text-sm sm:text-base lg:text-lg leading-relaxed text-slate-600 md:text-left">
+        <div className="relative mx-auto w-full max-w-[1360px] px-5 sm:px-8 pt-20 md:pt-28 pb-14 md:pb-16 flex flex-col md:grid md:grid-cols-[1.05fr_1fr] md:gap-x-10 lg:gap-x-14 md:items-center">
+          {/* Title */}
+          <h1 className="order-1 md:col-start-1 text-center md:text-left text-[#173A63] font-extrabold tracking-tight leading-[1.08] text-3xl sm:text-4xl lg:text-5xl xl:text-[3.3rem]">
+            {t('heroTitle')}
+          </h1>
+
+          {/* White card: subtitle + green-checkmark selling points */}
+          <div className="order-2 md:col-start-1 mt-5 md:mt-7 rounded-2xl bg-white/85 backdrop-blur-sm ring-1 ring-white/70 shadow-[0_14px_35px_rgba(23,58,99,0.10)] p-5 sm:p-7 md:p-8 text-center md:text-left">
+            <p className="mx-auto md:mx-0 max-w-xl text-sm sm:text-base lg:text-lg leading-relaxed text-slate-600">
               {t('heroSubtitle')}
             </p>
-            {/* green checkmark points */}
-            <ul className="md:col-start-1 mt-6 md:mt-8 space-y-3 w-fit mx-auto md:mx-0">
+            <ul className="mt-5 md:mt-6 space-y-3 w-fit mx-auto md:mx-0">
               {['heroPoint1', 'heroPoint2', 'heroPoint3'].map((k) => (
                 <li key={k} className="flex items-center gap-3">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-[#0FAE96] text-[#0FAE96]">
@@ -78,27 +93,31 @@ export default function PrivateLabelPage() {
                 </li>
               ))}
             </ul>
+          </div>
 
-          {/* Process visual — between selling points and CTA buttons */}
-          <BrandProcessVisual labels={[t('stepExisting'), t('stepBlank'), t('stepBrand')]} />
+          {/* Process image — right column on desktop; between white card and steps bar on mobile */}
+          <ProcessImage />
 
-            <div className="md:col-start-1 mt-4 md:mt-6 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 md:gap-4">
-              <Link
-                href="/contact"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-[#173A63] px-9 py-3.5 text-base font-semibold text-white transition-all hover:bg-[#0F2A4A] hover:scale-[0.98] shadow-[0_12px_30px_rgba(23,58,99,0.25)]"
-              >
-                {t('heroCta')}
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-              <Link
-                href="/contact"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#173A63]/25 bg-white/70 px-9 py-3.5 text-base font-semibold text-[#173A63] transition-all hover:border-[#173A63]/50"
-              >
-                {t('heroCta2')}
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
+          {/* Steps bar card — above the CTA buttons */}
+          <StepsBar labels={[t('stepExisting'), t('stepBlank'), t('stepBrand')]} />
 
+          {/* CTAs */}
+          <div className="order-5 md:col-start-1 mt-6 md:mt-8 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 md:gap-4">
+            <Link
+              href="/contact"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-[#173A63] px-9 py-3.5 text-base font-semibold text-white transition-all hover:bg-[#0F2A4A] hover:scale-[0.98] shadow-[0_12px_30px_rgba(23,58,99,0.25)]"
+            >
+              {t('heroCta')}
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+            <Link
+              href="/contact"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#173A63]/25 bg-white/70 px-9 py-3.5 text-base font-semibold text-[#173A63] transition-all hover:border-[#173A63]/50"
+            >
+              {t('heroCta2')}
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+          </div>
         </div>
       </section>
 
