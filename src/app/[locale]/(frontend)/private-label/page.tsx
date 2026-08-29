@@ -24,17 +24,22 @@ function BrandProcessVisual({ labels }: { labels: string[] }) {
           className="object-contain drop-shadow-[0_20px_40px_rgba(23,58,99,0.14)]"
         />
       </div>
-      {/* Stage labels — three equal columns align under the three product groups */}
-      <div className="mt-4 md:mt-6 grid grid-cols-3 gap-2">
+      {/* Stage labels — text on top, round icon below, navy arrows between stages */}
+      <div className="mt-4 md:mt-6 grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-x-1.5 sm:gap-x-2 md:gap-x-3">
         {labels.map((label, i) => {
           const Icon = icons[i];
           return (
-            <div key={i} className="flex flex-col items-center gap-1.5 md:gap-2.5">
-              <span className="flex h-9 w-9 md:h-11 md:w-11 items-center justify-center rounded-full bg-[#EAF7FD] text-[#173A63] ring-1 ring-[#008FD5]/15">
-                <Icon className="h-4 w-4 md:h-5 md:w-5" />
-              </span>
-              <p className="text-[0.68rem] sm:text-xs md:text-sm font-bold text-[#173A63] text-center leading-tight">{label}</p>
-              <span className="h-0.5 w-7 md:w-10 rounded-full bg-[#0FAE96]" />
+            <div key={i} className="contents">
+              <div className="flex flex-col items-center gap-1.5 md:gap-2">
+                <p className="text-[0.68rem] sm:text-xs md:text-sm font-bold text-[#173A63] text-center leading-tight">{label}</p>
+                <span className="flex h-9 w-9 md:h-11 md:w-11 items-center justify-center rounded-full bg-[#EAF7FD] text-[#173A63] ring-1 ring-[#008FD5]/15">
+                  <Icon className="h-4 w-4 md:h-5 md:w-5" />
+                </span>
+                <span className="h-0.5 w-7 md:w-10 rounded-full bg-[#0FAE96]" />
+              </div>
+              {i < 2 && (
+                <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 text-[#173A63] justify-self-center self-center" strokeWidth={2.5} />
+              )}
             </div>
           );
         })}
