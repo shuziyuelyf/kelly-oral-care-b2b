@@ -135,3 +135,19 @@
 body {
   @apply font-sans;
 }
+
+/* Hero product pop-in (SNAP-style split banner) */
+@keyframes hero-pop {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-hero-pop {
+  animation: hero-pop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}

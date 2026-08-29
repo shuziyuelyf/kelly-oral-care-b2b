@@ -5,20 +5,65 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { trackEvent } from '@/lib/analytics';
 
+/**
+ * SNAP-style split hero banner.
+ * PC: text left + product PNG right on a soft-light background (no dark overlay).
+ * Mobile: product image on top, text below, CTA full width — nothing is clamped.
+ *
+ * Replace <ProductPlaceholder> with <img src="slide.productImg" className="h-full w-auto object-contain" />
+ * once real transparent-background product PNGs are available.
+ */
 const slides = [
   {
-    img: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=1920&q=80',
-    imgAlt: 'Oral care products',
+    titleKey: 'heroTitle',
+    descKey: 'heroSubtitle',
+    ctaKey: 'heroCta',
+    href: '/products',
+    accent: 'from-[#008FD5] to-[#173A63]',
+    glow: 'bg-[#008FD5]/15',
   },
   {
-    img: 'https://images.unsplash.com/photo-1559650656-5d1d361ad10e?w=1920&q=80',
-    imgAlt: 'Dental care',
+    titleKey: 'plPathTitle',
+    descKey: 'plPathDesc',
+    ctaKey: 'plPathCta',
+    href: '/private-label',
+    accent: 'from-[#0EA5E9] to-[#0369A1]',
+    glow: 'bg-[#0EA5E9]/15',
   },
   {
-    img: 'https://images.unsplash.com/photo-1571772996211-2f02c9727629?w=1920&q=80',
-    imgAlt: 'Healthy smile',
+    titleKey: 'oemPathTitle',
+    descKey: 'oemPathDesc',
+    ctaKey: 'oemPathCta',
+    href: '/custom',
+    accent: 'from-[#173A63] to-[#0F2A4A]',
+    glow: 'bg-[#173A63]/12',
   },
-];
+] as const;
+
+function ToothIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 5.5C10.8 4.2 8.8 3.5 7 3.8 4.8 4.2 3.5 6 3.6 8.4c.1 1.8.5 3.2.9 4.9.3 1.4.4 2.9.6 4.4.2 1.4.7 2.5 1.6 2.5.9 0 1.2-1 1.4-2.3.2-1.2.4-2.5 1.2-3.3.5-.5 1.4-.5 1.9 0 .8.8 1 2.1 1.2 3.3.2 1.3.5 2.3 1.4 2.3.9 0 1.4-1.1 1.6-2.5.2-1.5.3-3 .6-4.4.4-1.7.8-3.1.9-4.9.1-2.4-1.2-4.2-3.4-4.6-1.8-.3-3.8.4-5 1.7z" />
+    </svg>
+  );
+}
+
+function ProductPlaceholder({ accent, glow, animKey }: { accent: string; glow: string; animKey: number }) {
+  return (
+    <div key={animKey} className="animate-hero-pop relative flex flex-col items-center">
+      {/* soft glow behind product */}
+      <div className={`absolute top-1/2 left-1/2 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl ${glow}`} />
+      {/* product card (replace with transparent product PNG later) */}
+      <div className="relative w-36 h-48 sm:w-44 sm:h-56 md:w-52 md:h-64 rounded-3xl bg-white shadow-[0_24px_60px_rgba(23,58,99,0.18)] flex items-center justify-center">
+        <div className={`flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl bg-gradient-to-br text-white ${accent}`}>
+          <ToothIcon className="h-9 w-9 sm:h-11 sm:w-11" />
+        </div>
+      </div>
+      {/* floor shadow */}
+      <div className="mt-4 h-3 w-28 sm:w-36 rounded-[100%] bg-[#173A63]/15 blur-md" />
+    </div>
+  );
+}
 
 export default function HeroBanner() {
   const t = useTranslations('home');
@@ -31,163 +76,72 @@ export default function HeroBanner() {
     return () => clearInterval(timer);
   }, []);
 
+  const slide = slides[current];
+
   return (
-    <section className="w-full">
-      {/* Banner image area */}
-      <div className="relative w-full overflow-hidden aspect-[16/9] md:aspect-auto md:min-h-[75vh]">
-        {/* Desktop (≥768px): full-screen cover background images */}
-        <div className="hidden md:block absolute inset-0">
-          {slides.map((slide, i) => (
-            <div
-              key={i}
-              className={`absolute inset-0 transition-opacity duration-1000 ${
-                i === current ? 'opacity-100' : 'opacity-0'
-              }`}
+    <section className="relative w-full overflow-hidden bg-gradient-to-br from-[#EAF7FD] via-[#F2FBFF] to-[#F7F4EF]">
+      {/* decorative blurred blobs */}
+      <div className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[#008FD5]/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-[#173A63]/8 blur-3xl" />
+
+      <div className="relative mx-auto w-full max-w-[1360px] px-5 sm:px-8 pt-8 md:pt-28 md:min-h-[clamp(480px,62vh,640px)] flex flex-col md:flex-row md:items-center">
+        {/* Mobile: product on top | PC: text on left */}
+        {/* Product visual — mobile order-first, desktop right column */}
+        <div className="order-1 flex justify-center py-8 md:order-2 md:flex-1 md:py-0 md:pl-10">
+          <ProductPlaceholder accent={slide.accent} glow={slide.glow} animKey={current} />
+        </div>
+
+        {/* Text block — mobile centered below image, desktop left column */}
+        <div className="order-2 pb-14 md:order-1 md:flex-1 md:pb-0 text-center md:text-left">
+          <h1
+            key={`title-${current}`}
+            className="animate-fade-in text-[#173A63] font-extrabold tracking-tight leading-[1.1] text-3xl sm:text-4xl lg:text-5xl xl:text-[3.4rem]"
+          >
+            {t(slide.titleKey)}
+          </h1>
+          <p
+            key={`desc-${current}`}
+            className="animate-fade-in mx-auto md:mx-0 mt-4 md:mt-6 max-w-xl text-sm sm:text-base lg:text-lg leading-relaxed text-slate-600"
+          >
+            {t(slide.descKey)}
+          </p>
+          <div className="mt-7 md:mt-9 flex flex-col sm:flex-row items-center gap-3 md:gap-4 justify-center md:justify-start">
+            <Link
+              href={slide.href}
+              className="animate-fade-in w-full sm:w-auto rounded-full bg-[#173A63] px-9 py-3.5 text-base font-semibold text-white text-center transition-all hover:bg-[#0F2A4A] hover:scale-[0.98] shadow-[0_12px_30px_rgba(23,58,99,0.25)]"
             >
-              <img
-                src={slide.img}
-                alt={slide.imgAlt}
-                className="h-full w-full object-cover"
-                loading={i === 0 ? 'eager' : 'lazy'}
-              />
-            </div>
-          ))}
-          {/* Navy gradient overlay for desktop text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0F2A4A]/85 via-[#173A63]/70 to-[#1E4D7B]/50" />
-        </div>
-
-        {/* Mobile (<768px): cover images with bottom-deepening gradient */}
-        <div className="block md:hidden absolute inset-0">
-          {slides.map((slide, i) => (
-            <div
-              key={i}
-              className={`absolute inset-0 transition-opacity duration-1000 ${
-                i === current ? 'opacity-100' : 'opacity-0'
-              }`}
+              {t(slide.ctaKey)}
+            </Link>
+            <a
+              href="https://wa.me/1234567890"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackEvent('whatsapp_click', { page: 'home', position: 'hero' })}
+              className="animate-fade-in inline-flex items-center justify-center gap-2 rounded-full border border-[#21C96B]/40 bg-white/70 px-7 py-3.5 text-base font-semibold text-[#159d55] transition-all hover:bg-[#21C96B]/10"
             >
-              <img
-                src={slide.img}
-                alt={slide.imgAlt}
-                className="h-full w-full object-cover"
-                style={{ objectPosition: 'center' }}
-                loading={i === 0 ? 'eager' : 'lazy'}
-              />
-            </div>
-          ))}
-          {/* Bottom-deepening gradient for mobile text readability */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(to top, rgba(15,42,74,0.92) 0%, rgba(23,58,99,0.75) 40%, rgba(23,58,99,0.3) 70%, rgba(23,58,99,0.1) 100%)',
-            }}
-          />
-        </div>
-
-        {/* Desktop content: positioned at 40% from top */}
-        <div className="hidden md:flex absolute inset-0 z-10">
-          <div className="absolute top-[40%] left-0 right-0 mx-auto w-[94%] max-w-[1360px] px-6">
-            <div className="max-w-2xl">
-              <h1
-                key={`title-${current}`}
-                className="animate-fade-in mb-6 font-bold leading-[1.05] tracking-tight text-white"
-                style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)' }}
-              >
-                {current === 0 ? t('heroTitle') : current === 1 ? t('plPathTitle') : t('oemPathTitle')}
-              </h1>
-              <p
-                key={`sub-${current}`}
-                className="animate-fade-in mb-8 max-w-lg text-lg leading-relaxed text-white/85"
-              >
-                {current === 0 ? t('heroSubtitle') : current === 1 ? t('plPathDesc') : t('oemPathDesc')}
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Link
-                  href="/products"
-                  className="animate-fade-in rounded-full bg-white px-10 py-4 text-base font-semibold text-[#173A63] transition-all hover:bg-white/90 hover:scale-[0.98] shadow-lg"
-                >
-                  {t('heroCta')}
-                </Link>
-                <a
-                  href="https://wa.me/1234567890"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => trackEvent('whatsapp_click', { page: 'home', position: 'hero' })}
-                  className="animate-fade-in rounded-full bg-[#21C96B] px-10 py-4 text-base font-semibold text-white transition-all hover:bg-[#1db85e] hover:scale-[0.98] shadow-lg flex items-center gap-2"
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                  </svg>
-                  {t('heroWhatsapp')}
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile content: text at bottom of 16:9 banner */}
-        <div className="flex md:hidden absolute inset-0 z-10 items-end">
-          <div className="w-full px-4 pb-3">
-            <h1
-              key={`title-${current}`}
-              className="animate-fade-in mb-2 font-bold leading-tight text-white line-clamp-2"
-              style={{ fontSize: '1.25rem' }}
-            >
-              {current === 0 ? t('heroTitle') : current === 1 ? t('plPathTitle') : t('oemPathTitle')}
-            </h1>
-            <p
-              key={`sub-${current}`}
-              className="animate-fade-in text-sm leading-snug text-white/80 line-clamp-2"
-            >
-              {current === 0 ? t('heroSubtitle') : current === 1 ? t('plPathDesc') : t('oemPathDesc')}
-            </p>
-          </div>
-        </div>
-
-        {/* Desktop carousel indicators */}
-        <div className="hidden md:flex absolute bottom-4 left-1/2 z-10 -translate-x-1/2 gap-2">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              className={`h-2 rounded-full transition-all ${
-                i === current
-                  ? 'bg-white w-8'
-                  : 'bg-white/40 w-2 hover:bg-white/60'
-              }`}
-            />
-          ))}
-        </div>
-
-        {/* Desktop scroll indicator */}
-        <div className="hidden md:flex absolute bottom-24 left-1/2 z-10 -translate-x-1/2 flex-col items-center gap-1 text-white/50">
-          <div className="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-white/60 animate-bounce" />
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              {t('heroWhatsapp')}
+            </a>
           </div>
         </div>
       </div>
 
-      {/* Mobile CTA buttons: below banner image */}
-      <div className="block md:hidden px-4 py-3 bg-[#F7F4EF]">
-        <div className="flex flex-col gap-2">
-          <Link
-            href="/products"
-            className="animate-fade-in rounded-full bg-[#173A63] h-10 flex items-center justify-center text-sm font-semibold text-white transition-all hover:bg-[#0F2A4A] active:scale-[0.98] shadow-md w-full"
-          >
-            {t('heroCta')}
-          </Link>
-          <a
-            href="https://wa.me/1234567890"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => trackEvent('whatsapp_click', { page: 'home', position: 'hero' })}
-            className="animate-fade-in rounded-full bg-[#21C96B] h-10 flex items-center justify-center text-sm font-semibold text-white transition-all hover:bg-[#1db85e] active:scale-[0.98] shadow-md w-full gap-2"
-          >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
-            {t('heroWhatsapp')}
-          </a>
-        </div>
+      {/* carousel indicators */}
+      <div className="relative z-10 flex justify-center gap-2 pb-6 md:pb-8">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            className={`h-2 rounded-full transition-all ${
+              i === current
+                ? 'bg-[#173A63] w-8'
+                : 'bg-[#173A63]/25 w-2 hover:bg-[#173A63]/45'
+            }`}
+          />
+        ))}
       </div>
     </section>
   );
