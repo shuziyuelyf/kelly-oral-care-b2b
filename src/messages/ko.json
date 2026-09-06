@@ -1082,5 +1082,16 @@
     "ctaTitle": "Need More Information?",
     "ctaDesc": "Our team is ready to answer your questions and help you get started",
     "ctaButton": "Contact Our Team"
+  },
+  "crossNav": {
+    "productsBannerTitle": "자체 브랜드를 원하세요?",
+    "productsBannerDesc": "맞춤 처방, 자사 브랜드 패키징, 낮은 MOQ.",
+    "productsBannerCta": "OEM/ODM 살펴보기",
+    "productsBannerDismiss": "닫기",
+    "customCardTitle": "제품이 더 빨리 필요하세요?",
+    "customCardDesc": "재고가 준비된 즉시 출하 도매 카탈로그.",
+    "customCardCta": "제품 둘러보기",
+    "menuProductsToOem": "자사 브랜드를 찾으세요? OEM/ODM 서비스",
+    "menuOemToProducts": "재고 제품이 필요하세요? 도매 제품"
   }
 }

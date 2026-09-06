@@ -16,6 +16,7 @@ import CustomShowcase from '@/components/frontend/CustomShowcase';
 export default function CustomPage() {
   const locale = useLocale();
   const t = useTranslations('custom');
+  const tCn = useTranslations('crossNav');
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); setSubmitted(true); };
@@ -336,6 +337,23 @@ export default function CustomPage() {
                   </div>
                 </div>
               ))}
+
+              {/* Cross-nav: ready-stock quick channel (lower visual weight than RFQ form) */}
+              <div className="flex items-center gap-4 rounded-2xl border border-[#008FD5]/15 bg-[#EAF7FD] p-5">
+                <div className="w-11 h-11 shrink-0 bg-white rounded-xl flex items-center justify-center shadow-sm">
+                  <ShoppingBag className="w-5 h-5 text-[#008FD5]" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="font-bold text-[#173A63] mb-0.5">{tCn('customCardTitle')}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed mb-1.5">{tCn('customCardDesc')}</p>
+                  <Link
+                    href={`/${locale}/products`}
+                    className="inline-flex items-center gap-1 text-sm font-semibold text-[#008FD5] hover:text-[#0070a8] transition-colors"
+                  >
+                    {tCn('customCardCta')} <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
             </div>
 
             {/* Right — RFQ form */}

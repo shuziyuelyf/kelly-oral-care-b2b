@@ -1082,5 +1082,16 @@
     "ctaTitle": "Need More Information?",
     "ctaDesc": "Our team is ready to answer your questions and help you get started",
     "ctaButton": "Contact Our Team"
+  },
+  "crossNav": {
+    "productsBannerTitle": "Want your own brand?",
+    "productsBannerDesc": "Custom formulas, private label packaging & low MOQ.",
+    "productsBannerCta": "Explore OEM/ODM",
+    "productsBannerDismiss": "Dismiss",
+    "customCardTitle": "Need products faster?",
+    "customCardDesc": "Ready-to-ship wholesale catalog with stock available.",
+    "customCardCta": "Browse Products",
+    "menuProductsToOem": "Looking for private label? OEM/ODM services",
+    "menuOemToProducts": "Need ready stock? Wholesale products"
   }
 }

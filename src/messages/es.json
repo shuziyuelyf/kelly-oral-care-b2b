@@ -1082,5 +1082,16 @@
     "ctaTitle": "Need More Information?",
     "ctaDesc": "Our team is ready to answer your questions and help you get started",
     "ctaButton": "Contact Our Team"
+  },
+  "crossNav": {
+    "productsBannerTitle": "¿Quiere su propia marca?",
+    "productsBannerDesc": "Fórmulas personalizadas, empaque de marca privada y MOQ bajo.",
+    "productsBannerCta": "Explorar OEM/ODM",
+    "productsBannerDismiss": "Cerrar",
+    "customCardTitle": "¿Necesita productos más rápido?",
+    "customCardDesc": "Catálogo mayorista listo para enviar con stock disponible.",
+    "customCardCta": "Ver productos",
+    "menuProductsToOem": "¿Busca marca privada? Servicios OEM/ODM",
+    "menuOemToProducts": "¿Necesita stock listo? Productos al por mayor"
   }
 }

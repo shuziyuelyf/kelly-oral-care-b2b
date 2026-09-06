@@ -1082,5 +1082,16 @@
     "ctaTitle": "需要更多信息？",
     "ctaDesc": "我们的团队随时为您解答疑问并帮助您开始合作",
     "ctaButton": "联系我们的团队"
+  },
+  "crossNav": {
+    "productsBannerTitle": "想做自己的品牌？",
+    "productsBannerDesc": "定制配方、自有品牌包装，起订量低。",
+    "productsBannerCta": "了解 OEM/ODM",
+    "productsBannerDismiss": "关闭",
+    "customCardTitle": "想更快拿到产品？",
+    "customCardDesc": "现货批发目录，库存充足可即发。",
+    "customCardCta": "浏览产品",
+    "menuProductsToOem": "想做自有品牌？OEM/ODM 服务",
+    "menuOemToProducts": "需要现货？批发产品"
   }
 }

@@ -21,6 +21,7 @@ const ALL_MENU_ITEMS: { key: NonNullable<MenuKey>; href: string }[] = [
 export default function Header({ locale }: { locale: string }) {
   const t = useTranslations('common');
   const tm = useTranslations('megaMenu');
+  const tCn = useTranslations('crossNav');
   // locale is now passed as prop
   const pathname = usePathname();
 
@@ -347,11 +348,17 @@ export default function Header({ locale }: { locale: string }) {
             </Link>
           </div>
         </div>
+        {/* Cross-nav: Products -> OEM/ODM */}
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <Link href={`/${locale}/custom`} className="inline-flex items-center gap-1 text-xs font-medium text-[#008FD5] hover:text-[#0070a8] transition-colors">
+            {tCn('menuProductsToOem')} <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
       </div>
     </div>
   );
 
-  const renderSimplePanel = (links: { name: string; href: string }[], imageCard?: { title: string; desc: string; href: string; image: string }) => (
+  const renderSimplePanel = (links: { name: string; href: string }[], imageCard?: { title: string; desc: string; href: string; image: string }, footerLink?: { label: string; href: string }) => (
     <div
       className="absolute top-full pt-3 z-50 pointer-events-auto"
       style={{ left: panelLeft, width: imageCard ? 'min(680px, calc(100vw - 2rem))' : 'min(400px, calc(100vw - 2rem))' }}
@@ -384,6 +391,13 @@ export default function Header({ locale }: { locale: string }) {
             </div>
           )}
         </div>
+        {footerLink && (
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <Link href={`/${locale}${footerLink.href}`} className="inline-flex items-center gap-1 text-xs font-medium text-[#008FD5] hover:text-[#0070a8] transition-colors">
+              {footerLink.label} <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -403,7 +417,7 @@ export default function Header({ locale }: { locale: string }) {
         desc: tm('oemPanelDesc'),
         href: '/custom',
         image: 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800',
-      });
+      }, { label: tCn('menuOemToProducts'), href: '/products' });
       case 'factory': return renderSimplePanel(factoryLinks);
       case 'quality': return renderSimplePanel(qualityLinks);
       case 'resources': return renderSimplePanel(resourcesLinks);
@@ -636,6 +650,25 @@ export default function Header({ locale }: { locale: string }) {
                                 {l.name}
                               </Link>
                             ))}
+                            {/* Cross-nav links at bottom of relevant groups */}
+                            {key === 'products' && (
+                              <Link
+                                href={`/${locale}/custom`}
+                                className="block px-4 py-2.5 text-sm font-medium text-[#008FD5] hover:text-[#0070a8] rounded-lg hover:bg-[#EAF7FD] min-h-[44px] flex items-center gap-1"
+                                onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
+                              >
+                                {tCn('menuProductsToOem')} <ArrowRight className="w-3.5 h-3.5" />
+                              </Link>
+                            )}
+                            {key === 'oemOdm' && (
+                              <Link
+                                href={`/${locale}/products`}
+                                className="block px-4 py-2.5 text-sm font-medium text-[#008FD5] hover:text-[#0070a8] rounded-lg hover:bg-[#EAF7FD] min-h-[44px] flex items-center gap-1"
+                                onClick={() => { setIsBurgerOpen(false); setBurgerExpanded(null); }}
+                              >
+                                {tCn('menuOemToProducts')} <ArrowRight className="w-3.5 h-3.5" />
+                              </Link>
+                            )}
                           </div>
                         )}
                       </>

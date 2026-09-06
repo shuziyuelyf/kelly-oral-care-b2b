@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp, ArrowRight, Check } from 'lucide-react';
+import { Search, SlidersHorizontal, X, ChevronDown, ChevronUp, ArrowRight, Check, Sparkles } from 'lucide-react';
 import { mockProducts } from '@/lib/mock/products';
 import { getI18nValue, safeImageSrc } from '@/lib/utils-i18n';
 import { trackEvent } from '@/lib/analytics';
@@ -34,6 +34,29 @@ type SortKey = 'featured' | 'newest' | 'moqAsc' | 'moqDesc' | 'bestSelling';
 export default function ProductsListClient({ locale }: { locale: string }) {
   const t = useTranslations('product');
   const tNav = useTranslations('nav');
+  const tCn = useTranslations('crossNav');
+
+  /* ---- OEM/ODM cross-nav banner (dismiss persisted in localStorage) ---- */
+  const [bannerVisible, setBannerVisible] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (!localStorage.getItem('kelly_oem_banner_dismissed')) {
+        setBannerVisible(true);
+      }
+    } catch {
+      setBannerVisible(true);
+    }
+  }, []);
+
+  const dismissBanner = () => {
+    try {
+      localStorage.setItem('kelly_oem_banner_dismissed', '1');
+    } catch {
+      /* ignore storage errors */
+    }
+    setBannerVisible(false);
+  };
 
   /* ---- Filters ---- */
   const [search, setSearch] = useState('');
@@ -342,6 +365,41 @@ export default function ProductsListClient({ locale }: { locale: string }) {
           </div>
         </div>
       </section>
+
+      {/* OEM/ODM cross-nav banner — below title, above grid */}
+      {bannerVisible && (
+        <section className="pb-2 md:pb-4">
+          <div className="mx-auto w-[94%] max-w-[1360px] px-4 md:px-6">
+            <div className="relative rounded-2xl border border-[#008FD5]/15 bg-[#EAF7FD] px-5 py-4 md:px-6 md:py-4">
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between pr-10 md:pr-12">
+                <div className="flex items-start gap-3">
+                  <div className="hidden sm:flex w-10 h-10 shrink-0 rounded-xl bg-white items-center justify-center shadow-sm">
+                    <Sparkles className="w-5 h-5 text-[#008FD5]" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-[#173A63] text-base md:text-lg">{tCn('productsBannerTitle')}</p>
+                    <p className="text-sm text-gray-500 mt-0.5">{tCn('productsBannerDesc')}</p>
+                  </div>
+                </div>
+                <Link
+                  href={`/${locale}/custom`}
+                  className="inline-flex shrink-0 items-center justify-center gap-1.5 self-start md:self-auto rounded-full bg-[#008FD5] px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:bg-[#0070a8] hover:scale-[0.98]"
+                >
+                  {tCn('productsBannerCta')} <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+              <button
+                type="button"
+                onClick={dismissBanner}
+                aria-label={tCn('productsBannerDismiss')}
+                className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-white hover:text-gray-600"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Main Content: Sidebar + Grid */}
       <section className="pb-12 md:pb-20">

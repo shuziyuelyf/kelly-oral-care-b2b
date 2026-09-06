@@ -1082,5 +1082,16 @@
     "ctaTitle": "Need More Information?",
     "ctaDesc": "Our team is ready to answer your questions and help you get started",
     "ctaButton": "Contact Our Team"
+  },
+  "crossNav": {
+    "productsBannerTitle": "هل ترغب بعلامتك التجارية الخاصة؟",
+    "productsBannerDesc": "تركيبات مخصصة وتغليف بالعلامة الخاصة وحد أدنى منخفض للطلب.",
+    "productsBannerCta": "استكشف OEM/ODM",
+    "productsBannerDismiss": "إغلاق",
+    "customCardTitle": "هل تحتاج المنتجات بشكل أسرع؟",
+    "customCardDesc": "كتالوج جملة جاهز للشحن مع توفر المخزون.",
+    "customCardCta": "تصفح المنتجات",
+    "menuProductsToOem": "هل تبحث عن علامة خاصة؟ خدمات OEM/ODM",
+    "menuOemToProducts": "هل تحتاج مخزونًا جاهزًا؟ منتجات الجملة"
   }
 }

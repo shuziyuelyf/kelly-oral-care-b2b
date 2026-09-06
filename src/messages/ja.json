@@ -1082,5 +1082,16 @@
     "ctaTitle": "Need More Information?",
     "ctaDesc": "Our team is ready to answer your questions and help you get started",
     "ctaButton": "Contact Our Team"
+  },
+  "crossNav": {
+    "productsBannerTitle": "自社ブランドをお考えですか？",
+    "productsBannerDesc": "カスタム処方、プライベートラベル包装、低い最小発注数。",
+    "productsBannerCta": "OEM/ODM を見る",
+    "productsBannerDismiss": "閉じる",
+    "customCardTitle": "製品をもっと早く必要ですか？",
+    "customCardDesc": "在庫対応の即日出荷卸売カタログ。",
+    "customCardCta": "製品を見る",
+    "menuProductsToOem": "プライベートラベルをお探しですか？ OEM/ODMサービス",
+    "menuOemToProducts": "在庫品が必要ですか？卸売製品"
   }
 }
