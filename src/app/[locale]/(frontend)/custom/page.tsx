@@ -11,6 +11,7 @@ import {
   Smile, Brush, BadgeCheck, Store, ShoppingBag, Stethoscope, Handshake,
   Building2, Truck, Award, ClipboardList, Lightbulb,
 } from 'lucide-react';
+import CustomShowcase from '@/components/frontend/CustomShowcase';
 
 export default function CustomPage() {
   const locale = useLocale();
@@ -231,7 +232,7 @@ export default function CustomPage() {
         </div>
       </section>
 
-      {/* 05 — WHAT WE CAN CUSTOMIZE: dimensions + product categories */}
+      {/* 05 — TOOTHPASTE CUSTOMIZATION SHOWCASE: tabs + capability matrix */}
       <section id="customize" className="scroll-mt-24 md:scroll-mt-32 py-20 bg-[#F7F4EF]">
         <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
@@ -239,44 +240,7 @@ export default function CustomPage() {
             <p className="text-gray-500 text-lg max-w-2xl mx-auto">{t('customizeDesc')}</p>
           </div>
 
-          {/* Customization dimensions */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-14">
-            {[
-              { icon: FlaskConical, label: t('dimFormula') },
-              { icon: Beaker, label: t('dimIngredient') },
-              { icon: Sparkles, label: t('dimFlavor') },
-              { icon: Palette, label: t('dimColor') },
-              { icon: Layers, label: t('dimPackaging') },
-              { icon: Printer, label: t('dimPrint') },
-            ].map((d, i) => (
-              <div key={i} className="bg-white rounded-2xl p-5 text-center shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-11 h-11 bg-[#EAF7FD] rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <d.icon className="w-5 h-5 text-[#008FD5]" />
-                </div>
-                <p className="text-sm font-semibold text-[#173A63]">{d.label}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Product categories */}
-          <h3 className="text-xl md:text-2xl font-bold text-[#173A63] text-center mb-8">{t('productsTitle')}</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {[
-              { icon: Sparkles, name: t('catToothpaste') },
-              { icon: Droplet, name: t('catMouthwash') },
-              { icon: Wind, name: t('catPowder') },
-              { icon: Smile, name: t('catWhitening') },
-              { icon: SprayCan, name: t('catSpray') },
-              { icon: Brush, name: t('catBrush') },
-            ].map((p, i) => (
-              <div key={i} className="bg-white rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-[#EAF7FD] rounded-full flex items-center justify-center mx-auto mb-3">
-                  <p.icon className="w-6 h-6 text-[#008FD5]" />
-                </div>
-                <h4 className="font-semibold text-[#173A63] text-sm">{p.name}</h4>
-              </div>
-            ))}
-          </div>
+          <CustomShowcase />
         </div>
       </section>
 
