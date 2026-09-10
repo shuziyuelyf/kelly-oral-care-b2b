@@ -120,7 +120,7 @@ export default function PrivateLabelPage() {
       </section>
 
       {/* Why Choose Private Label */}
-      <section className="py-20 bg-white">
+      <section id="why" className="scroll-mt-24 md:scroll-mt-28 py-20 bg-white">
         <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">{t('whyTitle')}</h2>
@@ -279,7 +279,7 @@ export default function PrivateLabelPage() {
       </section>
 
       {/* Startup Packages — Pricing available on request */}
-      <section className="py-20 bg-[#F7F4EF]">
+      <section id="packages" className="scroll-mt-24 md:scroll-mt-28 py-20 bg-[#F7F4EF]">
         <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-[#173A63] mb-4">Startup Packages</h2>
           <p className="text-gray-500 text-lg mb-6 max-w-xl mx-auto">Pre-configured packages to launch your brand quickly. Pricing varies by product type, packaging, and quantity — contact us for a detailed quote.</p>
@@ -384,7 +384,7 @@ export default function PrivateLabelPage() {
       </section>
 
       {/* MOQ & Pricing */}
-      <section className="py-20 bg-[#F7F4EF]">
+      <section id="sample" className="scroll-mt-24 md:scroll-mt-28 py-20 bg-[#F7F4EF]">
         <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-4">{t('moqTitle')}</h2>
@@ -411,7 +411,7 @@ export default function PrivateLabelPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20 bg-white">
+      <section id="faq" className="scroll-mt-24 md:scroll-mt-28 py-20 bg-white">
         <div className="mx-auto w-[94%] max-w-[1360px] px-2 md:px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-[#173A63] mb-12 text-center">{t('faqTitle')}</h2>
           <div className="space-y-4">

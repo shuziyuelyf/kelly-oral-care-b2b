@@ -199,6 +199,28 @@ export default function Header({ locale }: { locale: string }) {
     }, 1000);
   }, []);
 
+  // Click toggles the mega menu on desktop too (touch + mouse). Hover-open is
+  // preserved via onMouseEnter; clicking the active item closes it.
+  const handleMenuClick = useCallback((key: MenuKey) => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    if (activeMenu === key) {
+      setIsPanelVisible(false);
+      setTimeout(() => setActiveMenu(null), 200);
+      return;
+    }
+    setActiveMenu(key);
+    const itemIndex = ALL_MENU_ITEMS.findIndex(item => item.key === key);
+    const itemEl = itemIndex >= 0 ? itemRefs.current[itemIndex] : null;
+    if (itemEl) {
+      const rect = itemEl.getBoundingClientRect();
+      setPanelLeft(rect.left);
+    }
+    requestAnimationFrame(() => setIsPanelVisible(true));
+  }, [activeMenu]);
+
   const handleLangEnter = useCallback(() => {
     if (langCloseTimeoutRef.current) {
       clearTimeout(langCloseTimeoutRef.current);
@@ -266,7 +288,7 @@ export default function Header({ locale }: { locale: string }) {
     const overview = (href: string) => ({ name: t(`nav.${key}`), href });
     switch (key) {
       case 'products': return [{ name: tm('allProducts'), href: '/products' }, { name: tm('toothpaste'), href: '/products?cat=toothpaste' }, { name: tm('mouthwash'), href: '/products?cat=mouthwash' }, { name: tm('toothPowder'), href: '/products?cat=tooth-powder' }, { name: tm('toothbrush'), href: '/products?cat=toothbrush' }];
-      case 'privateLabel': return [overview('/private-label'), ...privateLabelLinks];
+      case 'privateLabel': return [...privateLabelLinks];
       case 'oemOdm': return [overview('/custom'), ...oemOdmLinks];
       case 'factory': return factoryLinks;
       case 'quality': return qualityLinks;
@@ -409,7 +431,7 @@ export default function Header({ locale }: { locale: string }) {
       case 'privateLabel': return renderSimplePanel(privateLabelLinks, {
         title: tm('plPanelTitle'),
         desc: tm('plPanelDesc'),
-        href: '/private-label',
+        href: '/private-label#why',
         image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=600',
       });
       case 'oemOdm': return renderSimplePanel(oemOdmLinks, {
@@ -489,13 +511,15 @@ export default function Header({ locale }: { locale: string }) {
                       onMouseEnter={() => handleMenuEnter(key)}
                       onMouseLeave={handleMenuLeave}
                     >
-                      <Link
-                        href={`/${locale}${href}`}
+                      <button
+                        type="button"
+                        aria-expanded={activeMenu === key}
+                        onClick={() => handleMenuClick(key)}
                         className={`flex items-center gap-1 px-3 py-2.5 text-[13.5px] font-medium rounded-full transition-all whitespace-nowrap ${active ? 'text-[#008FD5]' : 'text-[#173A63] hover:text-[#008FD5] hover:bg-gray-100/60'}`}
                       >
                         {t(`nav.${key}`)}
                         <ChevronDown className={`w-3.5 h-3.5 transition-transform ${activeMenu === key ? 'rotate-180' : ''}`} />
-                      </Link>
+                      </button>
                     </div>
                   );
                 })
