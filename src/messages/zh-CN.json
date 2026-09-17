@@ -310,7 +310,9 @@
     "exhibition": "展会信息",
     "read_more": "阅读更多",
     "published_at": "发布时间",
-    "related_news": "相关新闻"
+    "related_news": "相关新闻",
+    "backToNews": "返回新闻列表",
+    "relatedNews": "相关推荐"
   },
   "contact": {
     "title": "联系我们",

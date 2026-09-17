@@ -1,12 +1,14 @@
 import { notFound } from 'next/navigation';
 import { mockNews } from '@/lib/mock/other';
 import { getI18nValue } from '@/lib/utils-i18n';
+import { getTranslations } from 'next-intl/server';
 import { Calendar, Eye, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 export default async function NewsDetailPage({ params }: { params: Promise<{ locale: string; id: string }> }) {
   const { locale, id } = await params;
   const lang = locale;
+  const t = await getTranslations({ locale: lang, namespace: 'news' });
   const news = mockNews.find((n) => n.id === Number(id));
   if (!news) return notFound();
 
@@ -18,7 +20,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ loc
     <div className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Link href={`/${locale}/news`} className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-[#008FD5] mb-6">
-          <ArrowLeft className="w-4 h-4" /> Back to News
+          <ArrowLeft className="w-4 h-4" /> {t('backToNews')}
         </Link>
 
         <article>
@@ -37,7 +39,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ loc
         {/* Related News */}
         {relatedNews.length > 0 && (
           <div className="mt-12 pt-8 border-t">
-            <h2 className="text-xl font-bold text-[#173A63] mb-6">Related News</h2>
+            <h2 className="text-xl font-bold text-[#173A63] mb-6">{t('relatedNews')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {relatedNews.map((rn) => (
                 <Link key={rn.id} href={`/${locale}/news/${rn.id}`} className="group bg-gray-50 rounded-lg overflow-hidden hover:shadow-md transition-shadow">

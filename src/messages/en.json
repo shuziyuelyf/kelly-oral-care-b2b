@@ -368,7 +368,9 @@
     "exhibition": "Exhibitions",
     "read_more": "Read More",
     "published_at": "Published",
-    "related_news": "Related News"
+    "related_news": "Related News",
+    "backToNews": "Back to News",
+    "relatedNews": "Related News"
   },
   "contact": {
     "title": "Contact Us",
