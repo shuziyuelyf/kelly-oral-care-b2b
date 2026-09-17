@@ -331,11 +331,21 @@
       "phone": "전화",
       "subject": "제목",
       "submit": "보내기",
-      "success": "메시지가 전송되었습니다!"
+      "success": "메시지가 전송되었습니다!",
+      "submitting": "전송 중...",
+      "nameRequired": "이름을 입력해 주세요.",
+      "emailRequired": "이메일 주소를 입력해 주세요.",
+      "emailInvalid": "유효한 이메일 주소를 입력해 주세요.",
+      "subjectRequired": "제목을 입력해 주세요.",
+      "messageRequired": "메시지를 입력해 주세요.",
+      "phoneInvalid": "유효한 전화번호를 입력해 주세요."
     },
     "messageForm": "문의하기",
     "submitSuccess": "메시지 전송됨",
-    "submitSuccessDesc": "빠른 시일 내에 답변드리겠습니다"
+    "submitSuccessDesc": "빠른 시일 내에 답변드리겠습니다",
+    "submitError": "전송에 실패했습니다. 잠시 후 다시 시도해 주세요.",
+    "whatsapp": "WhatsApp",
+    "whatsappCta": "WhatsApp 채팅"
   },
   "auth": {
     "login_title": "고객 로그인",

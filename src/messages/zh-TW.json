@@ -331,11 +331,21 @@
       "phone": "電話",
       "subject": "主題",
       "submit": "發送留言",
-      "success": "留言發送成功！"
+      "success": "留言發送成功！",
+      "submitting": "傳送中...",
+      "nameRequired": "請輸入您的姓名。",
+      "emailRequired": "請輸入您的郵箱地址。",
+      "emailInvalid": "請輸入有效的郵箱地址。",
+      "subjectRequired": "請輸入主題。",
+      "messageRequired": "請輸入留言內容。",
+      "phoneInvalid": "請輸入有效的電話號碼。"
     },
     "messageForm": "線上留言",
     "submitSuccess": "留言已發送",
-    "submitSuccessDesc": "我們會盡快回覆您"
+    "submitSuccessDesc": "我們會盡快回覆您",
+    "submitError": "傳送失敗，請稍後重試。",
+    "whatsapp": "WhatsApp",
+    "whatsappCta": "透過 WhatsApp 諮詢"
   },
   "auth": {
     "login_title": "客戶登入",

@@ -331,11 +331,21 @@
       "phone": "Teléfono",
       "subject": "Asunto",
       "submit": "Enviar",
-      "success": "¡Mensaje enviado!"
+      "success": "¡Mensaje enviado!",
+      "submitting": "Enviando...",
+      "nameRequired": "Por favor ingrese su nombre.",
+      "emailRequired": "Por favor ingrese su correo electrónico.",
+      "emailInvalid": "Ingrese una dirección de correo electrónico válida.",
+      "subjectRequired": "Por favor ingrese un asunto.",
+      "messageRequired": "Por favor ingrese su mensaje.",
+      "phoneInvalid": "Ingrese un número de teléfono válido."
     },
     "messageForm": "Deje un Mensaje",
     "submitSuccess": "Mensaje Enviado",
-    "submitSuccessDesc": "Le responderemos pronto"
+    "submitSuccessDesc": "Le responderemos pronto",
+    "submitError": "Algo salió mal. Inténtelo de nuevo más tarde.",
+    "whatsapp": "WhatsApp",
+    "whatsappCta": "Chatear por WhatsApp"
   },
   "auth": {
     "login_title": "Iniciar Sesión",

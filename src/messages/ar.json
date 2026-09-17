@@ -331,11 +331,21 @@
       "phone": "الهاتف",
       "subject": "الموضوع",
       "submit": "إرسال",
-      "success": "تم الإرسال!"
+      "success": "تم الإرسال!",
+      "submitting": "جارٍ الإرسال...",
+      "nameRequired": "يرجى إدخال اسمك.",
+      "emailRequired": "يرجى إدخال بريدك الإلكتروني.",
+      "emailInvalid": "يرجى إدخال بريد إلكتروني صالح.",
+      "subjectRequired": "يرجى إدخال الموضوع.",
+      "messageRequired": "يرجى إدخال رسالتك.",
+      "phoneInvalid": "يرجى إدخال رقم هاتف صالح."
     },
     "messageForm": "اترك رسالة",
     "submitSuccess": "تم الإرسال",
-    "submitSuccessDesc": "سنعود إليك قريباً"
+    "submitSuccessDesc": "سنعود إليك قريباً",
+    "submitError": "حدث خطأ ما. يرجى المحاولة مرة أخرى لاحقًا.",
+    "whatsapp": "واتساب",
+    "whatsappCta": "الدردشة عبر واتساب"
   },
   "auth": {
     "login_title": "تسجيل دخول العملاء",

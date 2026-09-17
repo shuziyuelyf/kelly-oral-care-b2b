@@ -331,11 +331,21 @@
       "phone": "電話",
       "subject": "件名",
       "submit": "送信",
-      "success": "メッセージが送信されました！"
+      "success": "メッセージが送信されました！",
+      "submitting": "送信中...",
+      "nameRequired": "お名前を入力してください。",
+      "emailRequired": "メールアドレスを入力してください。",
+      "emailInvalid": "有効なメールアドレスを入力してください。",
+      "subjectRequired": "件名を入力してください。",
+      "messageRequired": "メッセージを入力してください。",
+      "phoneInvalid": "有効な電話番号を入力してください。"
     },
     "messageForm": "お問い合わせ",
     "submitSuccess": "送信完了",
-    "submitSuccessDesc": "すぐにご連絡いたします"
+    "submitSuccessDesc": "すぐにご連絡いたします",
+    "submitError": "送信に失敗しました。しばらくしてからもう一度お試しください。",
+    "whatsapp": "WhatsApp",
+    "whatsappCta": "WhatsApp で相談する"
   },
   "auth": {
     "login_title": "顧客ログイン",

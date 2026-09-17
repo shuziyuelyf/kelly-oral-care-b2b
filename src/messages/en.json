@@ -392,8 +392,18 @@
       "message": "Message",
       "submit": "Send Message",
       "success": "Message sent successfully!",
-      "phone": "Phone"
-    }
+      "phone": "Phone",
+      "submitting": "Sending...",
+      "nameRequired": "Please enter your name.",
+      "emailRequired": "Please enter your email address.",
+      "emailInvalid": "Please enter a valid email address.",
+      "subjectRequired": "Please enter a subject.",
+      "messageRequired": "Please enter your message.",
+      "phoneInvalid": "Please enter a valid phone number."
+    },
+    "submitError": "Something went wrong. Please try again later.",
+    "whatsapp": "WhatsApp",
+    "whatsappCta": "Chat on WhatsApp"
   },
   "auth": {
     "login_title": "Customer Login",
