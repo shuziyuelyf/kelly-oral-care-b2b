@@ -13,14 +13,42 @@ export const brand = {
 } as const;
 
 export const contact = {
-  // Placeholder contacts — replace with real data when available
-  whatsapp: '1234567890',
-  whatsappUrl: 'https://wa.me/1234567890',
+  // WhatsApp — leave empty until a real international number is provided.
+  // Once filled in here, isPlausibleWhatsApp()/hasWhatsApp become true and all
+  // site-wide WhatsApp CTAs render automatically (single source of truth).
+  whatsapp: '',
+  whatsappUrl: '',
   email: 'contact@kellyoralcare.com',
   phone: null as string | null, // null = not provided, show "Contact Us"
   address: null as string | null,
   businessHours: 'Mon–Fri 9:00–18:00 (GMT+8)',
 } as const;
+
+/**
+ * Filler/placeholder numbers (never real) that must stay hidden.
+ * These hardcoded test numbers should not be shown to customers.
+ */
+const PLACEHOLDER_WHATSAPP_NUMBERS = ['1234567890', '8613800138000'];
+
+/**
+ * Return true only when `num` looks like a real international WhatsApp number:
+ * non-empty, digits-only (ignoring '+', spaces) after trimming, length >= 10,
+ * and not one of the known placeholder/test numbers (or starting with 123456).
+ */
+export function isPlausibleWhatsApp(
+  num: string | null | undefined
+): boolean {
+  if (!num) return false;
+  const digits = num.replace(/[\s+()-]/g, '');
+  if (!/^\d+$/.test(digits)) return false;
+  if (digits.length < 10) return false;
+  if (PLACEHOLDER_WHATSAPP_NUMBERS.includes(digits)) return false;
+  if (digits.startsWith('123456')) return false;
+  return true;
+}
+
+/** Convenience flag for conditional rendering of WhatsApp CTAs across the site. */
+export const hasWhatsApp = isPlausibleWhatsApp(contact.whatsapp);
 
 /**
  * MOQ & Lead Time tiers — single source of truth.

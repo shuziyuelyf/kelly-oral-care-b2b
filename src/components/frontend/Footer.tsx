@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { Phone, Mail, MapPin } from 'lucide-react';
-import { contact, brand } from '@/lib/brand';
+import { contact, brand, hasWhatsApp } from '@/lib/brand';
 
 export default function Footer({ locale }: { locale: string }) {
   const t = useTranslations('common');
@@ -47,14 +47,16 @@ export default function Footer({ locale }: { locale: string }) {
             >
               {t('footer.getQuote')}
             </Link>
-            <a
-              href={contact.whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#21C96B] text-white font-semibold rounded-full hover:bg-[#1db954] transition-colors"
-            >
-              WhatsApp
-            </a>
+            {hasWhatsApp && contact.whatsappUrl && (
+              <a
+                href={contact.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#21C96B] text-white font-semibold rounded-full hover:bg-[#1db954] transition-colors"
+              >
+                WhatsApp
+              </a>
+            )}
           </div>
         </div>
       </div>

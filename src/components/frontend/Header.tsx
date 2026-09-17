@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect, useCallback, useRef, useLayoutEffect } from 'react';
 import { Menu, X, Globe, ChevronDown, ChevronRight, ArrowRight, MessageCircle } from 'lucide-react';
 import { locales, localeNames } from '@/i18n/config';
+import { hasWhatsApp, contact } from '@/lib/brand';
 
 type MenuKey = 'products' | 'privateLabel' | 'oemOdm' | 'factory' | 'quality' | 'resources' | null;
 
@@ -568,9 +569,9 @@ export default function Header({ locale }: { locale: string }) {
               </div>
 
               {/* WhatsApp Button - hidden in mobile mode (goes into burger menu) */}
-              {!isMobileMode && (
+              {!isMobileMode && hasWhatsApp && contact.whatsappUrl && (
                 <a
-                  href="https://wa.me/8613800138000"
+                  href={contact.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hidden md:flex items-center gap-1.5 px-4 py-2 bg-[#21C96B] text-white text-[13px] font-semibold rounded-full hover:bg-[#1DB95E] transition-colors"
@@ -712,10 +713,10 @@ export default function Header({ locale }: { locale: string }) {
             </div>
 
             {/* WhatsApp button at bottom in mobile mode */}
-            {isMobileMode && (
+            {isMobileMode && hasWhatsApp && contact.whatsappUrl && (
               <div className="mt-4 pt-3 border-t border-gray-100">
                 <a
-                  href="https://wa.me/8613800138000"
+                  href={contact.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-[#21C96B] text-white text-sm font-semibold rounded-xl hover:bg-[#1DB95E] transition-colors"

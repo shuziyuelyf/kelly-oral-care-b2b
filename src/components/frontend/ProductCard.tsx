@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { trackEvent } from '@/lib/analytics';
+import { hasWhatsApp, contact } from '@/lib/brand';
 
 interface ProductCardProps {
   slug: string;
@@ -86,8 +87,9 @@ export default function ProductCard({
           <span className="text-center py-2 rounded-full border border-[#173A63] text-[#173A63] text-sm font-medium group-hover:bg-[#173A63] group-hover:text-white transition whitespace-nowrap w-full sm:w-auto sm:flex-1">
             {viewDetailsLabel}
           </span>
+          {hasWhatsApp && contact.whatsappUrl && (
           <a
-            href="https://wa.me/1234567890"
+            href={contact.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
             onClick={e => { e.stopPropagation(); trackEvent('whatsapp_click', { page: 'product_card', product: slug }); }}
@@ -95,6 +97,7 @@ export default function ProductCard({
           >
             WhatsApp
           </a>
+        )}
         </div>
       </div>
     </Link>

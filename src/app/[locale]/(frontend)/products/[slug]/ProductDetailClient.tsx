@@ -9,6 +9,7 @@ import { productDetailData } from '@/lib/mock/productDetail';
 import { getI18nValue, getI18nRecordValue, safeImageSrc } from '@/lib/utils-i18n';
 import type { Product } from '@/lib/types';
 import { trackEvent } from '@/lib/analytics';
+import { hasWhatsApp, contact } from '@/lib/brand';
 
 const iconMap: Record<string, React.ElementType> = {
   Shield, Sparkles, Droplets, Heart, Leaf, Smile,
@@ -108,8 +109,9 @@ export default function ProductDetailClient({ locale, slug }: { locale: string; 
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 mb-8">
+                {hasWhatsApp && contact.whatsappUrl && (
                 <a
-                  href="https://wa.me/1234567890"
+                  href={contact.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => trackEvent('whatsapp_click', { page: 'product_detail', position: 'hero' })}
@@ -117,6 +119,7 @@ export default function ProductDetailClient({ locale, slug }: { locale: string; 
                 >
                   <MessageCircle className="w-5 h-5" /> {t('whatsappUs')}
                 </a>
+              )}
                 <Link
                   href={`/${locale}/custom`}
                   className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-full border-2 border-[#173A63] text-[#173A63] font-semibold hover:bg-[#173A63] hover:text-white transition"
@@ -282,8 +285,9 @@ export default function ProductDetailClient({ locale, slug }: { locale: string; 
           <h2 className="text-2xl md:text-3xl font-extrabold text-white mb-3">{t('finalCtaTitle')}</h2>
           <p className="text-white/70 mb-8 max-w-xl mx-auto">{t('finalCtaDesc')}</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
+            {hasWhatsApp && contact.whatsappUrl && (
             <a
-              href="https://wa.me/1234567890"
+              href={contact.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackEvent('whatsapp_click', { page: 'product_detail', position: 'final_cta' })}
@@ -291,6 +295,7 @@ export default function ProductDetailClient({ locale, slug }: { locale: string; 
             >
               <MessageCircle className="w-5 h-5" /> {t('whatsappUs')}
             </a>
+          )}
             <Link
               href={`/${locale}/custom`}
               className="flex items-center justify-center gap-2 py-3.5 rounded-full border-2 border-white text-white font-semibold hover:bg-white hover:text-[#173A63] transition"
