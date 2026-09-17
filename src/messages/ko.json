@@ -310,7 +310,9 @@
     "exhibition": "전시회",
     "read_more": "더 읽기",
     "published_at": "게시일",
-    "related_news": "관련 뉴스"
+    "related_news": "관련 뉴스",
+    "backToNews": "뉴스 목록으로",
+    "relatedNews": "관련 기사"
   },
   "contact": {
     "title": "문의",

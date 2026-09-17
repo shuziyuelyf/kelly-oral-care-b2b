@@ -310,7 +310,9 @@
     "exhibition": "展會資訊",
     "read_more": "閱讀更多",
     "published_at": "發佈時間",
-    "related_news": "相關新聞"
+    "related_news": "相關新聞",
+    "backToNews": "返回新聞列表",
+    "relatedNews": "相關推薦"
   },
   "contact": {
     "title": "聯繫我們",

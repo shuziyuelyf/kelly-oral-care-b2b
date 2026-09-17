@@ -310,7 +310,9 @@
     "exhibition": "المعارض",
     "read_more": "اقرأ المزيد",
     "published_at": "تاريخ النشر",
-    "related_news": "أخبار ذات صلة"
+    "related_news": "أخبار ذات صلة",
+    "backToNews": "العودة إلى الأخبار",
+    "relatedNews": "أخبار ذات صلة"
   },
   "contact": {
     "title": "اتصل بنا",

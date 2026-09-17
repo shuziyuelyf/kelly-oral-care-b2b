@@ -310,7 +310,9 @@
     "exhibition": "展示会",
     "read_more": "続きを読む",
     "published_at": "公開日",
-    "related_news": "関連ニュース"
+    "related_news": "関連ニュース",
+    "backToNews": "ニュース一覧に戻る",
+    "relatedNews": "関連記事"
   },
   "contact": {
     "title": "お問い合わせ",

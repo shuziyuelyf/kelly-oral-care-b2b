@@ -310,7 +310,9 @@
     "exhibition": "Exposiciones",
     "read_more": "Leer Más",
     "published_at": "Publicado",
-    "related_news": "Relacionadas"
+    "related_news": "Relacionadas",
+    "backToNews": "Volver a las noticias",
+    "relatedNews": "Noticias relacionadas"
   },
   "contact": {
     "title": "Contacto",
